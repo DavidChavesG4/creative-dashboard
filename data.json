@@ -1,0 +1,415 @@
+{
+  "gerado_em": "2026-04-11",
+  "total": 275,
+  "atrasados": 102,
+  "cancelados": 0,
+  "fora_sla": 0,
+  "finalizados": 1,
+  "taxa_atraso_geral": 37.1,
+  "status_counts": {
+    "Na fila": 103,
+    "Aprovação pendente": 83,
+    "Enviado": 74,
+    "Em produção": 10,
+    "Alteração": 1,
+    "Revisão": 1,
+    "": 1,
+    "Finalizado": 1,
+    "ERRO": 1
+  },
+  "tipo_counts": {
+    "APRESENTAÇÕES": 85,
+    "IMPRESSOS": 63,
+    "DIGITAL": 48,
+    "Sem categoria": 26,
+    "SOCIAL MEDIA": 16,
+    "Youtube e podcasts": 16,
+    "DESIGN DE ESPAÇOS": 8,
+    "ADs": 4
+  },
+  "area_counts": {
+    "Programas de Capacitação": 54,
+    "Programa de Gestão": 24,
+    "Eventos": 23,
+    "Marketing": 20,
+    "Corporativo": 15,
+    "Branding": 14,
+    "Content e SEO": 14,
+    "G4 Tools": 8
+  },
+  "area_atrasados": {
+    "Programas de Capacitação": 31,
+    "Content e SEO": 14,
+    "Marketing": 9,
+    "Eventos": 8,
+    "Corporativo": 6,
+    "Brand Performance": 6,
+    "G4 Skills": 4,
+    "Audiovisual": 4
+  },
+  "designers": {
+    "Flávia Lima": {
+      "total": 15,
+      "em_andamento": 15,
+      "finalizadas": 0,
+      "atrasadas": 5,
+      "canceladas": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 33.3,
+      "tipos": {
+        "IMPRESSOS": 8,
+        "APRESENTAÇÕES": 3,
+        "Sem categoria": 3,
+        "SOCIAL MEDIA": 1
+      },
+      "areas": {
+        "Eventos": 4,
+        "Marketing": 3,
+        "G4 Sprints": 2
+      },
+      "demandas_atrasadas": [
+        {
+          "titulo": "CREAT-367 | [G4 CLUB] [BOTTON] [BOTTON CELÍACO]",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": ""
+        },
+        {
+          "titulo": "CREAT-370 | [Brand performance] [Evelyn Moura] [G4",
+          "prazo": "2026-04-10",
+          "status": "Enviado",
+          "area": ""
+        },
+        {
+          "titulo": "[G4 CLUB] [BOTTON] [BOTTON CELÍACO]",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": "G4 Club"
+        },
+        {
+          "titulo": "[Brand performance] [Evelyn Moura] [G4PB CWB]",
+          "prazo": "2026-04-10",
+          "status": "Enviado",
+          "area": "Brand Performance"
+        },
+        {
+          "titulo": "[CORP][FOLHETO][PORTFOLIO]",
+          "prazo": "2026-03-27",
+          "status": "Em produção",
+          "area": "Corporativo"
+        }
+      ]
+    },
+    "Juliana Cespedes": {
+      "total": 10,
+      "em_andamento": 8,
+      "finalizadas": 0,
+      "atrasadas": 8,
+      "canceladas": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 80.0,
+      "tipos": {
+        "SOCIAL MEDIA": 4,
+        "Lifecycle": 2,
+        "Youtube e podcasts": 2,
+        "Eventos": 2
+      },
+      "areas": {
+        "Audiovisual": 4,
+        "Lifecycle": 2,
+        "Social": 2
+      },
+      "demandas_atrasadas": [
+        {
+          "titulo": "Youtube e podcasts - Roteiro YouTube (vídeo longo)",
+          "prazo": "2026-03-09",
+          "status": "Na fila",
+          "area": "Audiovisual"
+        },
+        {
+          "titulo": "Social media - Conteúdo Instagram",
+          "prazo": "2026-03-09",
+          "status": "Na fila",
+          "area": "Social"
+        },
+        {
+          "titulo": "Social media - Conteúdo Instagram",
+          "prazo": "2026-03-19",
+          "status": "Na fila",
+          "area": "Branding"
+        },
+        {
+          "titulo": "Eventos - Roteiro vídeo abertura",
+          "prazo": "2026-03-17",
+          "status": "Em produção",
+          "area": "Audiovisual"
+        },
+        {
+          "titulo": "Youtube e podcasts - Roteiro YouTube (vídeo longo)",
+          "prazo": "2026-03-09",
+          "status": "Na fila",
+          "area": "Audiovisual"
+        },
+        {
+          "titulo": "Social media - Conteúdo Instagram",
+          "prazo": "2026-03-09",
+          "status": "Na fila",
+          "area": "Social"
+        },
+        {
+          "titulo": "Social media - Conteúdo Instagram",
+          "prazo": "2026-03-19",
+          "status": "Na fila",
+          "area": "Branding"
+        },
+        {
+          "titulo": "Eventos - Roteiro vídeo abertura",
+          "prazo": "2026-03-17",
+          "status": "Em produção",
+          "area": "Audiovisual"
+        }
+      ]
+    },
+    "Matheus Gonçalves": {
+      "total": 17,
+      "em_andamento": 14,
+      "finalizadas": 1,
+      "atrasadas": 14,
+      "canceladas": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 82.4,
+      "tipos": {
+        "IMPRESSOS": 6,
+        "DIGITAL": 3,
+        "SOCIAL MEDIA": 3,
+        "APRESENTAÇÕES": 2,
+        "Youtube e podcasts": 1
+      },
+      "areas": {
+        "Programas de Capacitação": 5,
+        "G4 Skills": 3,
+        "Brand Performance": 3
+      },
+      "demandas_atrasadas": [
+        {
+          "titulo": "[G4 CLUB][CLASS17][BOTTON] [BOTTON AIVERSARIANTE]",
+          "prazo": "2026-04-07",
+          "status": "Alteração",
+          "area": "G4 Club"
+        },
+        {
+          "titulo": "Youtube e podcasts - Roteiro Podcast (episódio com",
+          "prazo": "2026-03-13",
+          "status": "Na fila",
+          "area": "Branding"
+        },
+        {
+          "titulo": "[PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]",
+          "prazo": "2026-03-27",
+          "status": "Na fila",
+          "area": "Programas de Capacitação"
+        },
+        {
+          "titulo": "[PP] [IMPRESSO] [FOLHA DE EXERCÍCIO - GDP]",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": "Programas de Capacitação"
+        },
+        {
+          "titulo": "CREAT-326 | [ONLINE][KV] Skills Conference - [KV] ",
+          "prazo": "2026-04-10",
+          "status": "Enviado",
+          "area": "G4 Skills"
+        },
+        {
+          "titulo": "CREAT-327 | [SPRINTS][CAMILLA][LAYOUTS]",
+          "prazo": "2026-04-08",
+          "status": "Enviado",
+          "area": "Brand Performance"
+        },
+        {
+          "titulo": "[PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]",
+          "prazo": "2026-03-27",
+          "status": "Na fila",
+          "area": "Programas de Capacitação"
+        },
+        {
+          "titulo": "[CLUB][TRILHA 12][ARTE TUNEL DE LED]",
+          "prazo": "2026-04-08",
+          "status": "Na fila",
+          "area": "Eventos"
+        },
+        {
+          "titulo": "[PP] [IMPRESSO] [FOLHA DE EXERCÍCIO - GDP]",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": "Programas de Capacitação"
+        },
+        {
+          "titulo": "[ONLINE][KV] Skills Conference - [KV] [SKILLS CONF",
+          "prazo": "2026-04-10",
+          "status": "Enviado",
+          "area": "G4 Skills"
+        }
+      ]
+    },
+    "Pedro Marcondes": {
+      "total": 28,
+      "em_andamento": 19,
+      "finalizadas": 0,
+      "atrasadas": 9,
+      "canceladas": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 32.1,
+      "tipos": {
+        "DIGITAL": 11,
+        "APRESENTAÇÕES": 7,
+        "IMPRESSOS": 6,
+        "DESIGN DE ESPAÇOS": 2,
+        "Sem categoria": 1
+      },
+      "areas": {
+        "Corporativo": 6,
+        "Marketing": 5,
+        "Programa de Gestão": 5
+      },
+      "demandas_atrasadas": [
+        {
+          "titulo": "REVISÃO LP - A VERDADE",
+          "prazo": "2026-03-27",
+          "status": "Na fila",
+          "area": "Marketing"
+        },
+        {
+          "titulo": "Relatório Diagnóstico Tools",
+          "prazo": "2026-04-10",
+          "status": "Em produção",
+          "area": "G4 Tools"
+        },
+        {
+          "titulo": "CREAT-374 | [EVENTOS][CLASS17][TEMPLATE DE AULAS]",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": "Eventos"
+        },
+        {
+          "titulo": "REVISÃO LP - A VERDADE",
+          "prazo": "2026-03-27",
+          "status": "Na fila",
+          "area": "Marketing"
+        },
+        {
+          "titulo": "[TOOLS][SOCIAL MEDIA][PODCAST] - [DIGITAL][TOOLS][",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": "G4 Tools"
+        },
+        {
+          "titulo": "Relatório Diagnóstico Tools",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": "G4 Tools"
+        },
+        {
+          "titulo": "[EVENTOS][CLASS17][TEMPLATE DE AULAS]",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": "Eventos"
+        },
+        {
+          "titulo": "REVISÃO LP - A VERDADE",
+          "prazo": "2026-03-27",
+          "status": "Na fila",
+          "area": "Marketing"
+        },
+        {
+          "titulo": "Relatório Diagnóstico Tools",
+          "prazo": "2026-04-10",
+          "status": "Em produção",
+          "area": "G4 Tools"
+        }
+      ]
+    },
+    "Vitor Santos Serodeo": {
+      "total": 22,
+      "em_andamento": 12,
+      "finalizadas": 0,
+      "atrasadas": 10,
+      "canceladas": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 45.5,
+      "tipos": {
+        "DIGITAL": 11,
+        "IMPRESSOS": 8,
+        "APRESENTAÇÕES": 3
+      },
+      "areas": {
+        "Marketing": 10,
+        "G4 Skills": 4,
+        "Programa de Gestão": 3
+      },
+      "demandas_atrasadas": [
+        {
+          "titulo": "DEMANDA TESTE",
+          "prazo": "2026-04-09",
+          "status": "Enviado",
+          "area": "G4 Skills"
+        },
+        {
+          "titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]",
+          "prazo": "2026-04-03",
+          "status": "Enviado",
+          "area": "Programa de Gestão"
+        },
+        {
+          "titulo": "CREAT-332 | Cards Mentores",
+          "prazo": "2026-04-10",
+          "status": "Enviado",
+          "area": "Marketing"
+        },
+        {
+          "titulo": "CREAT-334 | [EVENTOS&PP] [TRACTION COMEMORATIVA] [",
+          "prazo": "2026-04-07",
+          "status": "Em produção",
+          "area": "Eventos"
+        },
+        {
+          "titulo": "CREAT-362 | [HEADER][EMAIL MKT][RELAÇAMENTO DE FG4",
+          "prazo": "2026-04-10",
+          "status": "Na fila",
+          "area": "Marketing"
+        },
+        {
+          "titulo": "CREAT-372 | [BANNER][ABRIL][ECOMEMRCE] - 4 Banners",
+          "prazo": "2026-04-09",
+          "status": "Em produção",
+          "area": "Marketing"
+        },
+        {
+          "titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]",
+          "prazo": "2026-04-03",
+          "status": "Enviado",
+          "area": "Programa de Gestão"
+        },
+        {
+          "titulo": "Cards Mentores",
+          "prazo": "2026-04-10",
+          "status": "Enviado",
+          "area": "Marketing"
+        },
+        {
+          "titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]",
+          "prazo": "2026-04-03",
+          "status": "Enviado",
+          "area": "Programa de Gestão"
+        },
+        {
+          "titulo": "Cards Mentores",
+          "prazo": "2026-04-10",
+          "status": "Enviado",
+          "area": "Marketing"
+        }
+      ]
+    }
+  }
+}
