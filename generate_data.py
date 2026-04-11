@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 """
-Gera o dashboard/data.json com dados do banco 2026 do Notion.
+Gera data_creat.json e data_red.json com dados dos bancos 2026 do Notion.
 Roda pelo GitHub Actions e localmente para atualizar o dashboard.
 """
 
 import os
 import json
+import re
 import requests
 from datetime import date
 from collections import Counter
 
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
-NOTION_DB_ID = "2e0b431349e180498fe0cbaf43c58f21"
-CORTE        = "2026-03-01"
+
+DATABASES = {
+    "creat": "2e0b431349e180498fe0cbaf43c58f21",
+    "red":   "2e0b431349e181a091fd000b23ac1a37",
+}
+
+CORTE = "2026-04-01"
 
 HEADERS = {
     "Authorization": f"Bearer {NOTION_TOKEN}",
@@ -22,15 +28,30 @@ HEADERS = {
 
 STATUS_ATRASAVEIS = {"Enviado", "Na fila", "Em produção", "Alteração"}
 
+# Designers fixos por time — nomes exatamente como aparecem no Notion
+DESIGNERS = {
+    "creat": ["Flávia Lima", "Neemias Amaral", "Pedro Marcondes", "Vitor Santos Serodeo", "Matheus Gonçalves"],
+    "red":   ["Flávia Lima", "Neemias Amaral", "Pedro Marcondes", "Vitor Santos Serodeo", "Matheus Gonçalves"],
+}
 
-def fetch_all():
+# Variações de nome aceitas (Notion pode ter nome levemente diferente)
+NAME_MAP = {
+    "Vitor Serodeo":        "Vitor Santos Serodeo",
+    "Vitor Santos Serodeo": "Vitor Santos Serodeo",
+    "Neemias":              "Neemias Amaral",
+    "Flavia Lima":          "Flávia Lima",
+    "Matheus Goncalves":    "Matheus Gonçalves",
+}
+
+
+def fetch_all(db_id):
     results, cursor = [], None
     while True:
         body = {"page_size": 100}
         if cursor:
             body["start_cursor"] = cursor
         r = requests.post(
-            f"https://api.notion.com/v1/databases/{NOTION_DB_ID}/query",
+            f"https://api.notion.com/v1/databases/{db_id}/query",
             headers=HEADERS, json=body
         )
         r.raise_for_status()
@@ -63,14 +84,19 @@ def parse(page):
 
     def people(k):
         arr = props.get(k, {}).get("people", [])
-        return arr[0].get("name", "") if arr else ""
+        name = arr[0].get("name", "") if arr else ""
+        return NAME_MAP.get(name, name)
 
     def chk(k):
         return props.get(k, {}).get("checkbox", False)
 
     def ttl():
-        arr = props.get("", {}).get("title", [])
-        return arr[0].get("plain_text", "") if arr else ""
+        # título pode estar em chave vazia ou "Nome" ou "Name"
+        for key in ["", "Nome", "Name"]:
+            arr = props.get(key, {}).get("title", [])
+            if arr:
+                return arr[0].get("plain_text", "")
+        return ""
 
     prazo = dt("📅 Prazo entrega")
     st    = status()
@@ -93,22 +119,22 @@ def parse(page):
     }
 
 
-def build_summary(rows):
-    hoje = date.today().isoformat()
-    total       = len(rows)
+def build_summary(rows, team):
+    hoje  = date.today().isoformat()
+    total = len(rows)
     atrasados   = [r for r in rows if r["atrasado"]]
     cancelados  = [r for r in rows if r["status"] == "Cancelada"]
     fora_sla    = [r for r in rows if r["fora_sla"]]
     finalizados = [r for r in rows if r["status"] in ["Finalizado", "Aprovado"]]
 
     designers_data = {}
-    for designer in sorted(set(r["designer"] for r in rows if r["designer"] and r["designer"] != "David Chaves")):
-        dm  = [r for r in rows if r["designer"] == designer]
-        da  = [r for r in dm if r["atrasado"]]
-        df  = [r for r in dm if r["status"] in ["Finalizado", "Aprovado"]]
-        dc  = [r for r in dm if r["status"] == "Cancelada"]
-        ds  = [r for r in dm if r["fora_sla"]]
-        dand= [r for r in dm if r["status"] in ["Na fila", "Em produção", "Enviado", "Alteração", "Revisão"]]
+    for designer in DESIGNERS[team]:
+        dm   = [r for r in rows if r["designer"] == designer]
+        da   = [r for r in dm if r["atrasado"]]
+        df   = [r for r in dm if r["status"] in ["Finalizado", "Aprovado"]]
+        dc   = [r for r in dm if r["status"] == "Cancelada"]
+        ds   = [r for r in dm if r["fora_sla"]]
+        dand = [r for r in dm if r["status"] in ["Na fila", "Em produção", "Enviado", "Alteração", "Revisão"]]
         designers_data[designer] = {
             "total":        len(dm),
             "em_andamento": len(dand),
@@ -126,52 +152,68 @@ def build_summary(rows):
         }
 
     return {
-        "gerado_em":        hoje,
-        "total":            total,
-        "atrasados":        len(atrasados),
-        "cancelados":       len(cancelados),
-        "fora_sla":         len(fora_sla),
-        "finalizados":      len(finalizados),
-        "taxa_atraso_geral":round(len(atrasados)/total*100, 1) if total else 0,
-        "status_counts":    dict(Counter(r["status"] for r in rows).most_common()),
-        "tipo_counts":      dict(Counter(r["tipo"] for r in rows if r["tipo"]).most_common(8)),
-        "area_counts":      dict(Counter(r["area"] for r in rows if r["area"]).most_common(8)),
-        "area_atrasados":   dict(Counter(r["area"] for r in atrasados if r["area"]).most_common(8)),
-        "designers":        designers_data,
+        "gerado_em":         hoje,
+        "corte":             CORTE,
+        "total":             total,
+        "atrasados":         len(atrasados),
+        "cancelados":        len(cancelados),
+        "fora_sla":          len(fora_sla),
+        "finalizados":       len(finalizados),
+        "taxa_atraso_geral": round(len(atrasados)/total*100, 1) if total else 0,
+        "status_counts":     dict(Counter(r["status"] for r in rows).most_common()),
+        "tipo_counts":       dict(Counter(r["tipo"] for r in rows if r["tipo"]).most_common(8)),
+        "area_counts":       dict(Counter(r["area"] for r in rows if r["area"]).most_common(8)),
+        "area_atrasados":    dict(Counter(r["area"] for r in atrasados if r["area"]).most_common(8)),
+        "designers":         designers_data,
     }
 
 
-def main():
-    print("Buscando dados do Notion...")
-    pages = fetch_all()
-    rows  = [parse(p) for p in pages if parse(p)["criado"] >= CORTE]
-    print(f"  {len(rows)} demandas (desde {CORTE})")
-
-    summary = build_summary(rows)
-
-    # No repo o index.html e data.json ficam na raiz (GitHub Pages serve de /)
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    repo_root  = os.path.dirname(script_dir)  # dashboard/ está dentro do repo local, mas no Actions o script roda da raiz
-
-    # Detecta se está rodando no GitHub Actions (raiz do repo) ou local (pasta dashboard/)
-    index_path = "index.html" if os.path.exists("index.html") else os.path.join(script_dir, "index.html")
-    data_path  = "data.json"  if os.path.exists("index.html") else os.path.join(script_dir, "data.json")
-
+def inject_and_save(summary, team, index_path, data_path_tpl):
+    data_path = data_path_tpl.format(team=team)
     with open(data_path, "w") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
     print(f"  Salvo em {data_path}")
 
-    # Injeta no index.html
     with open(index_path) as f:
         html = f.read()
 
-    import re
     data_js = json.dumps(summary, ensure_ascii=False)
-    html = re.sub(r"const DATA = \{.*?\};", f"const DATA = {data_js};", html, flags=re.DOTALL)
+    # Substitui o bloco correto no HTML: DATA_CREAT ou DATA_RED
+    key = team.upper()
+    html = re.sub(
+        rf"const DATA_{key} = \{{.*?\}};",
+        f"const DATA_{key} = {data_js};",
+        html, flags=re.DOTALL
+    )
 
     with open(index_path, "w") as f:
         f.write(html)
-    print(f"  {index_path} atualizado")
+    print(f"  {index_path} — DATA_{key} atualizado")
+
+
+def main():
+    # Detecta raiz (GitHub Actions) vs local (pasta dashboard/)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    if os.path.exists("index.html"):
+        base = "."
+    else:
+        base = script_dir
+
+    index_path    = os.path.join(base, "index.html")
+    data_path_tpl = os.path.join(base, "data_{team}.json")
+
+    for team, db_id in DATABASES.items():
+        print(f"\n[{team.upper()}] Buscando dados do Notion (DB: {db_id})...")
+        pages = fetch_all(db_id)
+        rows  = [r for p in pages for r in [parse(p)] if r["criado"] >= CORTE]
+        print(f"  {len(rows)} demandas desde {CORTE}")
+
+        # Debug: nomes encontrados no campo Creative
+        names_found = Counter(r["designer"] for r in rows if r["designer"])
+        print(f"  Designers encontrados: {dict(names_found.most_common(10))}")
+
+        summary = build_summary(rows, team)
+        inject_and_save(summary, team, index_path, data_path_tpl)
 
 
 if __name__ == "__main__":
