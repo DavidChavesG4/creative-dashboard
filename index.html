@@ -19,6 +19,7 @@
     --blue: #5b8af5;
     --purple: #a78bfa;
     --cyan: #22d3ee;
+    --accent: #5b8af5;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 14px; }
@@ -26,14 +27,41 @@
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 16px 28px;
+    padding: 14px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
+    gap: 16px;
   }
-  header h1 { font-size: 16px; font-weight: 600; letter-spacing: .3px; }
+  header h1 { font-size: 16px; font-weight: 600; letter-spacing: .3px; white-space: nowrap; }
   header .meta { color: var(--text-muted); font-size: 12px; }
+
+  /* Toggle CREAT / RED */
+  .team-toggle {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .team-toggle button {
+    background: none; border: none;
+    padding: 5px 16px; border-radius: 6px;
+    font-size: 12px; font-weight: 700; letter-spacing: .5px;
+    cursor: pointer; color: var(--text-muted); transition: .15s;
+  }
+  .team-toggle button.active-creat {
+    background: #1e3a5f; color: #5b8af5;
+  }
+  .team-toggle button.active-red {
+    background: #3d1a1a; color: #f44b6e;
+  }
+  .team-toggle button:not(.active-creat):not(.active-red):hover {
+    background: var(--surface2); color: var(--text);
+  }
+
   .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
   .badge-green { background: rgba(76,175,125,.15); color: var(--green); }
   .badge-red   { background: rgba(244,75,110,.15);  color: var(--red); }
@@ -53,7 +81,7 @@
     transition: .15s;
   }
   nav button:hover { background: var(--surface2); color: var(--text); }
-  nav button.active { background: var(--surface2); color: var(--blue); }
+  nav button.active { background: var(--surface2); color: var(--accent); }
 
   .page { display: none; padding: 24px 28px; }
   .page.active { display: block; }
@@ -88,12 +116,11 @@
     border-radius: 8px; padding: 8px 14px; cursor: pointer;
     font-size: 13px; font-weight: 500; transition: .15s;
   }
-  .designer-tab:hover { border-color: var(--blue); }
-  .designer-tab.active { border-color: var(--blue); background: rgba(91,138,245,.1); color: var(--blue); }
+  .designer-tab:hover { border-color: var(--accent); }
+  .designer-tab.active { border-color: var(--accent); background: rgba(91,138,245,.1); color: var(--accent); }
 
   .designer-panel { display: none; }
   .designer-panel.active { display: block; }
-
   .designer-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
 
   /* Tabela */
@@ -120,26 +147,33 @@
 
   .atraso-tag { color: var(--red); font-size: 11px; font-weight: 600; }
 
+  .team-label-creat { color: #5b8af5; font-weight: 700; font-size: 11px; }
+  .team-label-red   { color: #f44b6e; font-weight: 700; font-size: 11px; }
+
   footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 12px; }
 </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <h1>📊 Dashboard Creative — G4</h1>
+  <div style="display:flex;align-items:center;gap:14px">
+    <h1>Dashboard Creative — G4</h1>
+    <div class="team-toggle">
+      <button id="btn-creat" class="active-creat" onclick="switchTeam('creat')">CREAT</button>
+      <button id="btn-red" onclick="switchTeam('red')">RED</button>
+    </div>
   </div>
   <div class="meta" id="header-meta">Carregando...</div>
 </header>
 
 <nav>
-  <button class="active" onclick="showPage('geral', this)">Visão Geral</button>
+  <button class="active" onclick="showPage('geral', this)">Visao Geral</button>
   <button onclick="showPage('designers', this)">Por Designer</button>
-  <button onclick="showPage('areas', this)">Por Área</button>
+  <button onclick="showPage('areas', this)">Por Area</button>
   <button onclick="showPage('atrasos', this)">Atrasos</button>
 </nav>
 
-<!-- ── VISÃO GERAL ─────────────────────────────────────────────────────── -->
+<!-- VISAO GERAL -->
 <div id="page-geral" class="page active">
   <div class="kpi-grid" id="kpis-geral"></div>
   <div class="charts-grid">
@@ -147,30 +181,30 @@
     <div class="card"><h3>Tipo de Demanda</h3><div class="chart-wrap"><canvas id="chart-tipo"></canvas></div></div>
   </div>
   <div class="charts-grid">
-    <div class="card"><h3>Volume por Área Solicitante</h3><div class="chart-wrap"><canvas id="chart-area"></canvas></div></div>
+    <div class="card"><h3>Volume por Area Solicitante</h3><div class="chart-wrap"><canvas id="chart-area"></canvas></div></div>
     <div class="card"><h3>Demandas por Designer</h3><div class="chart-wrap"><canvas id="chart-designer"></canvas></div></div>
   </div>
 </div>
 
-<!-- ── POR DESIGNER ───────────────────────────────────────────────────── -->
+<!-- POR DESIGNER -->
 <div id="page-designers" class="page">
   <div class="designer-tabs" id="designer-tabs"></div>
   <div id="designer-panels"></div>
 </div>
 
-<!-- ── POR ÁREA ───────────────────────────────────────────────────────── -->
+<!-- POR AREA -->
 <div id="page-areas" class="page">
   <div class="charts-grid">
-    <div class="card"><h3>Volume Total por Área</h3><div class="chart-wrap"><canvas id="chart-area2"></canvas></div></div>
-    <div class="card"><h3>Atrasos por Área</h3><div class="chart-wrap"><canvas id="chart-area-atraso"></canvas></div></div>
+    <div class="card"><h3>Volume Total por Area</h3><div class="chart-wrap"><canvas id="chart-area2"></canvas></div></div>
+    <div class="card"><h3>Atrasos por Area</h3><div class="chart-wrap"><canvas id="chart-area-atraso"></canvas></div></div>
   </div>
   <div class="card" style="margin-top:16px">
-    <h3>Detalhamento por Área</h3>
+    <h3>Detalhamento por Area</h3>
     <div class="table-wrap"><table id="table-areas"></table></div>
   </div>
 </div>
 
-<!-- ── ATRASOS ────────────────────────────────────────────────────────── -->
+<!-- ATRASOS -->
 <div id="page-atrasos" class="page">
   <div class="kpi-grid" id="kpis-atrasos"></div>
   <div class="card">
@@ -187,7 +221,12 @@
 
 <script>
 // ── DADOS ──────────────────────────────────────────────────────────────────
-const DATA = {"gerado_em": "2026-04-11", "total": 275, "atrasados": 102, "cancelados": 0, "fora_sla": 0, "finalizados": 1, "taxa_atraso_geral": 37.1, "status_counts": {"Na fila": 103, "Aprovação pendente": 83, "Enviado": 74, "Em produção": 10, "Alteração": 1, "Revisão": 1, "": 1, "Finalizado": 1, "ERRO": 1}, "tipo_counts": {"APRESENTAÇÕES": 85, "IMPRESSOS": 63, "DIGITAL": 48, "Sem categoria": 26, "SOCIAL MEDIA": 16, "Youtube e podcasts": 16, "DESIGN DE ESPAÇOS": 8, "ADs": 4}, "area_counts": {"Programas de Capacitação": 54, "Programa de Gestão": 24, "Eventos": 23, "Marketing": 20, "Corporativo": 15, "Branding": 14, "Content e SEO": 14, "G4 Tools": 8}, "area_atrasados": {"Programas de Capacitação": 31, "Content e SEO": 14, "Marketing": 9, "Eventos": 8, "Corporativo": 6, "Brand Performance": 6, "G4 Skills": 4, "Audiovisual": 4}, "designers": {"Flávia Lima": {"total": 15, "em_andamento": 15, "finalizadas": 0, "atrasadas": 5, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 33.3, "tipos": {"IMPRESSOS": 8, "APRESENTAÇÕES": 3, "Sem categoria": 3, "SOCIAL MEDIA": 1}, "areas": {"Eventos": 4, "Marketing": 3, "G4 Sprints": 2}, "demandas_atrasadas": [{"titulo": "CREAT-367 | [G4 CLUB] [BOTTON] [BOTTON CELÍACO]", "prazo": "2026-04-10", "status": "Na fila", "area": ""}, {"titulo": "CREAT-370 | [Brand performance] [Evelyn Moura] [G4", "prazo": "2026-04-10", "status": "Enviado", "area": ""}, {"titulo": "[G4 CLUB] [BOTTON] [BOTTON CELÍACO]", "prazo": "2026-04-10", "status": "Na fila", "area": "G4 Club"}, {"titulo": "[Brand performance] [Evelyn Moura] [G4PB CWB]", "prazo": "2026-04-10", "status": "Enviado", "area": "Brand Performance"}, {"titulo": "[CORP][FOLHETO][PORTFOLIO]", "prazo": "2026-03-27", "status": "Em produção", "area": "Corporativo"}]}, "Juliana Cespedes": {"total": 10, "em_andamento": 8, "finalizadas": 0, "atrasadas": 8, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 80.0, "tipos": {"SOCIAL MEDIA": 4, "Lifecycle": 2, "Youtube e podcasts": 2, "Eventos": 2}, "areas": {"Audiovisual": 4, "Lifecycle": 2, "Social": 2}, "demandas_atrasadas": [{"titulo": "Youtube e podcasts - Roteiro YouTube (vídeo longo)", "prazo": "2026-03-09", "status": "Na fila", "area": "Audiovisual"}, {"titulo": "Social media - Conteúdo Instagram", "prazo": "2026-03-09", "status": "Na fila", "area": "Social"}, {"titulo": "Social media - Conteúdo Instagram", "prazo": "2026-03-19", "status": "Na fila", "area": "Branding"}, {"titulo": "Eventos - Roteiro vídeo abertura", "prazo": "2026-03-17", "status": "Em produção", "area": "Audiovisual"}, {"titulo": "Youtube e podcasts - Roteiro YouTube (vídeo longo)", "prazo": "2026-03-09", "status": "Na fila", "area": "Audiovisual"}, {"titulo": "Social media - Conteúdo Instagram", "prazo": "2026-03-09", "status": "Na fila", "area": "Social"}, {"titulo": "Social media - Conteúdo Instagram", "prazo": "2026-03-19", "status": "Na fila", "area": "Branding"}, {"titulo": "Eventos - Roteiro vídeo abertura", "prazo": "2026-03-17", "status": "Em produção", "area": "Audiovisual"}]}, "Matheus Gonçalves": {"total": 17, "em_andamento": 14, "finalizadas": 1, "atrasadas": 14, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 82.4, "tipos": {"IMPRESSOS": 6, "DIGITAL": 3, "SOCIAL MEDIA": 3, "APRESENTAÇÕES": 2, "Youtube e podcasts": 1}, "areas": {"Programas de Capacitação": 5, "G4 Skills": 3, "Brand Performance": 3}, "demandas_atrasadas": [{"titulo": "[G4 CLUB][CLASS17][BOTTON] [BOTTON AIVERSARIANTE]", "prazo": "2026-04-07", "status": "Alteração", "area": "G4 Club"}, {"titulo": "Youtube e podcasts - Roteiro Podcast (episódio com", "prazo": "2026-03-13", "status": "Na fila", "area": "Branding"}, {"titulo": "[PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]", "prazo": "2026-03-27", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "[PP] [IMPRESSO] [FOLHA DE EXERCÍCIO - GDP]", "prazo": "2026-04-10", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "CREAT-326 | [ONLINE][KV] Skills Conference - [KV] ", "prazo": "2026-04-10", "status": "Enviado", "area": "G4 Skills"}, {"titulo": "CREAT-327 | [SPRINTS][CAMILLA][LAYOUTS]", "prazo": "2026-04-08", "status": "Enviado", "area": "Brand Performance"}, {"titulo": "[PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]", "prazo": "2026-03-27", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "[CLUB][TRILHA 12][ARTE TUNEL DE LED]", "prazo": "2026-04-08", "status": "Na fila", "area": "Eventos"}, {"titulo": "[PP] [IMPRESSO] [FOLHA DE EXERCÍCIO - GDP]", "prazo": "2026-04-10", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "[ONLINE][KV] Skills Conference - [KV] [SKILLS CONF", "prazo": "2026-04-10", "status": "Enviado", "area": "G4 Skills"}]}, "Pedro Marcondes": {"total": 28, "em_andamento": 19, "finalizadas": 0, "atrasadas": 9, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 32.1, "tipos": {"DIGITAL": 11, "APRESENTAÇÕES": 7, "IMPRESSOS": 6, "DESIGN DE ESPAÇOS": 2, "Sem categoria": 1}, "areas": {"Corporativo": 6, "Marketing": 5, "Programa de Gestão": 5}, "demandas_atrasadas": [{"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}, {"titulo": "Relatório Diagnóstico Tools", "prazo": "2026-04-10", "status": "Em produção", "area": "G4 Tools"}, {"titulo": "CREAT-374 | [EVENTOS][CLASS17][TEMPLATE DE AULAS]", "prazo": "2026-04-10", "status": "Na fila", "area": "Eventos"}, {"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}, {"titulo": "[TOOLS][SOCIAL MEDIA][PODCAST] - [DIGITAL][TOOLS][", "prazo": "2026-04-10", "status": "Na fila", "area": "G4 Tools"}, {"titulo": "Relatório Diagnóstico Tools", "prazo": "2026-04-10", "status": "Na fila", "area": "G4 Tools"}, {"titulo": "[EVENTOS][CLASS17][TEMPLATE DE AULAS]", "prazo": "2026-04-10", "status": "Na fila", "area": "Eventos"}, {"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}, {"titulo": "Relatório Diagnóstico Tools", "prazo": "2026-04-10", "status": "Em produção", "area": "G4 Tools"}]}, "Vitor Santos Serodeo": {"total": 22, "em_andamento": 12, "finalizadas": 0, "atrasadas": 10, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 45.5, "tipos": {"DIGITAL": 11, "IMPRESSOS": 8, "APRESENTAÇÕES": 3}, "areas": {"Marketing": 10, "G4 Skills": 4, "Programa de Gestão": 3}, "demandas_atrasadas": [{"titulo": "DEMANDA TESTE", "prazo": "2026-04-09", "status": "Enviado", "area": "G4 Skills"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}, {"titulo": "CREAT-332 | Cards Mentores", "prazo": "2026-04-10", "status": "Enviado", "area": "Marketing"}, {"titulo": "CREAT-334 | [EVENTOS&PP] [TRACTION COMEMORATIVA] [", "prazo": "2026-04-07", "status": "Em produção", "area": "Eventos"}, {"titulo": "CREAT-362 | [HEADER][EMAIL MKT][RELAÇAMENTO DE FG4", "prazo": "2026-04-10", "status": "Na fila", "area": "Marketing"}, {"titulo": "CREAT-372 | [BANNER][ABRIL][ECOMEMRCE] - 4 Banners", "prazo": "2026-04-09", "status": "Em produção", "area": "Marketing"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}, {"titulo": "Cards Mentores", "prazo": "2026-04-10", "status": "Enviado", "area": "Marketing"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}, {"titulo": "Cards Mentores", "prazo": "2026-04-10", "status": "Enviado", "area": "Marketing"}]}}};
+const DATA_CREAT = {"gerado_em": "2026-04-10", "corte": "2026-04-01", "total": 0, "atrasados": 0, "cancelados": 0, "fora_sla": 0, "finalizados": 0, "taxa_atraso_geral": 0, "status_counts": {}, "tipo_counts": {}, "area_counts": {}, "area_atrasados": {}, "designers": {}};
+const DATA_RED   = {"gerado_em": "2026-04-10", "corte": "2026-04-01", "total": 0, "atrasados": 0, "cancelados": 0, "fora_sla": 0, "finalizados": 0, "taxa_atraso_geral": 0, "status_counts": {}, "tipo_counts": {}, "area_counts": {}, "area_atrasados": {}, "designers": {}};
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let currentTeam = 'creat';
+let chartInstances = {};
 
 // ── HELPERS ────────────────────────────────────────────────────────────────
 function showPage(id, btn) {
@@ -197,11 +236,26 @@ function showPage(id, btn) {
   btn.classList.add('active');
 }
 
+function switchTeam(team) {
+  currentTeam = team;
+  document.getElementById('btn-creat').className = team === 'creat' ? 'active-creat' : '';
+  document.getElementById('btn-red').className   = team === 'red'   ? 'active-red'   : '';
+  // Accent color
+  document.documentElement.style.setProperty('--accent', team === 'creat' ? '#5b8af5' : '#f44b6e');
+  renderAll();
+}
+
+function getData() {
+  return currentTeam === 'creat' ? DATA_CREAT : DATA_RED;
+}
+
 function statusClass(s) {
   const m = {
-    'Na fila': 's-na-fila', 'Enviado': 's-enviado', 'Em produção': 's-producao',
+    'Na fila': 's-na-fila', 'Enviado': 's-enviado', 'Em producao': 's-producao', 'Em produção': 's-producao',
     'Aprovado': 's-aprovado', 'Finalizado': 's-finalizado', 'Cancelada': 's-cancelada',
-    'Revisão': 's-revisao', 'Alteração': 's-alteracao', 'Aprovação pendente': 's-aprovpend',
+    'Revisao': 's-revisao', 'Revisão': 's-revisao',
+    'Alteracao': 's-alteracao', 'Alteração': 's-alteracao',
+    'Aprovacao pendente': 's-aprovpend', 'Aprovação pendente': 's-aprovpend',
   };
   return m[s] || 's-default';
 }
@@ -217,9 +271,13 @@ function kpiHtml(label, value, sub, cls) {
 const COLORS = ['#5b8af5','#a78bfa','#22d3ee','#4caf7d','#f5a623','#f44b6e','#fb923c','#34d399','#818cf8','#f472b6'];
 
 function makeChart(id, type, labels, datasets, opts={}) {
+  if (chartInstances[id]) {
+    chartInstances[id].destroy();
+    delete chartInstances[id];
+  }
   const ctx = document.getElementById(id);
   if (!ctx) return;
-  new Chart(ctx, {
+  chartInstances[id] = new Chart(ctx, {
     type,
     data: { labels, datasets },
     options: {
@@ -237,19 +295,23 @@ function makeChart(id, type, labels, datasets, opts={}) {
   });
 }
 
-// ── VISÃO GERAL ────────────────────────────────────────────────────────────
+// ── VISAO GERAL ────────────────────────────────────────────────────────────
 function renderGeral() {
-  const d = DATA;
+  const d = getData();
   const pct_atraso = d.taxa_atraso_geral;
   const kpis = document.getElementById('kpis-geral');
+  const teamLabel = currentTeam === 'creat'
+    ? '<span class="team-label-creat">CREAT</span>'
+    : '<span class="team-label-red">RED</span>';
+
   kpis.innerHTML =
-    kpiHtml('Total de Demandas', d.total, 'desde 01/03/2026') +
-    kpiHtml('Atrasadas', d.atrasados, `${pct_atraso}% do total`, 'danger') +
+    kpiHtml('Time', currentTeam.toUpperCase(), `desde ${d.corte || '01/04/2026'}`) +
+    kpiHtml('Total de Demandas', d.total, `desde ${(d.corte||'').slice(5).replace('-','/')}/${(d.corte||'').slice(0,4)}`) +
+    kpiHtml('Atrasadas', d.atrasados, `${pct_atraso}% do total`, d.atrasados > 0 ? 'danger' : 'ok') +
     kpiHtml('Canceladas', d.cancelados, '', d.cancelados > 0 ? 'warn' : '') +
     kpiHtml('Finalizadas', d.finalizados, '', 'ok') +
-    kpiHtml('Fora de SLA', d.fora_sla, 'na criação', d.fora_sla > 0 ? 'warn' : 'ok');
+    kpiHtml('Fora de SLA', d.fora_sla, 'na criacao', d.fora_sla > 0 ? 'warn' : 'ok');
 
-  // Status
   const sc = d.status_counts;
   const statusColors = Object.keys(sc).map((_, i) => COLORS[i % COLORS.length]);
   makeChart('chart-status', 'doughnut',
@@ -257,15 +319,13 @@ function renderGeral() {
     { plugins: { legend: { position: 'right', labels: { color:'#7b82a8', font:{size:11}, boxWidth:10 } } } }
   );
 
-  // Tipo
   const tc = d.tipo_counts;
   makeChart('chart-tipo', 'bar',
     Object.keys(tc),
-    [{ data: Object.values(tc), backgroundColor: '#5b8af5', borderRadius: 4 }],
+    [{ data: Object.values(tc), backgroundColor: currentTeam === 'creat' ? '#5b8af5' : '#f44b6e', borderRadius: 4 }],
     { plugins: { legend: { display: false } }, indexAxis: 'y' }
   );
 
-  // Área
   const ac = d.area_counts;
   makeChart('chart-area', 'bar',
     Object.keys(ac),
@@ -273,7 +333,6 @@ function renderGeral() {
     { plugins: { legend: { display: false } }, indexAxis: 'y' }
   );
 
-  // Designer
   const designers = Object.entries(d.designers).map(([name, info]) => ({ name, total: info.total }))
     .sort((a,b) => b.total - a.total);
   makeChart('chart-designer', 'bar',
@@ -285,13 +344,19 @@ function renderGeral() {
 
 // ── POR DESIGNER ───────────────────────────────────────────────────────────
 function renderDesigners() {
-  const tabsEl = document.getElementById('designer-tabs');
+  const tabsEl   = document.getElementById('designer-tabs');
   const panelsEl = document.getElementById('designer-panels');
-  const designers = Object.entries(DATA.designers);
+  tabsEl.innerHTML = '';
+  panelsEl.innerHTML = '';
+
+  const designers = Object.entries(getData().designers);
+  if (designers.length === 0) {
+    panelsEl.innerHTML = '<p style="color:var(--text-muted);padding:20px">Sem dados para este time no periodo selecionado.</p>';
+    return;
+  }
 
   designers.forEach(([name, info], idx) => {
     const id = 'designer-' + idx;
-    // Tab
     const tab = document.createElement('div');
     tab.className = 'designer-tab' + (idx === 0 ? ' active' : '');
     tab.textContent = name;
@@ -303,23 +368,22 @@ function renderDesigners() {
     };
     tabsEl.appendChild(tab);
 
-    // Panel
     const panel = document.createElement('div');
     panel.id = id;
     panel.className = 'designer-panel' + (idx === 0 ? ' active' : '');
 
-    const atrasoPct = info.taxa_atraso;
+    const atrasoPct  = info.taxa_atraso;
     const atrasoClass = atrasoPct >= 50 ? 'danger' : atrasoPct >= 20 ? 'warn' : 'ok';
 
-    let tiposHtml = Object.entries(info.tipos).map(([t,v]) =>
-      `<tr><td>${t}</td><td><b>${v}</b></td></tr>`).join('');
+    const tiposHtml = Object.entries(info.tipos).map(([t,v]) =>
+      `<tr><td>${t}</td><td><b>${v}</b></td></tr>`).join('') || '<tr><td colspan="2" style="color:var(--text-muted)">Sem dados</td></tr>';
 
-    let atrasadasHtml = info.demandas_atrasadas.map(d =>
+    const atrasadasHtml = info.demandas_atrasadas.map(dem =>
       `<tr>
-        <td>${d.titulo}</td>
-        <td><span class="status-pill ${statusClass(d.status)}">${d.status}</span></td>
-        <td>${d.area || '—'}</td>
-        <td class="atraso-tag">${d.prazo}</td>
+        <td>${dem.titulo || '—'}</td>
+        <td><span class="status-pill ${statusClass(dem.status)}">${dem.status}</span></td>
+        <td>${dem.area || '—'}</td>
+        <td class="atraso-tag">${dem.prazo}</td>
       </tr>`).join('') || '<tr><td colspan="4" style="color:var(--text-muted)">Nenhuma demanda atrasada</td></tr>';
 
     panel.innerHTML = `
@@ -329,7 +393,7 @@ function renderDesigners() {
         ${kpiHtml('Finalizadas', info.finalizadas, '', 'ok')}
         ${kpiHtml('Atrasadas', info.atrasadas, `${atrasoPct}%`, atrasoClass)}
         ${kpiHtml('Canceladas', info.canceladas)}
-        ${kpiHtml('Fora de SLA', info.fora_sla, 'na criação', info.fora_sla > 0 ? 'warn' : 'ok')}
+        ${kpiHtml('Fora de SLA', info.fora_sla, 'na criacao', info.fora_sla > 0 ? 'warn' : 'ok')}
       </div>
       <div class="charts-grid">
         <div class="card">
@@ -342,7 +406,7 @@ function renderDesigners() {
           <h3>Demandas Atrasadas</h3>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Demanda</th><th>Status</th><th>Área</th><th>Prazo</th></tr></thead>
+              <thead><tr><th>Demanda</th><th>Status</th><th>Area</th><th>Prazo</th></tr></thead>
               <tbody>${atrasadasHtml}</tbody>
             </table>
           </div>
@@ -352,14 +416,15 @@ function renderDesigners() {
   });
 }
 
-// ── POR ÁREA ───────────────────────────────────────────────────────────────
+// ── POR AREA ───────────────────────────────────────────────────────────────
 function renderAreas() {
-  const ac = DATA.area_counts;
-  const aa = DATA.area_atrasados;
+  const d  = getData();
+  const ac = d.area_counts;
+  const aa = d.area_atrasados;
 
   makeChart('chart-area2', 'bar',
     Object.keys(ac),
-    [{ data: Object.values(ac), backgroundColor: '#5b8af5', borderRadius: 4 }],
+    [{ data: Object.values(ac), backgroundColor: currentTeam === 'creat' ? '#5b8af5' : '#f44b6e', borderRadius: 4 }],
     { plugins: { legend: { display: false } }, indexAxis: 'y' }
   );
   makeChart('chart-area-atraso', 'bar',
@@ -368,15 +433,15 @@ function renderAreas() {
     { plugins: { legend: { display: false } }, indexAxis: 'y' }
   );
 
-  const tbl = document.getElementById('table-areas');
+  const tbl  = document.getElementById('table-areas');
   const rows = Object.keys(ac).map(area => {
-    const total = ac[area] || 0;
+    const total  = ac[area] || 0;
     const atrasos = aa[area] || 0;
-    const pct = total > 0 ? Math.round(atrasos/total*100) : 0;
+    const pct    = total > 0 ? Math.round(atrasos/total*100) : 0;
     return { area, total, atrasos, pct };
   }).sort((a,b) => b.total - a.total);
 
-  tbl.innerHTML = `<thead><tr><th>Área</th><th>Total</th><th>Atrasadas</th><th>% Atraso</th></tr></thead><tbody>` +
+  tbl.innerHTML = `<thead><tr><th>Area</th><th>Total</th><th>Atrasadas</th><th>% Atraso</th></tr></thead><tbody>` +
     rows.map(r => `<tr>
       <td>${r.area}</td>
       <td>${r.total}</td>
@@ -387,23 +452,23 @@ function renderAreas() {
 
 // ── ATRASOS ────────────────────────────────────────────────────────────────
 function renderAtrasos() {
-  const d = DATA;
+  const d    = getData();
   const kpis = document.getElementById('kpis-atrasos');
   kpis.innerHTML =
-    kpiHtml('Total Atrasadas', d.atrasados, `${d.taxa_atraso_geral}% do total`, 'danger') +
-    kpiHtml('Maior Concentração', Object.keys(d.area_atrasados)[0] || '—', 'por área') +
+    kpiHtml('Total Atrasadas', d.atrasados, `${d.taxa_atraso_geral}% do total`, d.atrasados > 0 ? 'danger' : 'ok') +
+    kpiHtml('Maior Concentracao', Object.keys(d.area_atrasados)[0] || '—', 'por area') +
     kpiHtml('Canceladas', d.cancelados, '');
 
-  // Atrasos por designer
-  const dd = Object.entries(d.designers).map(([name, info]) => ({ name: name.split(' ')[0], atr: info.atrasadas }))
+  const dd = Object.entries(d.designers)
+    .map(([name, info]) => ({ name: name.split(' ')[0], atr: info.atrasadas }))
     .filter(x => x.atr > 0).sort((a,b) => b.atr - a.atr);
+
   makeChart('chart-atrasos-designer', 'bar',
     dd.map(x => x.name),
     [{ data: dd.map(x => x.atr), backgroundColor: '#f44b6e', borderRadius: 4 }],
     { plugins: { legend: { display: false } } }
   );
 
-  // Tabela de atrasos
   const rows = [];
   Object.entries(d.designers).forEach(([name, info]) => {
     info.demandas_atrasadas.forEach(dem => rows.push({ designer: name, ...dem }));
@@ -411,9 +476,9 @@ function renderAtrasos() {
   rows.sort((a,b) => (a.prazo||'') < (b.prazo||'') ? -1 : 1);
 
   const tbl = document.getElementById('table-atrasos');
-  tbl.innerHTML = `<thead><tr><th>Demanda</th><th>Designer</th><th>Status</th><th>Área</th><th>Prazo</th></tr></thead><tbody>` +
+  tbl.innerHTML = `<thead><tr><th>Demanda</th><th>Designer</th><th>Status</th><th>Area</th><th>Prazo</th></tr></thead><tbody>` +
     rows.map(r => `<tr>
-      <td>${r.titulo}</td>
+      <td>${r.titulo || '—'}</td>
       <td>${r.designer.split(' ')[0]}</td>
       <td><span class="status-pill ${statusClass(r.status)}">${r.status}</span></td>
       <td>${r.area || '—'}</td>
@@ -421,14 +486,23 @@ function renderAtrasos() {
     </tr>`).join('') + '</tbody>';
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
-document.getElementById('header-meta').textContent = `Atualizado em ${DATA.gerado_em} • ${DATA.total} demandas (desde 01/03/2026)`;
-document.getElementById('footer-updated').textContent = `Creative Dashboard · G4 · Dados: Notion banco 2026 · Gerado em ${DATA.gerado_em}`;
+// ── RENDER ALL ─────────────────────────────────────────────────────────────
+function renderAll() {
+  const d    = getData();
+  const team = currentTeam.toUpperCase();
+  document.getElementById('header-meta').textContent =
+    `${team} · Atualizado em ${d.gerado_em} · ${d.total} demandas (desde ${(d.corte||'2026-04-01').split('-').reverse().join('/')})`;
+  document.getElementById('footer-updated').textContent =
+    `Creative Dashboard · G4 · Dados: Notion banco 2026 · ${team} · Gerado em ${d.gerado_em}`;
 
-renderGeral();
-renderDesigners();
-renderAreas();
-renderAtrasos();
+  renderGeral();
+  renderDesigners();
+  renderAreas();
+  renderAtrasos();
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+renderAll();
 </script>
 </body>
 </html>
