@@ -21,20 +21,13 @@ TEAM_PROJETO = {
     "red":   "RED",
 }
 
-CORTE = "2026-04-01"
-
-HEADERS = {
-    "Authorization": f"Bearer {NOTION_TOKEN}",
-    "Content-Type": "application/json",
-    "Notion-Version": "2022-06-28",
-}
-
-STATUS_ATRASAVEIS = {"Enviado", "Na fila", "Em produção", "Alteração"}
+# Demandas consideradas atrasadas quando prazo < hoje e estão nesses status
+STATUS_ATRASAVEIS = {"Enviado", "Na fila", "Em produção", "Revisão", "Alteração"}
 
 # Designers fixos por time — nomes exatamente como aparecem no Notion
 DESIGNERS = {
     "creat": ["Flávia Lima", "Neemias Amaral", "Pedro Marcondes", "Vitor Santos Serodeo", "Matheus Gonçalves"],
-    "red":   ["Flávia Lima", "Neemias Amaral", "Pedro Marcondes", "Vitor Santos Serodeo", "Matheus Gonçalves"],
+    "red":   ["Flávia Lima", "Neemias Amaral", "Pedro Marcondes", "Vitor Santos Serodeo", "Matheus Gonçalves", "Juliana Cespedes"],
 }
 
 # Variações de nome aceitas (Notion pode ter nome levemente diferente)
@@ -44,6 +37,12 @@ NAME_MAP = {
     "Neemias":              "Neemias Amaral",
     "Flavia Lima":          "Flávia Lima",
     "Matheus Goncalves":    "Matheus Gonçalves",
+}
+
+HEADERS = {
+    "Authorization": f"Bearer {NOTION_TOKEN}",
+    "Content-Type": "application/json",
+    "Notion-Version": "2022-06-28",
 }
 
 
@@ -94,7 +93,6 @@ def parse(page):
         return props.get(k, {}).get("checkbox", False)
 
     def ttl():
-        # título pode estar em chave vazia ou "Nome" ou "Name"
         for key in ["", "Nome", "Name"]:
             arr = props.get(key, {}).get("title", [])
             if arr:
@@ -116,6 +114,7 @@ def parse(page):
         "freelancer": txt("Freelancer"),
         "prazo":      prazo,
         "criado":     page.get("created_time", "")[:10],
+        "mes":        page.get("created_time", "")[:7],  # "2026-04"
         "prioridade": sel("Prioridade"),
         "projeto":    sel("Projeto JIRA"),
         "fora_sla":   chk("⚠ Fora de SLA?"),
@@ -126,10 +125,36 @@ def parse(page):
 def build_summary(rows, team):
     hoje  = date.today().isoformat()
     total = len(rows)
+
     atrasados   = [r for r in rows if r["atrasado"]]
     cancelados  = [r for r in rows if r["status"] == "Cancelada"]
     fora_sla    = [r for r in rows if r["fora_sla"]]
     finalizados = [r for r in rows if r["status"] in ["Finalizado", "Aprovado"]]
+    em_aprovacao = [r for r in rows if r["status"] == "Aprovação pendente"]
+
+    # Meses disponíveis
+    meses = sorted(set(r["mes"] for r in rows if r["mes"]), reverse=True)
+
+    # Resumo por mês
+    por_mes = {}
+    for mes in meses:
+        mr = [r for r in rows if r["mes"] == mes]
+        ma = [r for r in mr if r["atrasado"]]
+        mf = [r for r in mr if r["status"] in ["Finalizado", "Aprovado"]]
+        mc = [r for r in mr if r["status"] == "Cancelada"]
+        ms_sla = [r for r in mr if r["fora_sla"]]
+        por_mes[mes] = {
+            "total":      len(mr),
+            "atrasados":  len(ma),
+            "finalizados":len(mf),
+            "cancelados": len(mc),
+            "fora_sla":   len(ms_sla),
+            "taxa_atraso":round(len(ma)/len(mr)*100, 1) if mr else 0,
+            "status_counts": dict(Counter(r["status"] for r in mr).most_common()),
+            "tipo_counts":   dict(Counter(r["tipo"] for r in mr if r["tipo"]).most_common(8)),
+            "area_counts":   dict(Counter(r["area"] for r in mr if r["area"]).most_common(8)),
+            "area_atrasados":dict(Counter(r["area"] for r in ma if r["area"]).most_common(8)),
+        }
 
     designers_data = {}
     for designer in DESIGNERS[team]:
@@ -139,6 +164,17 @@ def build_summary(rows, team):
         dc   = [r for r in dm if r["status"] == "Cancelada"]
         ds   = [r for r in dm if r["fora_sla"]]
         dand = [r for r in dm if r["status"] in ["Na fila", "Em produção", "Enviado", "Alteração", "Revisão"]]
+
+        # Por mês do designer
+        designer_por_mes = {}
+        for mes in meses:
+            dmm = [r for r in dm if r["mes"] == mes]
+            dma = [r for r in dmm if r["atrasado"]]
+            designer_por_mes[mes] = {
+                "total":     len(dmm),
+                "atrasadas": len(dma),
+            }
+
         designers_data[designer] = {
             "total":        len(dm),
             "em_andamento": len(dand),
@@ -149,6 +185,7 @@ def build_summary(rows, team):
             "taxa_atraso":  round(len(da)/len(dm)*100, 1) if dm else 0,
             "tipos":        dict(Counter(r["tipo"] for r in dm if r["tipo"]).most_common(5)),
             "areas":        dict(Counter(r["area"] for r in dm if r["area"]).most_common(3)),
+            "por_mes":      designer_por_mes,
             "demandas_atrasadas": [
                 {"titulo": r["titulo"][:50], "prazo": r["prazo"], "status": r["status"], "area": r["area"]}
                 for r in da[:10]
@@ -157,12 +194,15 @@ def build_summary(rows, team):
 
     return {
         "gerado_em":         hoje,
-        "corte":             CORTE,
+        "meses":             meses,
+        "por_mes":           por_mes,
+        # Totais globais (todos os meses desde corte)
         "total":             total,
         "atrasados":         len(atrasados),
         "cancelados":        len(cancelados),
         "fora_sla":          len(fora_sla),
         "finalizados":       len(finalizados),
+        "em_aprovacao":      len(em_aprovacao),
         "taxa_atraso_geral": round(len(atrasados)/total*100, 1) if total else 0,
         "status_counts":     dict(Counter(r["status"] for r in rows).most_common()),
         "tipo_counts":       dict(Counter(r["tipo"] for r in rows if r["tipo"]).most_common(8)),
@@ -182,10 +222,9 @@ def inject_and_save(summary, team, index_path, data_path_tpl):
         html = f.read()
 
     data_js = json.dumps(summary, ensure_ascii=False)
-    # Substitui o bloco correto no HTML: DATA_CREAT ou DATA_RED
     key = team.upper()
     html = re.sub(
-        rf"const DATA_{key} = \{{.*?\}};",
+        rf"const DATA_{key}\s*=\s*\{{.*?\}};",
         f"const DATA_{key} = {data_js};",
         html, flags=re.DOTALL
     )
@@ -196,7 +235,6 @@ def inject_and_save(summary, team, index_path, data_path_tpl):
 
 
 def main():
-    # Detecta raiz (GitHub Actions) vs local (pasta dashboard/)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     if os.path.exists("index.html"):
         base = "."
@@ -206,7 +244,6 @@ def main():
     index_path    = os.path.join(base, "index.html")
     data_path_tpl = os.path.join(base, "data_{team}.json")
 
-    # Busca todas as páginas uma vez só (mesmo banco para CREAT e RED)
     print(f"\nBuscando dados do Notion (DB: {NOTION_DB_ID})...")
     all_pages = fetch_all(NOTION_DB_ID)
     print(f"  {len(all_pages)} páginas totais")
@@ -216,13 +253,13 @@ def main():
         rows = []
         for p in all_pages:
             r = parse(p)
-            if r["criado"] < CORTE:
+            if r["criado"] < "2026-01-01":
                 continue
             if r["projeto"] != projeto_val:
                 continue
             rows.append(r)
 
-        print(f"\n[{team.upper()}] {len(rows)} demandas (Projeto JIRA='{projeto_val}') desde {CORTE}")
+        print(f"\n[{team.upper()}] {len(rows)} demandas (Projeto JIRA='{projeto_val}')")
         names_found = Counter(r["designer"] for r in rows if r["designer"])
         print(f"  Designers: {dict(names_found.most_common(10))}")
 
