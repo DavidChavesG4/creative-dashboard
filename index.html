@@ -27,18 +27,18 @@
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 14px 28px;
+    padding: 12px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
-    gap: 16px;
+    gap: 12px; flex-wrap: wrap;
   }
-  header h1 { font-size: 16px; font-weight: 600; letter-spacing: .3px; white-space: nowrap; }
-  header .meta { color: var(--text-muted); font-size: 12px; }
+  header h1 { font-size: 15px; font-weight: 600; letter-spacing: .3px; white-space: nowrap; }
+  .header-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .meta { color: var(--text-muted); font-size: 11px; }
 
-  /* Toggle CREAT / RED */
-  .team-toggle {
+  .toggle-group {
     display: flex;
     background: var(--bg);
     border: 1px solid var(--border);
@@ -46,32 +46,20 @@
     padding: 3px;
     gap: 2px;
   }
-  .team-toggle button {
+  .toggle-group button {
     background: none; border: none;
-    padding: 5px 16px; border-radius: 6px;
-    font-size: 12px; font-weight: 700; letter-spacing: .5px;
+    padding: 4px 14px; border-radius: 6px;
+    font-size: 12px; font-weight: 700; letter-spacing: .4px;
     cursor: pointer; color: var(--text-muted); transition: .15s;
   }
-  .team-toggle button.active-creat {
-    background: #1e3a5f; color: #5b8af5;
-  }
-  .team-toggle button.active-red {
-    background: #3d1a1a; color: #f44b6e;
-  }
-  .team-toggle button:not(.active-creat):not(.active-red):hover {
-    background: var(--surface2); color: var(--text);
-  }
-
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .badge-green { background: rgba(76,175,125,.15); color: var(--green); }
-  .badge-red   { background: rgba(244,75,110,.15);  color: var(--red); }
-  .badge-yellow{ background: rgba(245,166,35,.15);  color: var(--yellow); }
-  .badge-blue  { background: rgba(91,138,245,.15);  color: var(--blue); }
+  .toggle-group button:hover { background: var(--surface2); color: var(--text); }
+  .btn-creat-active { background: #1e3a5f !important; color: #5b8af5 !important; }
+  .btn-red-active   { background: #3d1a1a !important; color: #f44b6e !important; }
+  .btn-mes-active   { background: var(--surface2) !important; color: var(--accent) !important; }
 
   nav {
-    display: flex;
-    gap: 4px;
-    padding: 12px 28px;
+    display: flex; gap: 4px;
+    padding: 10px 24px;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
   }
@@ -83,37 +71,36 @@
   nav button:hover { background: var(--surface2); color: var(--text); }
   nav button.active { background: var(--surface2); color: var(--accent); }
 
-  .page { display: none; padding: 24px 28px; }
+  .page { display: none; padding: 20px 24px; }
   .page.active { display: block; }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
   .kpi {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 18px 16px;
+    border-radius: 10px; padding: 16px 14px;
   }
-  .kpi .label { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
-  .kpi .value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .kpi .label { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
+  .kpi .value { font-size: 26px; font-weight: 700; line-height: 1; }
   .kpi .sub { color: var(--text-muted); font-size: 11px; margin-top: 4px; }
-  .kpi.danger { border-color: rgba(244,75,110,.3); }
-  .kpi.warn   { border-color: rgba(245,166,35,.3); }
-  .kpi.ok     { border-color: rgba(76,175,125,.3); }
+  .kpi.danger { border-color: rgba(244,75,110,.4); }
+  .kpi.warn   { border-color: rgba(245,166,35,.4); }
+  .kpi.ok     { border-color: rgba(76,175,125,.4); }
+  .kpi.info   { border-color: rgba(91,138,245,.3); }
 
-  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-  .charts-grid.three { grid-template-columns: 1fr 1fr 1fr; }
-  @media(max-width:900px){ .charts-grid,.charts-grid.three { grid-template-columns: 1fr; } }
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  @media(max-width:900px){ .charts-grid { grid-template-columns: 1fr; } }
 
   .card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 18px;
+    border-radius: 10px; padding: 16px;
   }
-  .card h3 { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: .5px; }
-  .chart-wrap { position: relative; height: 220px; }
+  .card h3 { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; }
+  .chart-wrap { position: relative; height: 200px; }
 
-  /* Designer tabs */
-  .designer-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .designer-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
   .designer-tab {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 8px; padding: 8px 14px; cursor: pointer;
+    border-radius: 8px; padding: 7px 13px; cursor: pointer;
     font-size: 13px; font-weight: 500; transition: .15s;
   }
   .designer-tab:hover { border-color: var(--accent); }
@@ -121,47 +108,52 @@
 
   .designer-panel { display: none; }
   .designer-panel.active { display: block; }
-  .designer-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .designer-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-bottom: 18px; }
 
-  /* Tabela */
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; padding: 8px 12px; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
-  td { padding: 9px 12px; border-bottom: 1px solid rgba(46,49,80,.5); }
+  th { text-align: left; padding: 7px 10px; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+  td { padding: 8px 10px; border-bottom: 1px solid rgba(46,49,80,.5); }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: rgba(255,255,255,.02); }
 
   .status-pill {
     display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600;
   }
-  .s-na-fila     { background: rgba(91,138,245,.15); color: var(--blue); }
-  .s-enviado     { background: rgba(34,211,238,.15); color: var(--cyan); }
-  .s-producao    { background: rgba(167,139,250,.15); color: var(--purple); }
-  .s-aprovado    { background: rgba(76,175,125,.15); color: var(--green); }
-  .s-finalizado  { background: rgba(76,175,125,.15); color: var(--green); }
-  .s-cancelada   { background: rgba(244,75,110,.15); color: var(--red); }
-  .s-revisao     { background: rgba(245,166,35,.15); color: var(--yellow); }
-  .s-alteracao   { background: rgba(245,166,35,.15); color: var(--yellow); }
-  .s-aprovpend   { background: rgba(245,166,35,.15); color: var(--yellow); }
-  .s-default     { background: rgba(123,130,168,.15); color: var(--text-muted); }
+  .s-na-fila    { background: rgba(91,138,245,.15);  color: var(--blue); }
+  .s-enviado    { background: rgba(34,211,238,.15);   color: var(--cyan); }
+  .s-producao   { background: rgba(167,139,250,.15);  color: var(--purple); }
+  .s-aprovado   { background: rgba(76,175,125,.15);   color: var(--green); }
+  .s-finalizado { background: rgba(76,175,125,.15);   color: var(--green); }
+  .s-cancelada  { background: rgba(244,75,110,.15);   color: var(--red); }
+  .s-revisao    { background: rgba(245,166,35,.15);   color: var(--yellow); }
+  .s-alteracao  { background: rgba(245,166,35,.15);   color: var(--yellow); }
+  .s-aprovpend  { background: rgba(245,166,35,.15);   color: var(--yellow); }
+  .s-default    { background: rgba(123,130,168,.15);  color: var(--text-muted); }
+  .atraso-tag   { color: var(--red); font-size: 11px; font-weight: 600; }
 
-  .atraso-tag { color: var(--red); font-size: 11px; font-weight: 600; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-green  { background: rgba(76,175,125,.15);  color: var(--green); }
+  .badge-red    { background: rgba(244,75,110,.15);  color: var(--red); }
+  .badge-yellow { background: rgba(245,166,35,.15);  color: var(--yellow); }
 
-  .team-label-creat { color: #5b8af5; font-weight: 700; font-size: 11px; }
-  .team-label-red   { color: #f44b6e; font-weight: 700; font-size: 11px; }
+  footer { text-align: center; padding: 16px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 8px; }
 
-  footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 12px; }
+  .empty-state { color: var(--text-muted); padding: 32px; text-align: center; font-size: 13px; }
 </style>
 </head>
 <body>
 
 <header>
-  <div style="display:flex;align-items:center;gap:14px">
+  <div class="header-left">
     <h1>Dashboard Creative — G4</h1>
-    <div class="team-toggle">
-      <button id="btn-creat" class="active-creat" onclick="switchTeam('creat')">CREAT</button>
+    <!-- Toggle Time -->
+    <div class="toggle-group" id="team-toggle">
+      <button id="btn-creat" class="btn-creat-active" onclick="switchTeam('creat')">CREAT</button>
       <button id="btn-red" onclick="switchTeam('red')">RED</button>
     </div>
+    <!-- Filtro de Mês -->
+    <div class="toggle-group" id="mes-toggle"></div>
   </div>
   <div class="meta" id="header-meta">Carregando...</div>
 </header>
@@ -198,7 +190,7 @@
     <div class="card"><h3>Volume Total por Area</h3><div class="chart-wrap"><canvas id="chart-area2"></canvas></div></div>
     <div class="card"><h3>Atrasos por Area</h3><div class="chart-wrap"><canvas id="chart-area-atraso"></canvas></div></div>
   </div>
-  <div class="card" style="margin-top:16px">
+  <div class="card" style="margin-top:14px">
     <h3>Detalhamento por Area</h3>
     <div class="table-wrap"><table id="table-areas"></table></div>
   </div>
@@ -208,10 +200,10 @@
 <div id="page-atrasos" class="page">
   <div class="kpi-grid" id="kpis-atrasos"></div>
   <div class="card">
-    <h3>Demandas Atrasadas por Designer</h3>
+    <h3>Atrasadas por Designer</h3>
     <div class="chart-wrap"><canvas id="chart-atrasos-designer"></canvas></div>
   </div>
-  <div class="card" style="margin-top:16px">
+  <div class="card" style="margin-top:14px">
     <h3>Tabela de Atrasos</h3>
     <div class="table-wrap"><table id="table-atrasos"></table></div>
   </div>
@@ -220,12 +212,13 @@
 <footer id="footer-updated"></footer>
 
 <script>
-// ── DADOS ──────────────────────────────────────────────────────────────────
-const DATA_CREAT = {"gerado_em": "2026-04-11", "corte": "2026-04-01", "total": 240, "atrasados": 92, "cancelados": 0, "fora_sla": 0, "finalizados": 0, "taxa_atraso_geral": 38.3, "status_counts": {"Na fila": 95, "Enviado": 74, "Aprovação pendente": 61, "Em produção": 8, "Alteração": 1, "Revisão": 1}, "tipo_counts": {"APRESENTAÇÕES": 85, "IMPRESSOS": 63, "DIGITAL": 48, "Sem categoria": 21, "SOCIAL MEDIA": 10, "DESIGN DE ESPAÇOS": 8, "ADs": 4, "VIDEO": 1}, "area_counts": {"Programas de Capacitação": 54, "Programa de Gestão": 24, "Eventos": 23, "Marketing": 20, "Corporativo": 15, "Content e SEO": 14, "G4 Skills": 7, "Brand Performance": 6}, "area_atrasados": {"Programas de Capacitação": 31, "Content e SEO": 14, "Marketing": 9, "Eventos": 8, "Corporativo": 6, "Brand Performance": 6, "G4 Skills": 4, "G4 Tools": 4}, "designers": {"Flávia Lima": {"total": 15, "em_andamento": 15, "finalizadas": 0, "atrasadas": 5, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 33.3, "tipos": {"IMPRESSOS": 8, "APRESENTAÇÕES": 3, "Sem categoria": 3, "SOCIAL MEDIA": 1}, "areas": {"Eventos": 4, "Marketing": 3, "G4 Sprints": 2}, "demandas_atrasadas": [{"titulo": "CREAT-367 | [G4 CLUB] [BOTTON] [BOTTON CELÍACO]", "prazo": "2026-04-10", "status": "Na fila", "area": ""}, {"titulo": "CREAT-370 | [Brand performance] [Evelyn Moura] [G4", "prazo": "2026-04-10", "status": "Enviado", "area": ""}, {"titulo": "[G4 CLUB] [BOTTON] [BOTTON CELÍACO]", "prazo": "2026-04-10", "status": "Na fila", "area": "G4 Club"}, {"titulo": "[Brand performance] [Evelyn Moura] [G4PB CWB]", "prazo": "2026-04-10", "status": "Enviado", "area": "Brand Performance"}, {"titulo": "[CORP][FOLHETO][PORTFOLIO]", "prazo": "2026-03-27", "status": "Em produção", "area": "Corporativo"}]}, "Neemias Amaral": {"total": 0, "em_andamento": 0, "finalizadas": 0, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 0, "tipos": {}, "areas": {}, "demandas_atrasadas": []}, "Pedro Marcondes": {"total": 28, "em_andamento": 19, "finalizadas": 0, "atrasadas": 9, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 32.1, "tipos": {"DIGITAL": 11, "APRESENTAÇÕES": 7, "IMPRESSOS": 6, "DESIGN DE ESPAÇOS": 2, "Sem categoria": 1}, "areas": {"Corporativo": 6, "Marketing": 5, "Programa de Gestão": 5}, "demandas_atrasadas": [{"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}, {"titulo": "Relatório Diagnóstico Tools", "prazo": "2026-04-10", "status": "Em produção", "area": "G4 Tools"}, {"titulo": "CREAT-374 | [EVENTOS][CLASS17][TEMPLATE DE AULAS]", "prazo": "2026-04-10", "status": "Na fila", "area": "Eventos"}, {"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}, {"titulo": "[TOOLS][SOCIAL MEDIA][PODCAST] - [DIGITAL][TOOLS][", "prazo": "2026-04-10", "status": "Na fila", "area": "G4 Tools"}, {"titulo": "Relatório Diagnóstico Tools", "prazo": "2026-04-10", "status": "Na fila", "area": "G4 Tools"}, {"titulo": "[EVENTOS][CLASS17][TEMPLATE DE AULAS]", "prazo": "2026-04-10", "status": "Na fila", "area": "Eventos"}, {"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}, {"titulo": "Relatório Diagnóstico Tools", "prazo": "2026-04-10", "status": "Em produção", "area": "G4 Tools"}]}, "Vitor Santos Serodeo": {"total": 22, "em_andamento": 12, "finalizadas": 0, "atrasadas": 10, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 45.5, "tipos": {"DIGITAL": 11, "IMPRESSOS": 8, "APRESENTAÇÕES": 3}, "areas": {"Marketing": 10, "G4 Skills": 4, "Programa de Gestão": 3}, "demandas_atrasadas": [{"titulo": "DEMANDA TESTE", "prazo": "2026-04-09", "status": "Enviado", "area": "G4 Skills"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}, {"titulo": "CREAT-332 | Cards Mentores", "prazo": "2026-04-10", "status": "Enviado", "area": "Marketing"}, {"titulo": "CREAT-334 | [EVENTOS&PP] [TRACTION COMEMORATIVA] [", "prazo": "2026-04-07", "status": "Em produção", "area": "Eventos"}, {"titulo": "CREAT-362 | [HEADER][EMAIL MKT][RELAÇAMENTO DE FG4", "prazo": "2026-04-10", "status": "Na fila", "area": "Marketing"}, {"titulo": "CREAT-372 | [BANNER][ABRIL][ECOMEMRCE] - 4 Banners", "prazo": "2026-04-09", "status": "Em produção", "area": "Marketing"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}, {"titulo": "Cards Mentores", "prazo": "2026-04-10", "status": "Enviado", "area": "Marketing"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}, {"titulo": "Cards Mentores", "prazo": "2026-04-10", "status": "Enviado", "area": "Marketing"}]}, "Matheus Gonçalves": {"total": 15, "em_andamento": 13, "finalizadas": 0, "atrasadas": 13, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 86.7, "tipos": {"IMPRESSOS": 6, "DIGITAL": 3, "SOCIAL MEDIA": 3, "APRESENTAÇÕES": 2, "DESIGN DE ESPAÇOS": 1}, "areas": {"Programas de Capacitação": 5, "G4 Skills": 3, "Brand Performance": 3}, "demandas_atrasadas": [{"titulo": "[G4 CLUB][CLASS17][BOTTON] [BOTTON AIVERSARIANTE]", "prazo": "2026-04-07", "status": "Alteração", "area": "G4 Club"}, {"titulo": "[PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]", "prazo": "2026-03-27", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "[PP] [IMPRESSO] [FOLHA DE EXERCÍCIO - GDP]", "prazo": "2026-04-10", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "CREAT-326 | [ONLINE][KV] Skills Conference - [KV] ", "prazo": "2026-04-10", "status": "Enviado", "area": "G4 Skills"}, {"titulo": "CREAT-327 | [SPRINTS][CAMILLA][LAYOUTS]", "prazo": "2026-04-08", "status": "Enviado", "area": "Brand Performance"}, {"titulo": "[PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]", "prazo": "2026-03-27", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "[CLUB][TRILHA 12][ARTE TUNEL DE LED]", "prazo": "2026-04-08", "status": "Na fila", "area": "Eventos"}, {"titulo": "[PP] [IMPRESSO] [FOLHA DE EXERCÍCIO - GDP]", "prazo": "2026-04-10", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "[ONLINE][KV] Skills Conference - [KV] [SKILLS CONF", "prazo": "2026-04-10", "status": "Enviado", "area": "G4 Skills"}, {"titulo": "[SPRINTS][CAMILLA][LAYOUTS]", "prazo": "2026-04-08", "status": "Enviado", "area": "Brand Performance"}]}}};
-const DATA_RED   = {"gerado_em": "2026-04-10", "corte": "2026-04-01", "total": 0, "atrasados": 0, "cancelados": 0, "fora_sla": 0, "finalizados": 0, "taxa_atraso_geral": 0, "status_counts": {}, "tipo_counts": {}, "area_counts": {}, "area_atrasados": {}, "designers": {}};
+// ── DADOS (injetados pelo generate_data.py) ────────────────────────────────
+const DATA_CREAT = {"gerado_em": "2026-04-10", "meses": ["2026-04"], "por_mes": {"2026-04": {"total": 240, "atrasados": 67, "finalizados": 0, "cancelados": 0, "fora_sla": 0, "taxa_atraso": 27.9, "status_counts": {"Na fila": 95, "Enviado": 74, "Aprovação pendente": 61, "Em produção": 8, "Alteração": 1, "Revisão": 1}, "tipo_counts": {"APRESENTAÇÕES": 85, "IMPRESSOS": 63, "DIGITAL": 48, "Sem categoria": 21, "SOCIAL MEDIA": 10, "DESIGN DE ESPAÇOS": 8, "ADs": 4, "VIDEO": 1}, "area_counts": {"Programas de Capacitação": 54, "Programa de Gestão": 24, "Eventos": 23, "Marketing": 20, "Corporativo": 15, "Content e SEO": 14, "G4 Skills": 7, "Brand Performance": 6}, "area_atrasados": {"Programas de Capacitação": 28, "Content e SEO": 14, "Brand Performance": 5, "Eventos": 5, "Corporativo": 4, "Marketing": 4, "Programa de Gestão": 3, "Paid Performance": 2}}}, "total": 240, "atrasados": 67, "cancelados": 0, "fora_sla": 0, "finalizados": 0, "em_aprovacao": 61, "taxa_atraso_geral": 27.9, "status_counts": {"Na fila": 95, "Enviado": 74, "Aprovação pendente": 61, "Em produção": 8, "Alteração": 1, "Revisão": 1}, "tipo_counts": {"APRESENTAÇÕES": 85, "IMPRESSOS": 63, "DIGITAL": 48, "Sem categoria": 21, "SOCIAL MEDIA": 10, "DESIGN DE ESPAÇOS": 8, "ADs": 4, "VIDEO": 1}, "area_counts": {"Programas de Capacitação": 54, "Programa de Gestão": 24, "Eventos": 23, "Marketing": 20, "Corporativo": 15, "Content e SEO": 14, "G4 Skills": 7, "Brand Performance": 6}, "area_atrasados": {"Programas de Capacitação": 28, "Content e SEO": 14, "Brand Performance": 5, "Eventos": 5, "Corporativo": 4, "Marketing": 4, "Programa de Gestão": 3, "Paid Performance": 2}, "designers": {"Flávia Lima": {"total": 15, "em_andamento": 15, "finalizadas": 0, "atrasadas": 1, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 6.7, "tipos": {"IMPRESSOS": 8, "APRESENTAÇÕES": 3, "Sem categoria": 3, "SOCIAL MEDIA": 1}, "areas": {"Eventos": 4, "Marketing": 3, "G4 Sprints": 2}, "por_mes": {"2026-04": {"total": 15, "atrasadas": 1}}, "demandas_atrasadas": [{"titulo": "[CORP][FOLHETO][PORTFOLIO]", "prazo": "2026-03-27", "status": "Em produção", "area": "Corporativo"}]}, "Neemias Amaral": {"total": 0, "em_andamento": 0, "finalizadas": 0, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 0, "tipos": {}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0}}, "demandas_atrasadas": []}, "Pedro Marcondes": {"total": 28, "em_andamento": 19, "finalizadas": 0, "atrasadas": 3, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 10.7, "tipos": {"DIGITAL": 11, "APRESENTAÇÕES": 7, "IMPRESSOS": 6, "DESIGN DE ESPAÇOS": 2, "Sem categoria": 1}, "areas": {"Corporativo": 6, "Marketing": 5, "Programa de Gestão": 5}, "por_mes": {"2026-04": {"total": 28, "atrasadas": 3}}, "demandas_atrasadas": [{"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}, {"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}, {"titulo": "REVISÃO LP - A VERDADE", "prazo": "2026-03-27", "status": "Na fila", "area": "Marketing"}]}, "Vitor Santos Serodeo": {"total": 22, "em_andamento": 12, "finalizadas": 0, "atrasadas": 6, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 27.3, "tipos": {"DIGITAL": 11, "IMPRESSOS": 8, "APRESENTAÇÕES": 3}, "areas": {"Marketing": 10, "G4 Skills": 4, "Programa de Gestão": 3}, "por_mes": {"2026-04": {"total": 22, "atrasadas": 6}}, "demandas_atrasadas": [{"titulo": "DEMANDA TESTE", "prazo": "2026-04-09", "status": "Enviado", "area": "G4 Skills"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}, {"titulo": "CREAT-334 | [EVENTOS&PP] [TRACTION COMEMORATIVA] [", "prazo": "2026-04-07", "status": "Em produção", "area": "Eventos"}, {"titulo": "CREAT-372 | [BANNER][ABRIL][ECOMEMRCE] - 4 Banners", "prazo": "2026-04-09", "status": "Em produção", "area": "Marketing"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}, {"titulo": "[PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "prazo": "2026-04-03", "status": "Enviado", "area": "Programa de Gestão"}]}, "Matheus Gonçalves": {"total": 15, "em_andamento": 13, "finalizadas": 0, "atrasadas": 7, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 46.7, "tipos": {"IMPRESSOS": 6, "DIGITAL": 3, "SOCIAL MEDIA": 3, "APRESENTAÇÕES": 2, "DESIGN DE ESPAÇOS": 1}, "areas": {"Programas de Capacitação": 5, "G4 Skills": 3, "Brand Performance": 3}, "por_mes": {"2026-04": {"total": 15, "atrasadas": 7}}, "demandas_atrasadas": [{"titulo": "[G4 CLUB][CLASS17][BOTTON] [BOTTON AIVERSARIANTE]", "prazo": "2026-04-07", "status": "Alteração", "area": "G4 Club"}, {"titulo": "[PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]", "prazo": "2026-03-27", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "CREAT-327 | [SPRINTS][CAMILLA][LAYOUTS]", "prazo": "2026-04-08", "status": "Enviado", "area": "Brand Performance"}, {"titulo": "[PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]", "prazo": "2026-03-27", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "[CLUB][TRILHA 12][ARTE TUNEL DE LED]", "prazo": "2026-04-08", "status": "Na fila", "area": "Eventos"}, {"titulo": "[SPRINTS][CAMILLA][LAYOUTS]", "prazo": "2026-04-08", "status": "Enviado", "area": "Brand Performance"}, {"titulo": "[SPRINTS][CAMILLA][LAYOUTS]", "prazo": "2026-04-08", "status": "Enviado", "area": "Brand Performance"}]}}};
+const DATA_RED = {"gerado_em": "2026-04-10", "meses": ["2026-04"], "por_mes": {"2026-04": {"total": 32, "atrasados": 10, "finalizados": 0, "cancelados": 0, "fora_sla": 0, "taxa_atraso": 31.2, "status_counts": {"Aprovação pendente": 22, "Na fila": 8, "Em produção": 2}, "tipo_counts": {"Youtube e podcasts": 16, "SOCIAL MEDIA": 6, "Lifecycle": 4, "Eventos": 4, "Sem categoria": 2}, "area_counts": {"Branding": 14, "Audiovisual": 4, "G4 Tools": 4, "Lifecycle": 2, "Social": 2, "Podcasts": 2, "Creative": 2, "Produtos": 2}, "area_atrasados": {"Audiovisual": 4, "Branding": 4, "Social": 2}}}, "total": 32, "atrasados": 10, "cancelados": 0, "fora_sla": 0, "finalizados": 0, "em_aprovacao": 22, "taxa_atraso_geral": 31.2, "status_counts": {"Aprovação pendente": 22, "Na fila": 8, "Em produção": 2}, "tipo_counts": {"Youtube e podcasts": 16, "SOCIAL MEDIA": 6, "Lifecycle": 4, "Eventos": 4, "Sem categoria": 2}, "area_counts": {"Branding": 14, "Audiovisual": 4, "G4 Tools": 4, "Lifecycle": 2, "Social": 2, "Podcasts": 2, "Creative": 2, "Produtos": 2}, "area_atrasados": {"Audiovisual": 4, "Branding": 4, "Social": 2}, "designers": {"Flávia Lima": {"total": 0, "em_andamento": 0, "finalizadas": 0, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 0, "tipos": {}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0}}, "demandas_atrasadas": []}, "Neemias Amaral": {"total": 0, "em_andamento": 0, "finalizadas": 0, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 0, "tipos": {}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0}}, "demandas_atrasadas": []}, "Pedro Marcondes": {"total": 0, "em_andamento": 0, "finalizadas": 0, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 0, "tipos": {}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0}}, "demandas_atrasadas": []}, "Vitor Santos Serodeo": {"total": 0, "em_andamento": 0, "finalizadas": 0, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 0, "tipos": {}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0}}, "demandas_atrasadas": []}, "Matheus Gonçalves": {"total": 2, "em_andamento": 2, "finalizadas": 0, "atrasadas": 2, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 100.0, "tipos": {"Youtube e podcasts": 2}, "areas": {"Branding": 2}, "por_mes": {"2026-04": {"total": 2, "atrasadas": 2}}, "demandas_atrasadas": [{"titulo": "Youtube e podcasts - Roteiro Podcast (episódio com", "prazo": "2026-03-13", "status": "Na fila", "area": "Branding"}, {"titulo": "Youtube e podcasts - Roteiro Podcast (episódio com", "prazo": "2026-03-13", "status": "Na fila", "area": "Branding"}]}, "Juliana Cespedes": {"total": 10, "em_andamento": 8, "finalizadas": 0, "atrasadas": 8, "canceladas": 0, "fora_sla": 0, "taxa_atraso": 80.0, "tipos": {"SOCIAL MEDIA": 4, "Lifecycle": 2, "Youtube e podcasts": 2, "Eventos": 2}, "areas": {"Audiovisual": 4, "Lifecycle": 2, "Social": 2}, "por_mes": {"2026-04": {"total": 10, "atrasadas": 8}}, "demandas_atrasadas": [{"titulo": "Youtube e podcasts - Roteiro YouTube (vídeo longo)", "prazo": "2026-03-09", "status": "Na fila", "area": "Audiovisual"}, {"titulo": "Social media - Conteúdo Instagram", "prazo": "2026-03-09", "status": "Na fila", "area": "Social"}, {"titulo": "Social media - Conteúdo Instagram", "prazo": "2026-03-19", "status": "Na fila", "area": "Branding"}, {"titulo": "Eventos - Roteiro vídeo abertura", "prazo": "2026-03-17", "status": "Em produção", "area": "Audiovisual"}, {"titulo": "Youtube e podcasts - Roteiro YouTube (vídeo longo)", "prazo": "2026-03-09", "status": "Na fila", "area": "Audiovisual"}, {"titulo": "Social media - Conteúdo Instagram", "prazo": "2026-03-09", "status": "Na fila", "area": "Social"}, {"titulo": "Social media - Conteúdo Instagram", "prazo": "2026-03-19", "status": "Na fila", "area": "Branding"}, {"titulo": "Eventos - Roteiro vídeo abertura", "prazo": "2026-03-17", "status": "Em produção", "area": "Audiovisual"}]}}};
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 let currentTeam = 'creat';
+let currentMes  = 'todos';
 let chartInstances = {};
 
 // ── HELPERS ────────────────────────────────────────────────────────────────
@@ -238,15 +231,58 @@ function showPage(id, btn) {
 
 function switchTeam(team) {
   currentTeam = team;
-  document.getElementById('btn-creat').className = team === 'creat' ? 'active-creat' : '';
-  document.getElementById('btn-red').className   = team === 'red'   ? 'active-red'   : '';
-  // Accent color
+  document.getElementById('btn-creat').className = team === 'creat' ? 'btn-creat-active' : '';
+  document.getElementById('btn-red').className   = team === 'red'   ? 'btn-red-active'   : '';
   document.documentElement.style.setProperty('--accent', team === 'creat' ? '#5b8af5' : '#f44b6e');
+  currentMes = 'todos';
+  buildMesToggle();
   renderAll();
+}
+
+function switchMes(mes) {
+  currentMes = mes;
+  document.querySelectorAll('#mes-toggle button').forEach(b => b.classList.remove('btn-mes-active'));
+  const btn = document.querySelector(`#mes-toggle button[data-mes="${mes}"]`);
+  if (btn) btn.classList.add('btn-mes-active');
+  renderAll();
+}
+
+function buildMesToggle() {
+  const d = getData();
+  const el = document.getElementById('mes-toggle');
+  el.innerHTML = '';
+  const meses = d.meses || [];
+
+  const todos = document.createElement('button');
+  todos.textContent = 'Todos';
+  todos.dataset.mes = 'todos';
+  todos.onclick = () => switchMes('todos');
+  if (currentMes === 'todos') todos.classList.add('btn-mes-active');
+  el.appendChild(todos);
+
+  meses.forEach(mes => {
+    const btn = document.createElement('button');
+    const [ano, m] = mes.split('-');
+    const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    btn.textContent = nomes[parseInt(m)-1] + '/' + ano.slice(2);
+    btn.dataset.mes = mes;
+    btn.onclick = () => switchMes(mes);
+    if (currentMes === mes) btn.classList.add('btn-mes-active');
+    el.appendChild(btn);
+  });
 }
 
 function getData() {
   return currentTeam === 'creat' ? DATA_CREAT : DATA_RED;
+}
+
+// Retorna os dados filtrados pelo mês selecionado
+function getView() {
+  const d = getData();
+  if (currentMes === 'todos') return d;
+  const m = d.por_mes?.[currentMes];
+  if (!m) return { total:0, atrasados:0, cancelados:0, fora_sla:0, finalizados:0, em_aprovacao:0, taxa_atraso_geral:0, status_counts:{}, tipo_counts:{}, area_counts:{}, area_atrasados:{} };
+  return { ...d, ...m };
 }
 
 function statusClass(s) {
@@ -268,13 +304,17 @@ function kpiHtml(label, value, sub, cls) {
   </div>`;
 }
 
+function mesLabel(mes) {
+  if (!mes || mes === 'todos') return 'todos os meses';
+  const [ano, m] = mes.split('-');
+  const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  return nomes[parseInt(m)-1] + '/' + ano;
+}
+
 const COLORS = ['#5b8af5','#a78bfa','#22d3ee','#4caf7d','#f5a623','#f44b6e','#fb923c','#34d399','#818cf8','#f472b6'];
 
 function makeChart(id, type, labels, datasets, opts={}) {
-  if (chartInstances[id]) {
-    chartInstances[id].destroy();
-    delete chartInstances[id];
-  }
+  if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
   const ctx = document.getElementById(id);
   if (!ctx) return;
   chartInstances[id] = new Chart(ctx, {
@@ -297,44 +337,45 @@ function makeChart(id, type, labels, datasets, opts={}) {
 
 // ── VISAO GERAL ────────────────────────────────────────────────────────────
 function renderGeral() {
-  const d = getData();
-  const pct_atraso = d.taxa_atraso_geral;
-  const kpis = document.getElementById('kpis-geral');
-  const teamLabel = currentTeam === 'creat'
-    ? '<span class="team-label-creat">CREAT</span>'
-    : '<span class="team-label-red">RED</span>';
+  const d    = getData();
+  const v    = getView();
+  const team = currentTeam.toUpperCase();
+  const accentColor = currentTeam === 'creat' ? '#5b8af5' : '#f44b6e';
 
-  kpis.innerHTML =
-    kpiHtml('Time', currentTeam.toUpperCase(), `desde ${d.corte || '01/04/2026'}`) +
-    kpiHtml('Total de Demandas', d.total, `desde ${(d.corte||'').slice(5).replace('-','/')}/${(d.corte||'').slice(0,4)}`) +
-    kpiHtml('Atrasadas', d.atrasados, `${pct_atraso}% do total`, d.atrasados > 0 ? 'danger' : 'ok') +
-    kpiHtml('Canceladas', d.cancelados, '', d.cancelados > 0 ? 'warn' : '') +
-    kpiHtml('Finalizadas', d.finalizados, '', 'ok') +
-    kpiHtml('Fora de SLA', d.fora_sla, 'na criacao', d.fora_sla > 0 ? 'warn' : 'ok');
+  document.getElementById('kpis-geral').innerHTML =
+    kpiHtml('Time', team, mesLabel(currentMes)) +
+    kpiHtml('Total', v.total, 'demandas') +
+    kpiHtml('Em Andamento', (v.status_counts?.['Na fila']||0) + (v.status_counts?.['Em produção']||0) + (v.status_counts?.['Enviado']||0) + (v.status_counts?.['Revisão']||0) + (v.status_counts?.['Alteração']||0), '', 'info') +
+    kpiHtml('Atrasadas', v.atrasados, `${v.taxa_atraso_geral}% do total`, v.atrasados > 0 ? 'danger' : 'ok') +
+    kpiHtml('Em Aprovacao', v.em_aprovacao || (v.status_counts?.['Aprovação pendente']||0), '', 'warn') +
+    kpiHtml('Finalizadas', v.finalizados, '', 'ok') +
+    kpiHtml('Canceladas', v.cancelados, '', v.cancelados > 0 ? 'warn' : '') +
+    kpiHtml('Fora de SLA', v.fora_sla, 'na criacao', v.fora_sla > 0 ? 'warn' : 'ok');
 
-  const sc = d.status_counts;
-  const statusColors = Object.keys(sc).map((_, i) => COLORS[i % COLORS.length]);
+  const sc = v.status_counts || {};
   makeChart('chart-status', 'doughnut',
-    Object.keys(sc), [{data: Object.values(sc), backgroundColor: statusColors, borderWidth:0}],
+    Object.keys(sc), [{data: Object.values(sc), backgroundColor: Object.keys(sc).map((_,i) => COLORS[i%COLORS.length]), borderWidth:0}],
     { plugins: { legend: { position: 'right', labels: { color:'#7b82a8', font:{size:11}, boxWidth:10 } } } }
   );
 
-  const tc = d.tipo_counts;
-  makeChart('chart-tipo', 'bar',
-    Object.keys(tc),
-    [{ data: Object.values(tc), backgroundColor: currentTeam === 'creat' ? '#5b8af5' : '#f44b6e', borderRadius: 4 }],
+  const tc = v.tipo_counts || {};
+  makeChart('chart-tipo', 'bar', Object.keys(tc),
+    [{ data: Object.values(tc), backgroundColor: accentColor, borderRadius: 4 }],
     { plugins: { legend: { display: false } }, indexAxis: 'y' }
   );
 
-  const ac = d.area_counts;
-  makeChart('chart-area', 'bar',
-    Object.keys(ac),
+  const ac = v.area_counts || {};
+  makeChart('chart-area', 'bar', Object.keys(ac),
     [{ data: Object.values(ac), backgroundColor: '#a78bfa', borderRadius: 4 }],
     { plugins: { legend: { display: false } }, indexAxis: 'y' }
   );
 
-  const designers = Object.entries(d.designers).map(([name, info]) => ({ name, total: info.total }))
-    .sort((a,b) => b.total - a.total);
+  // Demandas por designer no período
+  const designers = Object.entries(d.designers).map(([name, info]) => {
+    let total = currentMes === 'todos' ? info.total : (info.por_mes?.[currentMes]?.total || 0);
+    return { name, total };
+  }).filter(x => x.total > 0).sort((a,b) => b.total - a.total);
+
   makeChart('chart-designer', 'bar',
     designers.map(x => x.name.split(' ')[0]),
     [{ data: designers.map(x => x.total), backgroundColor: '#22d3ee', borderRadius: 4 }],
@@ -349,14 +390,19 @@ function renderDesigners() {
   tabsEl.innerHTML = '';
   panelsEl.innerHTML = '';
 
-  const designers = Object.entries(getData().designers);
-  if (designers.length === 0) {
-    panelsEl.innerHTML = '<p style="color:var(--text-muted);padding:20px">Sem dados para este time no periodo selecionado.</p>';
+  const d = getData();
+  const designers = Object.entries(d.designers).filter(([_, info]) => {
+    const t = currentMes === 'todos' ? info.total : (info.por_mes?.[currentMes]?.total || 0);
+    return t > 0;
+  });
+
+  if (!designers.length) {
+    panelsEl.innerHTML = '<div class="empty-state">Sem dados para este periodo.</div>';
     return;
   }
 
   designers.forEach(([name, info], idx) => {
-    const id = 'designer-' + idx;
+    const id  = 'dp-' + idx;
     const tab = document.createElement('div');
     tab.className = 'designer-tab' + (idx === 0 ? ' active' : '');
     tab.textContent = name;
@@ -368,15 +414,32 @@ function renderDesigners() {
     };
     tabsEl.appendChild(tab);
 
-    const panel = document.createElement('div');
-    panel.id = id;
-    panel.className = 'designer-panel' + (idx === 0 ? ' active' : '');
+    // Valores filtrados pelo mês
+    let total, atrasadas, finalizadas, canceladas, fora_sla, em_andamento, taxa_atraso;
+    if (currentMes === 'todos') {
+      total       = info.total;
+      atrasadas   = info.atrasadas;
+      finalizadas = info.finalizadas;
+      canceladas  = info.canceladas;
+      fora_sla    = info.fora_sla;
+      em_andamento= info.em_andamento;
+      taxa_atraso = info.taxa_atraso;
+    } else {
+      const pm = info.por_mes?.[currentMes] || {};
+      total       = pm.total || 0;
+      atrasadas   = pm.atrasadas || 0;
+      finalizadas = 0;
+      canceladas  = 0;
+      fora_sla    = 0;
+      em_andamento= 0;
+      taxa_atraso = total > 0 ? Math.round(atrasadas/total*100) : 0;
+    }
 
-    const atrasoPct  = info.taxa_atraso;
-    const atrasoClass = atrasoPct >= 50 ? 'danger' : atrasoPct >= 20 ? 'warn' : 'ok';
+    const atrasoClass = taxa_atraso >= 50 ? 'danger' : taxa_atraso >= 20 ? 'warn' : 'ok';
 
     const tiposHtml = Object.entries(info.tipos).map(([t,v]) =>
-      `<tr><td>${t}</td><td><b>${v}</b></td></tr>`).join('') || '<tr><td colspan="2" style="color:var(--text-muted)">Sem dados</td></tr>';
+      `<tr><td>${t}</td><td><b>${v}</b></td></tr>`).join('') ||
+      '<tr><td colspan="2" style="color:var(--text-muted)">Sem dados</td></tr>';
 
     const atrasadasHtml = info.demandas_atrasadas.map(dem =>
       `<tr>
@@ -384,16 +447,20 @@ function renderDesigners() {
         <td><span class="status-pill ${statusClass(dem.status)}">${dem.status}</span></td>
         <td>${dem.area || '—'}</td>
         <td class="atraso-tag">${dem.prazo}</td>
-      </tr>`).join('') || '<tr><td colspan="4" style="color:var(--text-muted)">Nenhuma demanda atrasada</td></tr>';
+      </tr>`).join('') ||
+      '<tr><td colspan="4" style="color:var(--text-muted)">Nenhuma atrasada</td></tr>';
 
+    const panel = document.createElement('div');
+    panel.id = id;
+    panel.className = 'designer-panel' + (idx === 0 ? ' active' : '');
     panel.innerHTML = `
       <div class="designer-kpis">
-        ${kpiHtml('Total', info.total)}
-        ${kpiHtml('Em andamento', info.em_andamento)}
-        ${kpiHtml('Finalizadas', info.finalizadas, '', 'ok')}
-        ${kpiHtml('Atrasadas', info.atrasadas, `${atrasoPct}%`, atrasoClass)}
-        ${kpiHtml('Canceladas', info.canceladas)}
-        ${kpiHtml('Fora de SLA', info.fora_sla, 'na criacao', info.fora_sla > 0 ? 'warn' : 'ok')}
+        ${kpiHtml('Total', total)}
+        ${kpiHtml('Em Andamento', em_andamento)}
+        ${kpiHtml('Finalizadas', finalizadas, '', 'ok')}
+        ${kpiHtml('Atrasadas', atrasadas, taxa_atraso + '%', atrasoClass)}
+        ${kpiHtml('Canceladas', canceladas)}
+        ${kpiHtml('Fora de SLA', fora_sla, 'na criacao', fora_sla > 0 ? 'warn' : 'ok')}
       </div>
       <div class="charts-grid">
         <div class="card">
@@ -418,33 +485,29 @@ function renderDesigners() {
 
 // ── POR AREA ───────────────────────────────────────────────────────────────
 function renderAreas() {
-  const d  = getData();
-  const ac = d.area_counts;
-  const aa = d.area_atrasados;
+  const v = getView();
+  const ac = v.area_counts || {};
+  const aa = v.area_atrasados || {};
+  const accentColor = currentTeam === 'creat' ? '#5b8af5' : '#f44b6e';
 
-  makeChart('chart-area2', 'bar',
-    Object.keys(ac),
-    [{ data: Object.values(ac), backgroundColor: currentTeam === 'creat' ? '#5b8af5' : '#f44b6e', borderRadius: 4 }],
+  makeChart('chart-area2', 'bar', Object.keys(ac),
+    [{ data: Object.values(ac), backgroundColor: accentColor, borderRadius: 4 }],
     { plugins: { legend: { display: false } }, indexAxis: 'y' }
   );
-  makeChart('chart-area-atraso', 'bar',
-    Object.keys(aa),
+  makeChart('chart-area-atraso', 'bar', Object.keys(aa),
     [{ data: Object.values(aa), backgroundColor: '#f44b6e', borderRadius: 4 }],
     { plugins: { legend: { display: false } }, indexAxis: 'y' }
   );
 
   const tbl  = document.getElementById('table-areas');
-  const rows = Object.keys(ac).map(area => {
-    const total  = ac[area] || 0;
-    const atrasos = aa[area] || 0;
-    const pct    = total > 0 ? Math.round(atrasos/total*100) : 0;
-    return { area, total, atrasos, pct };
-  }).sort((a,b) => b.total - a.total);
+  const rows = Object.keys(ac).map(area => ({
+    area, total: ac[area]||0, atrasos: aa[area]||0,
+    pct: ac[area] > 0 ? Math.round((aa[area]||0)/ac[area]*100) : 0
+  })).sort((a,b) => b.total - a.total);
 
   tbl.innerHTML = `<thead><tr><th>Area</th><th>Total</th><th>Atrasadas</th><th>% Atraso</th></tr></thead><tbody>` +
     rows.map(r => `<tr>
-      <td>${r.area}</td>
-      <td>${r.total}</td>
+      <td>${r.area}</td><td>${r.total}</td>
       <td>${r.atrasos > 0 ? `<span class="atraso-tag">${r.atrasos}</span>` : '0'}</td>
       <td>${r.pct > 0 ? `<span class="badge badge-${r.pct>=50?'red':r.pct>=20?'yellow':'green'}">${r.pct}%</span>` : '—'}</td>
     </tr>`).join('') + '</tbody>';
@@ -452,15 +515,20 @@ function renderAreas() {
 
 // ── ATRASOS ────────────────────────────────────────────────────────────────
 function renderAtrasos() {
+  const v    = getView();
   const d    = getData();
-  const kpis = document.getElementById('kpis-atrasos');
-  kpis.innerHTML =
-    kpiHtml('Total Atrasadas', d.atrasados, `${d.taxa_atraso_geral}% do total`, d.atrasados > 0 ? 'danger' : 'ok') +
-    kpiHtml('Maior Concentracao', Object.keys(d.area_atrasados)[0] || '—', 'por area') +
-    kpiHtml('Canceladas', d.cancelados, '');
 
+  document.getElementById('kpis-atrasos').innerHTML =
+    kpiHtml('Total Atrasadas', v.atrasados, `${v.taxa_atraso_geral}% do total`, v.atrasados > 0 ? 'danger' : 'ok') +
+    kpiHtml('Maior Concentracao', Object.keys(v.area_atrasados||{})[0] || '—', 'por area') +
+    kpiHtml('Canceladas', v.cancelados, '');
+
+  // Atrasos por designer (sempre usa dados globais do designer, pois demandas_atrasadas é global)
   const dd = Object.entries(d.designers)
-    .map(([name, info]) => ({ name: name.split(' ')[0], atr: info.atrasadas }))
+    .map(([name, info]) => {
+      const atr = currentMes === 'todos' ? info.atrasadas : (info.por_mes?.[currentMes]?.atrasadas || 0);
+      return { name: name.split(' ')[0], atr };
+    })
     .filter(x => x.atr > 0).sort((a,b) => b.atr - a.atr);
 
   makeChart('chart-atrasos-designer', 'bar',
@@ -469,6 +537,7 @@ function renderAtrasos() {
     { plugins: { legend: { display: false } } }
   );
 
+  // Tabela de atrasos (usa lista global de demandas_atrasadas)
   const rows = [];
   Object.entries(d.designers).forEach(([name, info]) => {
     info.demandas_atrasadas.forEach(dem => rows.push({ designer: name, ...dem }));
@@ -477,23 +546,25 @@ function renderAtrasos() {
 
   const tbl = document.getElementById('table-atrasos');
   tbl.innerHTML = `<thead><tr><th>Demanda</th><th>Designer</th><th>Status</th><th>Area</th><th>Prazo</th></tr></thead><tbody>` +
-    rows.map(r => `<tr>
-      <td>${r.titulo || '—'}</td>
+    (rows.length ? rows.map(r => `<tr>
+      <td>${r.titulo||'—'}</td>
       <td>${r.designer.split(' ')[0]}</td>
       <td><span class="status-pill ${statusClass(r.status)}">${r.status}</span></td>
-      <td>${r.area || '—'}</td>
+      <td>${r.area||'—'}</td>
       <td class="atraso-tag">${r.prazo}</td>
-    </tr>`).join('') + '</tbody>';
+    </tr>`).join('') : '<tr><td colspan="5" class="empty-state">Nenhuma atrasada</td></tr>') +
+    '</tbody>';
 }
 
 // ── RENDER ALL ─────────────────────────────────────────────────────────────
 function renderAll() {
   const d    = getData();
   const team = currentTeam.toUpperCase();
+  const ml   = mesLabel(currentMes);
   document.getElementById('header-meta').textContent =
-    `${team} · Atualizado em ${d.gerado_em} · ${d.total} demandas (desde ${(d.corte||'2026-04-01').split('-').reverse().join('/')})`;
+    `${team} · ${ml} · Atualizado em ${d.gerado_em} · ${d.total} demandas total`;
   document.getElementById('footer-updated').textContent =
-    `Creative Dashboard · G4 · Dados: Notion banco 2026 · ${team} · Gerado em ${d.gerado_em}`;
+    `Creative Dashboard · G4 · ${team} · Gerado em ${d.gerado_em}`;
 
   renderGeral();
   renderDesigners();
@@ -502,6 +573,7 @@ function renderAll() {
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────
+buildMesToggle();
 renderAll();
 </script>
 </body>
