@@ -149,23 +149,29 @@ def main():
 
     summary = build_summary(rows)
 
-    out = "dashboard/data.json"
-    os.makedirs("dashboard", exist_ok=True)
-    with open(out, "w") as f:
+    # No repo o index.html e data.json ficam na raiz (GitHub Pages serve de /)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root  = os.path.dirname(script_dir)  # dashboard/ está dentro do repo local, mas no Actions o script roda da raiz
+
+    # Detecta se está rodando no GitHub Actions (raiz do repo) ou local (pasta dashboard/)
+    index_path = "index.html" if os.path.exists("index.html") else os.path.join(script_dir, "index.html")
+    data_path  = "data.json"  if os.path.exists("index.html") else os.path.join(script_dir, "data.json")
+
+    with open(data_path, "w") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
-    print(f"  Salvo em {out}")
+    print(f"  Salvo em {data_path}")
 
     # Injeta no index.html
-    with open("dashboard/index.html") as f:
+    with open(index_path) as f:
         html = f.read()
 
     import re
     data_js = json.dumps(summary, ensure_ascii=False)
     html = re.sub(r"const DATA = \{.*?\};", f"const DATA = {data_js};", html, flags=re.DOTALL)
 
-    with open("dashboard/index.html", "w") as f:
+    with open(index_path, "w") as f:
         f.write(html)
-    print("  dashboard/index.html atualizado")
+    print(f"  {index_path} atualizado")
 
 
 if __name__ == "__main__":
