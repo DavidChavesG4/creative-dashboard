@@ -142,41 +142,34 @@
   .empty-state { color: var(--text-muted); padding: 32px; text-align: center; font-size: 13px; }
 
   /* Metricas */
-  .pilar { margin-bottom: 28px; }
-  .pilar-header {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 14px;
+  .met-section { margin-bottom: 24px; }
+  .met-section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px;
+    color: var(--text-muted); margin-bottom: 12px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
   }
-  .pilar-header h2 { font-size: 15px; font-weight: 700; }
-  .pilar-header .pilar-sub { color: var(--text-muted); font-size: 12px; font-style: italic; }
-  .metrica-list { display: flex; flex-direction: column; gap: 8px; }
-  .metrica-item {
+  .met-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .met-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 14px 16px;
-    display: flex; align-items: flex-start; gap: 14px;
-    transition: border-color .15s;
+    border-radius: 10px; padding: 16px 14px; position: relative;
   }
-  .metrica-item:hover { border-color: var(--accent); }
-  .metrica-item.disponivel { border-left: 3px solid var(--green); }
-  .metrica-item.parcial    { border-left: 3px solid var(--yellow); }
-  .metrica-item.a-criar    { border-left: 3px solid rgba(123,130,168,.4); }
-  .metrica-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-  .metrica-body { flex: 1; }
-  .metrica-nome { font-weight: 600; font-size: 13px; margin-bottom: 3px; }
-  .metrica-desc { color: var(--text-muted); font-size: 12px; line-height: 1.4; }
-  .metrica-tags { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
-  .tag {
-    display: inline-block; padding: 2px 8px; border-radius: 20px;
-    font-size: 10px; font-weight: 600; letter-spacing: .3px;
-  }
-  .tag-auto    { background: rgba(76,175,125,.15);  color: var(--green); }
-  .tag-semi    { background: rgba(245,166,35,.15);  color: var(--yellow); }
-  .tag-manual  { background: rgba(123,130,168,.15); color: var(--text-muted); }
-  .tag-ok      { background: rgba(76,175,125,.15);  color: var(--green); }
-  .tag-falta   { background: rgba(244,75,110,.15);  color: var(--red); }
+  .met-card.ok     { border-left: 3px solid var(--green); }
+  .met-card.warn   { border-left: 3px solid var(--yellow); }
+  .met-card.danger { border-left: 3px solid var(--red); }
+  .met-card.empty  { border-left: 3px solid rgba(123,130,168,.4); opacity: .7; }
+  .met-card .m-label { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
+  .met-card .m-value { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .met-card .m-sub   { color: var(--text-muted); font-size: 11px; }
+  .met-card .m-empty { color: var(--text-muted); font-size: 12px; font-style: italic; margin-top: 4px; }
+  .met-bar-list { display: flex; flex-direction: column; gap: 8px; }
+  .met-bar-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .met-bar-label { flex: 0 0 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+  .met-bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 6px; }
+  .met-bar-fill  { height: 6px; border-radius: 4px; background: var(--accent); }
+  .met-bar-val   { flex: 0 0 30px; text-align: right; color: var(--text-muted); font-size: 11px; }
   .notion-link {
     display: inline-flex; align-items: center; gap: 5px;
-    margin-top: 10px; color: var(--blue); font-size: 11px; font-weight: 600;
+    color: var(--blue); font-size: 11px; font-weight: 600;
     text-decoration: none; padding: 4px 10px;
     border: 1px solid rgba(91,138,245,.3); border-radius: 6px;
     transition: .15s;
@@ -254,227 +247,7 @@
 
 <!-- METRICAS -->
 <div id="page-metricas" class="page">
-
-  <div style="margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-    <div>
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:4px">Medidores de performance mapeados para o time Creative</div>
-    </div>
-    <a class="notion-link" href="https://www.notion.so/g40/Medidores-do-Time-Creative-Produtividade-Qualidade-e-Inova-o-33eb431349e1814aa0b2d18d5cc70f29" target="_blank">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 0 1 1h4"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      Ver documento completo no Notion
-    </a>
-  </div>
-
-  <!-- PRODUTIVIDADE -->
-  <div class="pilar">
-    <div class="pilar-header">
-      <div>
-        <h2>🏎 Produtividade</h2>
-        <span class="pilar-sub">"Estamos entregando no volume e velocidade certos?"</span>
-      </div>
-    </div>
-    <div class="metrica-list">
-
-      <div class="metrica-item disponivel">
-        <div class="metrica-icon">📊</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Demandas atrasadas</div>
-          <div class="metrica-desc">Status Enviado / Na fila / Em produção / Revisão / Alteração + prazo &lt; hoje. Script roda diariamente às 9h.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-auto">🤖 Automatico</span>
-            <span class="tag tag-ok">✅ Disponivel no dash</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item disponivel">
-        <div class="metrica-icon">📦</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Volume de entregas por periodo</div>
-          <div class="metrica-desc">Contagem de demandas com status Finalizado ou Aprovado no período selecionado.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-auto">🤖 Automatico</span>
-            <span class="tag tag-ok">✅ Disponivel no dash</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item disponivel">
-        <div class="metrica-icon">❌</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Demandas canceladas e taxa de cancelamento</div>
-          <div class="metrica-desc">Status = Cancelada. Taxa calculada como canceladas ÷ total do período.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-auto">🤖 Automatico</span>
-            <span class="tag tag-ok">✅ Disponivel no dash</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item disponivel">
-        <div class="metrica-icon">🗺</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Volume e atrasos por Area Solicitante</div>
-          <div class="metrica-desc">Quais áreas geram mais demandas e quais concentram mais atrasos.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-auto">🤖 Automatico</span>
-            <span class="tag tag-ok">✅ Disponivel no dash (aba Por Area)</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item disponivel">
-        <div class="metrica-icon">⚠️</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Demandas criadas fora de SLA</div>
-          <div class="metrica-desc">Campo ⚠ Fora de SLA? no banco 2026. Detecta se o prazo dado na criação é menor que o SLA mínimo do tipo de demanda.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-semi">⚙️ Semi-automatico</span>
-            <span class="tag tag-ok">✅ Campo existe no banco</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item parcial">
-        <div class="metrica-icon">⏱</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">SLA Executado (lead time real)</div>
-          <div class="metrica-desc">Criado em → Data de Entrega Real. Calcula quantos dias úteis levou de fato para entregar.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-auto">🤖 Automatico</span>
-            <span class="tag tag-falta">⚠️ Falta criar campo "Data de Entrega Real"</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item parcial">
-        <div class="metrica-icon">🎯</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">SLA cumprido % (pontualidade)</div>
-          <div class="metrica-desc">Comparação entre Data de Entrega Real e Prazo entrega. Percentual de demandas entregues dentro do prazo.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-auto">🤖 Automatico ao mudar para Finalizado</span>
-            <span class="tag tag-falta">⚠️ Falta campo "Data de Entrega Real"</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item parcial">
-        <div class="metrica-icon">⏳</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Tempo medio por categoria</div>
-          <div class="metrica-desc">Lead time médio agrupado por Tipo de Demanda. Identifica quais tipos demoram mais.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-auto">🤖 Automatico</span>
-            <span class="tag tag-falta">⚠️ Falta campo "Data de Entrega Real"</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- QUALIDADE -->
-  <div class="pilar">
-    <div class="pilar-header">
-      <div>
-        <h2>✅ Qualidade</h2>
-        <span class="pilar-sub">"O que entregamos resolve de primeira?"</span>
-      </div>
-    </div>
-    <div class="metrica-list">
-
-      <div class="metrica-item disponivel">
-        <div class="metrica-icon">🔁</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Taxa de retrabalho</div>
-          <div class="metrica-desc">Rastreamento de ciclos de status Revisão e Alteração. Quanto mais vezes volta, mais retrabalho.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-semi">⚙️ Semi-automatico</span>
-            <span class="tag tag-ok">✅ Status existe no banco</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item a-criar">
-        <div class="metrica-icon">📝</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Numero de revisoes por demanda</div>
-          <div class="metrica-desc">Campo "Nº de Revisões" a criar no banco 2026. Incrementa automaticamente ao voltar para Revisão.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-semi">⚙️ Semi-automatico</span>
-            <span class="tag tag-falta">❌ Campo a criar no banco</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item a-criar">
-        <div class="metrica-icon">🥇</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Taxa de aprovacao na 1ª entrega</div>
-          <div class="metrica-desc">Campo "✔ Aprovado de Primeira?" a criar. Designer ou gestor marca ao finalizar sem revisão.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-manual">✍️ Manual</span>
-            <span class="tag tag-falta">❌ Campo a criar no banco</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="metrica-item a-criar">
-        <div class="metrica-icon">⭐</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">Satisfacao do solicitante (rating)</div>
-          <div class="metrica-desc">Campo "⭐ Rating do Solicitante" a criar. Solicitante ou gestor preenche após entrega com nota de 1 a 5.</div>
-          <div class="metrica-tags">
-            <span class="tag tag-manual">✍️ Manual</span>
-            <span class="tag tag-falta">❌ Campo a criar no banco</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- INOVAÇÃO -->
-  <div class="pilar">
-    <div class="pilar-header">
-      <div>
-        <h2>💡 Inovacao</h2>
-        <span class="pilar-sub">"Estamos gerando valor além do operacional?"</span>
-      </div>
-    </div>
-    <div class="metrica-list">
-
-      <div class="metrica-item a-criar">
-        <div class="metrica-icon">🏷</div>
-        <div class="metrica-body">
-          <div class="metrica-nome">% entregas com iniciativa propria</div>
-          <div class="metrica-desc">Campo "🏷 Iniciativa" a criar. Gestor marca quando a demanda partiu de iniciativa do próprio designer (não apenas solicitada).</div>
-          <div class="metrica-tags">
-            <span class="tag tag-manual">✍️ Manual</span>
-            <span class="tag tag-falta">❌ Campo a criar no banco</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Legenda -->
-  <div class="card" style="margin-top:8px">
-    <h3>Legenda</h3>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:4px">
-      <span><span class="tag tag-auto">🤖 Automatico</span> <span style="color:var(--text-muted);font-size:12px;margin-left:4px">calculado sem acao manual</span></span>
-      <span><span class="tag tag-semi">⚙️ Semi-automatico</span> <span style="color:var(--text-muted);font-size:12px;margin-left:4px">G4 OS atualiza via gatilho</span></span>
-      <span><span class="tag tag-manual">✍️ Manual</span> <span style="color:var(--text-muted);font-size:12px;margin-left:4px">requer julgamento humano</span></span>
-    </div>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:10px">
-      <span style="display:inline-block;width:3px;height:16px;background:var(--green);border-radius:2px;vertical-align:middle;margin-right:6px"></span><span style="color:var(--text-muted);font-size:12px">Verde = disponivel no dashboard agora</span>
-      <span style="display:inline-block;width:3px;height:16px;background:var(--yellow);border-radius:2px;vertical-align:middle;margin-right:6px"></span><span style="color:var(--text-muted);font-size:12px">Amarelo = parcial, falta campo no banco</span>
-      <span style="display:inline-block;width:3px;height:16px;background:rgba(123,130,168,.4);border-radius:2px;vertical-align:middle;margin-right:6px"></span><span style="color:var(--text-muted);font-size:12px">Cinza = a criar</span>
-    </div>
-  </div>
-
+  <div id="metricas-content"></div>
 </div>
 
 <footer id="footer-updated"></footer>
@@ -549,8 +322,9 @@ function getView() {
   const d = getData();
   if (currentMes === 'todos') return d;
   const m = d.por_mes?.[currentMes];
-  if (!m) return { total:0, atrasados:0, cancelados:0, fora_sla:0, finalizados:0, em_aprovacao:0, taxa_atraso_geral:0, status_counts:{}, tipo_counts:{}, area_counts:{}, area_atrasados:{} };
-  return { ...d, ...m };
+  if (!m) return { total:0, atrasados:0, cancelados:0, fora_sla:0, finalizados:0, em_aprovacao:0, taxa_atraso_geral:0, status_counts:{}, tipo_counts:{}, area_counts:{}, area_atrasados:{}, metricas: d.metricas };
+  // metricas de qualidade sempre do global (calculadas sobre finalizados, independente de mês de criação)
+  return { ...d, ...m, metricas: d.metricas };
 }
 
 function statusClass(s) {
@@ -824,6 +598,124 @@ function renderAtrasos() {
     '</tbody>';
 }
 
+// ── METRICAS ────────────────────────────────────────────────────────────────
+function renderMetricas() {
+  const d = getData();
+  const v = getView();
+  const m = d.metricas || {};
+
+  function valOrDash(v, suffix='') {
+    return v !== null && v !== undefined ? `${v}${suffix}` : null;
+  }
+
+  function metCard(label, value, sub, cls) {
+    const isEmpty = value === null || value === undefined;
+    return `<div class="met-card ${isEmpty ? 'empty' : (cls||'')}">
+      <div class="m-label">${label}</div>
+      ${isEmpty
+        ? `<div class="m-value" style="font-size:18px;color:var(--text-muted)">—</div>
+           <div class="m-empty">Aguardando dados no Notion</div>`
+        : `<div class="m-value">${value}</div>
+           ${sub ? `<div class="m-sub">${sub}</div>` : ''}`
+      }
+    </div>`;
+  }
+
+  function barList(title, obj, color) {
+    if (!obj || !Object.keys(obj).length) return '';
+    const max = Math.max(...Object.values(obj));
+    const rows = Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v]) => `
+      <div class="met-bar-row">
+        <div class="met-bar-label">${k}</div>
+        <div class="met-bar-track"><div class="met-bar-fill" style="width:${Math.round(v/max*100)}%;background:${color||'var(--accent)'}"></div></div>
+        <div class="met-bar-val">${v}d</div>
+      </div>`).join('');
+    return `<div class="card" style="margin-top:14px">
+      <h3>${title}</h3>
+      <div class="met-bar-list" style="margin-top:8px">${rows}</div>
+    </div>`;
+  }
+
+  // — Produtividade —
+  const total   = v.total || 0;
+  const atr     = v.atrasados || 0;
+  const fin     = v.finalizados || 0;
+  const canc    = v.cancelados || 0;
+  const txAtr   = v.taxa_atraso_geral;
+  const txCanc  = total > 0 ? Math.round(canc/total*100) : 0;
+  const fSla    = v.fora_sla || 0;
+
+  // — Qualidade (do metricas global, pois vem de finalizados) —
+  const slaM    = valOrDash(m.sla_medio_dias, ' dias');
+  const slaSub  = m.sla_amostras > 0 ? `${m.sla_amostras} entregas com data real preenchida` : null;
+  const pont    = valOrDash(m.taxa_pontualidade != null ? m.taxa_pontualidade + '%' : null);
+  const pontSub = m.pont_amostras > 0 ? `${m.pont_amostras} entregas comparadas` : null;
+  const ap1a    = valOrDash(m.taxa_aprov_1a != null ? m.taxa_aprov_1a + '%' : null);
+  const ap1aSub = m.aprov_1a_amostras > 0 ? `${m.aprov_1a_amostras} finalizadas avaliadas` : null;
+  const rev     = valOrDash(m.rev_medio != null ? m.rev_medio + 'x' : null);
+  const revSub  = m.rev_amostras > 0 ? `${m.rev_amostras} demandas com nº revisoes` : null;
+  const rat     = valOrDash(m.rating_medio != null ? '⭐ ' + m.rating_medio : null);
+  const ratSub  = m.rating_amostras > 0 ? `${m.rating_amostras} avaliações recebidas` : null;
+
+  // Rating distribution bar
+  let ratingBarHtml = '';
+  if (m.rating_dist && Object.keys(m.rating_dist).length > 0) {
+    const total_r = Object.values(m.rating_dist).reduce((a,b)=>a+b,0);
+    ratingBarHtml = `<div class="card" style="margin-top:14px"><h3>Distribuicao de Ratings</h3>
+      <div class="met-bar-list" style="margin-top:8px">` +
+      [5,4,3,2,1].map(n => {
+        const cnt = m.rating_dist[n] || 0;
+        const pct = total_r > 0 ? Math.round(cnt/total_r*100) : 0;
+        return `<div class="met-bar-row">
+          <div class="met-bar-label">${'⭐'.repeat(n)}</div>
+          <div class="met-bar-track"><div class="met-bar-fill" style="width:${pct}%;background:${n>=4?'var(--green)':n===3?'var(--yellow)':'var(--red)'}"></div></div>
+          <div class="met-bar-val">${cnt}</div>
+        </div>`;
+      }).join('') +
+      `</div></div>`;
+  }
+
+  document.getElementById('metricas-content').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+      <div style="font-size:13px;color:var(--text-muted)">Métricas de performance — ${currentTeam.toUpperCase()} · ${mesLabel(currentMes)}</div>
+      <a class="notion-link" href="https://www.notion.so/g40/Medidores-do-Time-Creative-Produtividade-Qualidade-e-Inova-o-33eb431349e1814aa0b2d18d5cc70f29" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 0 1 1h4"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Ver no Notion
+      </a>
+    </div>
+
+    <div class="met-section">
+      <div class="met-section-title">🏎 Produtividade</div>
+      <div class="met-grid">
+        ${metCard('Total de Demandas', total, mesLabel(currentMes))}
+        ${metCard('Finalizadas', fin, 'Finalizado + Aprovado', 'ok')}
+        ${metCard('Atrasadas', atr, `${txAtr}% do total`, atr > 0 ? 'danger' : 'ok')}
+        ${metCard('Canceladas', canc, `${txCanc}% do total`, canc > 0 ? 'warn' : '')}
+        ${metCard('Fora de SLA na criacao', fSla, 'prazo < SLA minimo ao criar', fSla > 0 ? 'warn' : 'ok')}
+      </div>
+    </div>
+
+    <div class="met-section">
+      <div class="met-section-title">⏱ SLA & Velocidade</div>
+      <div class="met-grid">
+        ${metCard('SLA Medio Executado', slaM, slaSub, slaM ? (parseFloat(slaM)<=5?'ok':'warn') : '')}
+        ${metCard('Pontualidade', pont, pontSub, pont ? (parseFloat(pont)>=80?'ok':parseFloat(pont)>=60?'warn':'danger') : '')}
+      </div>
+      ${barList('Lead Time Medio por Tipo (dias)', m.sla_por_tipo, 'var(--blue)')}
+    </div>
+
+    <div class="met-section">
+      <div class="met-section-title">✅ Qualidade</div>
+      <div class="met-grid">
+        ${metCard('Aprovado de Primeira', ap1a, ap1aSub, ap1a ? (parseFloat(ap1a)>=70?'ok':parseFloat(ap1a)>=50?'warn':'danger') : '')}
+        ${metCard('Revisoes Medias', rev, revSub, rev ? (parseFloat(rev)<=1?'ok':parseFloat(rev)<=2?'warn':'danger') : '')}
+        ${metCard('Rating Medio', rat, ratSub, rat ? (m.rating_medio>=4?'ok':m.rating_medio>=3?'warn':'danger') : '')}
+      </div>
+      ${ratingBarHtml}
+    </div>
+  `;
+}
+
 // ── RENDER ALL ─────────────────────────────────────────────────────────────
 function renderAll() {
   const d    = getData();
@@ -838,6 +730,7 @@ function renderAll() {
   renderDesigners();
   renderAreas();
   renderAtrasos();
+  renderMetricas();
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────

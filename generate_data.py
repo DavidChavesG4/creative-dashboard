@@ -92,6 +92,10 @@ def parse(page):
     def chk(k):
         return props.get(k, {}).get("checkbox", False)
 
+    def num(k):
+        v = props.get(k, {}).get("number")
+        return v if v is not None else None
+
     def ttl():
         for key in ["", "Nome", "Name"]:
             arr = props.get(key, {}).get("title", [])
@@ -100,25 +104,101 @@ def parse(page):
         return ""
 
     prazo = dt("📅 Prazo entrega")
+    entrega_real = dt("📅 Data de Entrega Real")
     st    = status()
     hoje  = date.today().isoformat()
     tipo  = sel("Tipo de Demanda").replace("?: ", "").strip() or "Sem categoria"
+    criado = page.get("created_time", "")[:10]
+
+    # SLA executado em dias corridos (criado -> entrega real)
+    sla_exec = None
+    if entrega_real and criado:
+        try:
+            from datetime import datetime
+            d1 = datetime.strptime(criado, "%Y-%m-%d")
+            d2 = datetime.strptime(entrega_real[:10], "%Y-%m-%d")
+            sla_exec = (d2 - d1).days
+        except Exception:
+            pass
+
+    # Entregue dentro do prazo?
+    no_prazo = None
+    if entrega_real and prazo:
+        no_prazo = entrega_real[:10] <= prazo[:10]
 
     return {
-        "titulo":     ttl(),
-        "status":     st,
-        "tipo":       tipo,
-        "area":       txt("Área Solicitante"),
-        "solicitante":txt("Solicitante"),
-        "designer":   people("Creative"),
-        "freelancer": txt("Freelancer"),
-        "prazo":      prazo,
-        "criado":     page.get("created_time", "")[:10],
-        "mes":        page.get("created_time", "")[:7],  # "2026-04"
-        "prioridade": sel("Prioridade"),
-        "projeto":    sel("Projeto JIRA"),
-        "fora_sla":   chk("⚠ Fora de SLA?"),
-        "atrasado":   bool(prazo and prazo < hoje and st in STATUS_ATRASAVEIS),
+        "titulo":        ttl(),
+        "status":        st,
+        "tipo":          tipo,
+        "area":          txt("Área Solicitante"),
+        "solicitante":   txt("Solicitante"),
+        "designer":      people("Creative"),
+        "freelancer":    txt("Freelancer"),
+        "prazo":         prazo,
+        "entrega_real":  entrega_real,
+        "criado":        criado,
+        "mes":           page.get("created_time", "")[:7],
+        "prioridade":    sel("Prioridade"),
+        "projeto":       sel("Projeto JIRA"),
+        "fora_sla":      chk("⚠ Fora de SLA?"),
+        "atrasado":      bool(prazo and prazo < hoje and st in STATUS_ATRASAVEIS),
+        "sla_exec":      sla_exec,
+        "no_prazo":      no_prazo,
+        "aprovado_1a":   chk("✔ Aprovado de Primeira?"),
+        "n_revisoes":    num("Nº de Revisões"),
+        "rating":        num("⭐ Rating do Solicitante"),
+        "iniciativa":    chk("🏷 Iniciativa"),
+    }
+
+
+def calc_metricas(rows):
+    """Calcula métricas derivadas dos novos campos."""
+    finalizados = [r for r in rows if r["status"] in ["Finalizado", "Aprovado"]]
+
+    # SLA executado (só quem tem entrega_real preenchida)
+    com_sla = [r for r in finalizados if r["sla_exec"] is not None]
+    sla_medio = round(sum(r["sla_exec"] for r in com_sla) / len(com_sla), 1) if com_sla else None
+
+    # SLA por tipo
+    tipos_sla = {}
+    for r in com_sla:
+        tipos_sla.setdefault(r["tipo"], []).append(r["sla_exec"])
+    sla_por_tipo = {t: round(sum(v)/len(v), 1) for t, v in tipos_sla.items() if len(v) >= 2}
+
+    # Pontualidade (entregues dentro do prazo)
+    com_pontualidade = [r for r in finalizados if r["no_prazo"] is not None]
+    no_prazo_count = sum(1 for r in com_pontualidade if r["no_prazo"])
+    taxa_pontualidade = round(no_prazo_count / len(com_pontualidade) * 100, 1) if com_pontualidade else None
+
+    # Aprovado de primeira
+    com_aprov1a = [r for r in finalizados if r["aprovado_1a"] is not None and r["aprovado_1a"] in [True, False]]
+    aprov_1a_count = sum(1 for r in com_aprov1a if r["aprovado_1a"])
+    taxa_aprov_1a = round(aprov_1a_count / len(com_aprov1a) * 100, 1) if com_aprov1a else None
+
+    # Nº de revisões médio
+    com_rev = [r for r in rows if r["n_revisoes"] is not None]
+    rev_medio = round(sum(r["n_revisoes"] for r in com_rev) / len(com_rev), 1) if com_rev else None
+
+    # Rating médio
+    com_rating = [r for r in rows if r["rating"] is not None]
+    rating_medio = round(sum(r["rating"] for r in com_rating) / len(com_rating), 1) if com_rating else None
+
+    # Distribuição de ratings
+    rating_dist = dict(Counter(r["rating"] for r in com_rating).most_common()) if com_rating else {}
+
+    return {
+        "sla_medio_dias":    sla_medio,
+        "sla_amostras":      len(com_sla),
+        "sla_por_tipo":      sla_por_tipo,
+        "taxa_pontualidade": taxa_pontualidade,
+        "pont_amostras":     len(com_pontualidade),
+        "taxa_aprov_1a":     taxa_aprov_1a,
+        "aprov_1a_amostras": len(com_aprov1a),
+        "rev_medio":         rev_medio,
+        "rev_amostras":      len(com_rev),
+        "rating_medio":      rating_medio,
+        "rating_amostras":   len(com_rating),
+        "rating_dist":       rating_dist,
     }
 
 
@@ -126,10 +206,10 @@ def build_summary(rows, team):
     hoje  = date.today().isoformat()
     total = len(rows)
 
-    atrasados   = [r for r in rows if r["atrasado"]]
-    cancelados  = [r for r in rows if r["status"] == "Cancelada"]
-    fora_sla    = [r for r in rows if r["fora_sla"]]
-    finalizados = [r for r in rows if r["status"] in ["Finalizado", "Aprovado"]]
+    atrasados    = [r for r in rows if r["atrasado"]]
+    cancelados   = [r for r in rows if r["status"] == "Cancelada"]
+    fora_sla     = [r for r in rows if r["fora_sla"]]
+    finalizados  = [r for r in rows if r["status"] in ["Finalizado", "Aprovado"]]
     em_aprovacao = [r for r in rows if r["status"] == "Aprovação pendente"]
 
     # Meses disponíveis
@@ -165,7 +245,6 @@ def build_summary(rows, team):
         ds   = [r for r in dm if r["fora_sla"]]
         dand = [r for r in dm if r["status"] in ["Na fila", "Em produção", "Enviado", "Alteração", "Revisão"]]
 
-        # Por mês do designer
         designer_por_mes = {}
         for mes in meses:
             dmm = [r for r in dm if r["mes"] == mes]
@@ -196,7 +275,6 @@ def build_summary(rows, team):
         "gerado_em":         hoje,
         "meses":             meses,
         "por_mes":           por_mes,
-        # Totais globais (todos os meses desde corte)
         "total":             total,
         "atrasados":         len(atrasados),
         "cancelados":        len(cancelados),
@@ -209,6 +287,7 @@ def build_summary(rows, team):
         "area_counts":       dict(Counter(r["area"] for r in rows if r["area"]).most_common(8)),
         "area_atrasados":    dict(Counter(r["area"] for r in atrasados if r["area"]).most_common(8)),
         "designers":         designers_data,
+        "metricas":          calc_metricas(rows),
     }
 
 
