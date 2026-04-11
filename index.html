@@ -140,6 +140,48 @@
   footer { text-align: center; padding: 16px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 8px; }
 
   .empty-state { color: var(--text-muted); padding: 32px; text-align: center; font-size: 13px; }
+
+  /* Metricas */
+  .pilar { margin-bottom: 28px; }
+  .pilar-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .pilar-header h2 { font-size: 15px; font-weight: 700; }
+  .pilar-header .pilar-sub { color: var(--text-muted); font-size: 12px; font-style: italic; }
+  .metrica-list { display: flex; flex-direction: column; gap: 8px; }
+  .metrica-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: flex-start; gap: 14px;
+    transition: border-color .15s;
+  }
+  .metrica-item:hover { border-color: var(--accent); }
+  .metrica-item.disponivel { border-left: 3px solid var(--green); }
+  .metrica-item.parcial    { border-left: 3px solid var(--yellow); }
+  .metrica-item.a-criar    { border-left: 3px solid rgba(123,130,168,.4); }
+  .metrica-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .metrica-body { flex: 1; }
+  .metrica-nome { font-weight: 600; font-size: 13px; margin-bottom: 3px; }
+  .metrica-desc { color: var(--text-muted); font-size: 12px; line-height: 1.4; }
+  .metrica-tags { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 600; letter-spacing: .3px;
+  }
+  .tag-auto    { background: rgba(76,175,125,.15);  color: var(--green); }
+  .tag-semi    { background: rgba(245,166,35,.15);  color: var(--yellow); }
+  .tag-manual  { background: rgba(123,130,168,.15); color: var(--text-muted); }
+  .tag-ok      { background: rgba(76,175,125,.15);  color: var(--green); }
+  .tag-falta   { background: rgba(244,75,110,.15);  color: var(--red); }
+  .notion-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 10px; color: var(--blue); font-size: 11px; font-weight: 600;
+    text-decoration: none; padding: 4px 10px;
+    border: 1px solid rgba(91,138,245,.3); border-radius: 6px;
+    transition: .15s;
+  }
+  .notion-link:hover { background: rgba(91,138,245,.08); border-color: var(--blue); }
 </style>
 </head>
 <body>
@@ -163,6 +205,7 @@
   <button onclick="showPage('designers', this)">Por Designer</button>
   <button onclick="showPage('areas', this)">Por Area</button>
   <button onclick="showPage('atrasos', this)">Atrasos</button>
+  <button onclick="showPage('metricas', this)">Metricas</button>
 </nav>
 
 <!-- VISAO GERAL -->
@@ -207,6 +250,231 @@
     <h3>Tabela de Atrasos</h3>
     <div class="table-wrap"><table id="table-atrasos"></table></div>
   </div>
+</div>
+
+<!-- METRICAS -->
+<div id="page-metricas" class="page">
+
+  <div style="margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:4px">Medidores de performance mapeados para o time Creative</div>
+    </div>
+    <a class="notion-link" href="https://www.notion.so/g40/Medidores-do-Time-Creative-Produtividade-Qualidade-e-Inova-o-33eb431349e1814aa0b2d18d5cc70f29" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 0 1 1h4"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Ver documento completo no Notion
+    </a>
+  </div>
+
+  <!-- PRODUTIVIDADE -->
+  <div class="pilar">
+    <div class="pilar-header">
+      <div>
+        <h2>🏎 Produtividade</h2>
+        <span class="pilar-sub">"Estamos entregando no volume e velocidade certos?"</span>
+      </div>
+    </div>
+    <div class="metrica-list">
+
+      <div class="metrica-item disponivel">
+        <div class="metrica-icon">📊</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Demandas atrasadas</div>
+          <div class="metrica-desc">Status Enviado / Na fila / Em produção / Revisão / Alteração + prazo &lt; hoje. Script roda diariamente às 9h.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-auto">🤖 Automatico</span>
+            <span class="tag tag-ok">✅ Disponivel no dash</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item disponivel">
+        <div class="metrica-icon">📦</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Volume de entregas por periodo</div>
+          <div class="metrica-desc">Contagem de demandas com status Finalizado ou Aprovado no período selecionado.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-auto">🤖 Automatico</span>
+            <span class="tag tag-ok">✅ Disponivel no dash</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item disponivel">
+        <div class="metrica-icon">❌</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Demandas canceladas e taxa de cancelamento</div>
+          <div class="metrica-desc">Status = Cancelada. Taxa calculada como canceladas ÷ total do período.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-auto">🤖 Automatico</span>
+            <span class="tag tag-ok">✅ Disponivel no dash</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item disponivel">
+        <div class="metrica-icon">🗺</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Volume e atrasos por Area Solicitante</div>
+          <div class="metrica-desc">Quais áreas geram mais demandas e quais concentram mais atrasos.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-auto">🤖 Automatico</span>
+            <span class="tag tag-ok">✅ Disponivel no dash (aba Por Area)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item disponivel">
+        <div class="metrica-icon">⚠️</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Demandas criadas fora de SLA</div>
+          <div class="metrica-desc">Campo ⚠ Fora de SLA? no banco 2026. Detecta se o prazo dado na criação é menor que o SLA mínimo do tipo de demanda.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-semi">⚙️ Semi-automatico</span>
+            <span class="tag tag-ok">✅ Campo existe no banco</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item parcial">
+        <div class="metrica-icon">⏱</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">SLA Executado (lead time real)</div>
+          <div class="metrica-desc">Criado em → Data de Entrega Real. Calcula quantos dias úteis levou de fato para entregar.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-auto">🤖 Automatico</span>
+            <span class="tag tag-falta">⚠️ Falta criar campo "Data de Entrega Real"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item parcial">
+        <div class="metrica-icon">🎯</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">SLA cumprido % (pontualidade)</div>
+          <div class="metrica-desc">Comparação entre Data de Entrega Real e Prazo entrega. Percentual de demandas entregues dentro do prazo.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-auto">🤖 Automatico ao mudar para Finalizado</span>
+            <span class="tag tag-falta">⚠️ Falta campo "Data de Entrega Real"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item parcial">
+        <div class="metrica-icon">⏳</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Tempo medio por categoria</div>
+          <div class="metrica-desc">Lead time médio agrupado por Tipo de Demanda. Identifica quais tipos demoram mais.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-auto">🤖 Automatico</span>
+            <span class="tag tag-falta">⚠️ Falta campo "Data de Entrega Real"</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUALIDADE -->
+  <div class="pilar">
+    <div class="pilar-header">
+      <div>
+        <h2>✅ Qualidade</h2>
+        <span class="pilar-sub">"O que entregamos resolve de primeira?"</span>
+      </div>
+    </div>
+    <div class="metrica-list">
+
+      <div class="metrica-item disponivel">
+        <div class="metrica-icon">🔁</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Taxa de retrabalho</div>
+          <div class="metrica-desc">Rastreamento de ciclos de status Revisão e Alteração. Quanto mais vezes volta, mais retrabalho.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-semi">⚙️ Semi-automatico</span>
+            <span class="tag tag-ok">✅ Status existe no banco</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item a-criar">
+        <div class="metrica-icon">📝</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Numero de revisoes por demanda</div>
+          <div class="metrica-desc">Campo "Nº de Revisões" a criar no banco 2026. Incrementa automaticamente ao voltar para Revisão.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-semi">⚙️ Semi-automatico</span>
+            <span class="tag tag-falta">❌ Campo a criar no banco</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item a-criar">
+        <div class="metrica-icon">🥇</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Taxa de aprovacao na 1ª entrega</div>
+          <div class="metrica-desc">Campo "✔ Aprovado de Primeira?" a criar. Designer ou gestor marca ao finalizar sem revisão.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-manual">✍️ Manual</span>
+            <span class="tag tag-falta">❌ Campo a criar no banco</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrica-item a-criar">
+        <div class="metrica-icon">⭐</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">Satisfacao do solicitante (rating)</div>
+          <div class="metrica-desc">Campo "⭐ Rating do Solicitante" a criar. Solicitante ou gestor preenche após entrega com nota de 1 a 5.</div>
+          <div class="metrica-tags">
+            <span class="tag tag-manual">✍️ Manual</span>
+            <span class="tag tag-falta">❌ Campo a criar no banco</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INOVAÇÃO -->
+  <div class="pilar">
+    <div class="pilar-header">
+      <div>
+        <h2>💡 Inovacao</h2>
+        <span class="pilar-sub">"Estamos gerando valor além do operacional?"</span>
+      </div>
+    </div>
+    <div class="metrica-list">
+
+      <div class="metrica-item a-criar">
+        <div class="metrica-icon">🏷</div>
+        <div class="metrica-body">
+          <div class="metrica-nome">% entregas com iniciativa propria</div>
+          <div class="metrica-desc">Campo "🏷 Iniciativa" a criar. Gestor marca quando a demanda partiu de iniciativa do próprio designer (não apenas solicitada).</div>
+          <div class="metrica-tags">
+            <span class="tag tag-manual">✍️ Manual</span>
+            <span class="tag tag-falta">❌ Campo a criar no banco</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Legenda -->
+  <div class="card" style="margin-top:8px">
+    <h3>Legenda</h3>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:4px">
+      <span><span class="tag tag-auto">🤖 Automatico</span> <span style="color:var(--text-muted);font-size:12px;margin-left:4px">calculado sem acao manual</span></span>
+      <span><span class="tag tag-semi">⚙️ Semi-automatico</span> <span style="color:var(--text-muted);font-size:12px;margin-left:4px">G4 OS atualiza via gatilho</span></span>
+      <span><span class="tag tag-manual">✍️ Manual</span> <span style="color:var(--text-muted);font-size:12px;margin-left:4px">requer julgamento humano</span></span>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:10px">
+      <span style="display:inline-block;width:3px;height:16px;background:var(--green);border-radius:2px;vertical-align:middle;margin-right:6px"></span><span style="color:var(--text-muted);font-size:12px">Verde = disponivel no dashboard agora</span>
+      <span style="display:inline-block;width:3px;height:16px;background:var(--yellow);border-radius:2px;vertical-align:middle;margin-right:6px"></span><span style="color:var(--text-muted);font-size:12px">Amarelo = parcial, falta campo no banco</span>
+      <span style="display:inline-block;width:3px;height:16px;background:rgba(123,130,168,.4);border-radius:2px;vertical-align:middle;margin-right:6px"></span><span style="color:var(--text-muted);font-size:12px">Cinza = a criar</span>
+    </div>
+  </div>
+
 </div>
 
 <footer id="footer-updated"></footer>
