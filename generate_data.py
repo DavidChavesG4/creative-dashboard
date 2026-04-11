@@ -13,9 +13,12 @@ from collections import Counter
 
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
 
-DATABASES = {
-    "creat": "2e0b431349e180498fe0cbaf43c58f21",
-    "red":   "2e0b431349e181a091fd000b23ac1a37",
+# RED e CREAT são o mesmo banco — distinguidos pelo campo "Projeto JIRA" (select)
+NOTION_DB_ID = "2e0b431349e180498fe0cbaf43c58f21"
+
+TEAM_PROJETO = {
+    "creat": "CREAT",
+    "red":   "RED",
 }
 
 CORTE = "2026-04-01"
@@ -114,6 +117,7 @@ def parse(page):
         "prazo":      prazo,
         "criado":     page.get("created_time", "")[:10],
         "prioridade": sel("Prioridade"),
+        "projeto":    sel("Projeto JIRA"),
         "fora_sla":   chk("⚠ Fora de SLA?"),
         "atrasado":   bool(prazo and prazo < hoje and st in STATUS_ATRASAVEIS),
     }
@@ -202,15 +206,25 @@ def main():
     index_path    = os.path.join(base, "index.html")
     data_path_tpl = os.path.join(base, "data_{team}.json")
 
-    for team, db_id in DATABASES.items():
-        print(f"\n[{team.upper()}] Buscando dados do Notion (DB: {db_id})...")
-        pages = fetch_all(db_id)
-        rows  = [r for p in pages for r in [parse(p)] if r["criado"] >= CORTE]
-        print(f"  {len(rows)} demandas desde {CORTE}")
+    # Busca todas as páginas uma vez só (mesmo banco para CREAT e RED)
+    print(f"\nBuscando dados do Notion (DB: {NOTION_DB_ID})...")
+    all_pages = fetch_all(NOTION_DB_ID)
+    print(f"  {len(all_pages)} páginas totais")
 
-        # Debug: nomes encontrados no campo Creative
+    for team in ["creat", "red"]:
+        projeto_val = TEAM_PROJETO[team]
+        rows = []
+        for p in all_pages:
+            r = parse(p)
+            if r["criado"] < CORTE:
+                continue
+            if r["projeto"] != projeto_val:
+                continue
+            rows.append(r)
+
+        print(f"\n[{team.upper()}] {len(rows)} demandas (Projeto JIRA='{projeto_val}') desde {CORTE}")
         names_found = Counter(r["designer"] for r in rows if r["designer"])
-        print(f"  Designers encontrados: {dict(names_found.most_common(10))}")
+        print(f"  Designers: {dict(names_found.most_common(10))}")
 
         summary = build_summary(rows, team)
         inject_and_save(summary, team, index_path, data_path_tpl)
