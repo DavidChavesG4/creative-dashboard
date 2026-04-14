@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Creative — G4</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
     --bg: #0f1117;
@@ -359,10 +360,14 @@ function mesLabel(mes) {
 
 const COLORS = ['#5b8af5','#a78bfa','#22d3ee','#4caf7d','#f5a623','#f44b6e','#fb923c','#34d399','#818cf8','#f472b6'];
 
+Chart.register(ChartDataLabels);
 function makeChart(id, type, labels, datasets, opts={}) {
   if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
   const ctx = document.getElementById(id);
   if (!ctx) return;
+  const isBar = type === 'bar';
+  const isDoughnut = type === 'doughnut';
+  const isHBar = opts.indexAxis === 'y';
   chartInstances[id] = new Chart(ctx, {
     type,
     data: { labels, datasets },
@@ -370,9 +375,18 @@ function makeChart(id, type, labels, datasets, opts={}) {
       responsive: true, maintainAspectRatio: false,
       plugins: {
         legend: { labels: { color: '#7b82a8', font: { size: 11 } } },
+        datalabels: {
+          color: '#ffffff',
+          font: { size: 11, weight: 'bold' },
+          formatter: (value) => value > 0 ? value : '',
+          anchor: isDoughnut ? 'center' : (isHBar ? 'end' : 'end'),
+          align: isDoughnut ? 'center' : (isHBar ? 'right' : 'top'),
+          padding: isDoughnut ? 0 : 2,
+          display: (context) => context.dataset.data[context.dataIndex] > 0,
+        },
         ...opts.plugins
       },
-      scales: type === 'bar' ? {
+      scales: isBar ? {
         x: { ticks: { color: '#7b82a8', font:{size:10} }, grid: { color: 'rgba(46,49,80,.4)' } },
         y: { ticks: { color: '#7b82a8', font:{size:10} }, grid: { color: 'rgba(46,49,80,.4)' } }
       } : {},
