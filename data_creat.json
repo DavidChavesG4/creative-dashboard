@@ -7,24 +7,24 @@
   ],
   "por_mes": {
     "2026-04": {
-      "total": 86,
+      "total": 89,
       "atrasados": 3,
-      "finalizados": 22,
+      "finalizados": 23,
       "cancelados": 6,
       "fora_sla": 0,
-      "taxa_atraso": 3.5,
+      "taxa_atraso": 3.4,
       "status_counts": {
         "Revisão": 29,
-        "Finalizado": 22,
+        "Finalizado": 23,
         "Na fila": 11,
-        "Aprovação pendente": 6,
-        "Enviada": 6,
+        "Enviada": 9,
         "Cancelado": 6,
+        "Aprovação pendente": 5,
         "Em produção": 5,
         "Alteração": 1
       },
       "tipo_counts": {
-        "Sem categoria": 63,
+        "Sem categoria": 66,
         "IMPRESSO": 9,
         "G4PBCURITIBA": 8,
         "Freelancer": 6
@@ -100,25 +100,25 @@
       "area_atrasados": {}
     }
   },
-  "total": 408,
+  "total": 411,
   "atrasados": 5,
   "cancelados": 54,
   "fora_sla": 0,
-  "finalizados": 257,
-  "em_aprovacao": 15,
+  "finalizados": 258,
+  "em_aprovacao": 14,
   "taxa_atraso_geral": 1.2,
   "status_counts": {
-    "Finalizado": 257,
+    "Finalizado": 258,
     "Cancelado": 54,
     "Na fila": 36,
     "Revisão": 30,
-    "Aprovação pendente": 15,
+    "Aprovação pendente": 14,
+    "Enviada": 9,
     "Em produção": 7,
-    "Enviada": 6,
     "Alteração": 3
   },
   "tipo_counts": {
-    "Sem categoria": 201,
+    "Sem categoria": 204,
     "IMPRESSO": 42,
     "Apresentação": 34,
     "DIGITAL": 29,
@@ -139,6 +139,42 @@
   },
   "area_atrasados": {},
   "designers": {
+    "Neemias Araujo do Amaral": {
+      "total": 17,
+      "em_andamento": 3,
+      "finalizadas": 13,
+      "atrasadas": 0,
+      "canceladas": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 0.0,
+      "tipos": {
+        "Sem categoria": 11,
+        "DIGITAL": 3,
+        "KV": 1,
+        "IMPRESSO": 1,
+        "G4_TRACTION": 1
+      },
+      "areas": {
+        "Marketing": 1,
+        "CORPORATIVO": 1,
+        "Comunicação e Marca": 1
+      },
+      "por_mes": {
+        "2026-04": {
+          "total": 3,
+          "atrasadas": 0
+        },
+        "2026-03": {
+          "total": 14,
+          "atrasadas": 0
+        },
+        "2026-02": {
+          "total": 0,
+          "atrasadas": 0
+        }
+      },
+      "demandas_atrasadas": []
+    },
     "Flávia Lima": {
       "total": 92,
       "em_andamento": 7,
@@ -175,23 +211,65 @@
       },
       "demandas_atrasadas": []
     },
-    "Matheus Gonçalves": {
-      "total": 0,
-      "em_andamento": 0,
-      "finalizadas": 0,
+    "Matheus Pio Nunes Gonçalves": {
+      "total": 35,
+      "em_andamento": 5,
+      "finalizadas": 27,
       "atrasadas": 0,
-      "canceladas": 0,
+      "canceladas": 3,
       "fora_sla": 0,
-      "taxa_atraso": 0,
-      "tipos": {},
-      "areas": {},
+      "taxa_atraso": 0.0,
+      "tipos": {
+        "Sem categoria": 19,
+        "Apresentação": 4,
+        "DIGITAL": 3,
+        "Apresentações": 3,
+        "IMPRESSO": 2
+      },
+      "areas": {
+        "Brand Performance": 4,
+        "Eventos": 2,
+        "Corporativo": 2
+      },
       "por_mes": {
         "2026-04": {
-          "total": 0,
+          "total": 6,
           "atrasadas": 0
         },
         "2026-03": {
+          "total": 29,
+          "atrasadas": 0
+        },
+        "2026-02": {
           "total": 0,
+          "atrasadas": 0
+        }
+      },
+      "demandas_atrasadas": []
+    },
+    "Vitor Santos Serodeo": {
+      "total": 13,
+      "em_andamento": 3,
+      "finalizadas": 4,
+      "atrasadas": 0,
+      "canceladas": 1,
+      "fora_sla": 0,
+      "taxa_atraso": 0.0,
+      "tipos": {
+        "Sem categoria": 11,
+        "IMPRESSO": 2
+      },
+      "areas": {
+        "Programas de Capacitação": 1,
+        "G4 SKILLS": 1
+      },
+      "por_mes": {
+        "2026-04": {
+          "total": 9,
+          "atrasadas": 0
+        },
+        "2026-03": {
+          "total": 4,
           "atrasadas": 0
         },
         "2026-02": {
@@ -249,32 +327,6 @@
           "area": ""
         }
       ]
-    },
-    "Nathalie Favacho": {
-      "total": 0,
-      "em_andamento": 0,
-      "finalizadas": 0,
-      "atrasadas": 0,
-      "canceladas": 0,
-      "fora_sla": 0,
-      "taxa_atraso": 0,
-      "tipos": {},
-      "areas": {},
-      "por_mes": {
-        "2026-04": {
-          "total": 0,
-          "atrasadas": 0
-        },
-        "2026-03": {
-          "total": 0,
-          "atrasadas": 0
-        },
-        "2026-02": {
-          "total": 0,
-          "atrasadas": 0
-        }
-      },
-      "demandas_atrasadas": []
     }
   },
   "metricas": {

@@ -1,85 +1,142 @@
 {
   "gerado_em": "2026-04-14",
-  "meses": [],
-  "por_mes": {},
-  "total": 0,
-  "atrasados": 0,
-  "cancelados": 0,
+  "meses": [
+    "2026-04",
+    "2026-03"
+  ],
+  "por_mes": {
+    "2026-04": {
+      "total": 6,
+      "atrasados": 1,
+      "finalizados": 0,
+      "cancelados": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 16.7,
+      "status_counts": {
+        "Analisar": 3,
+        "Na fila": 3
+      },
+      "tipo_counts": {
+        "REDboard": 6
+      },
+      "area_counts": {},
+      "area_atrasados": {}
+    },
+    "2026-03": {
+      "total": 43,
+      "atrasados": 6,
+      "finalizados": 9,
+      "cancelados": 22,
+      "fora_sla": 0,
+      "taxa_atraso": 14.0,
+      "status_counts": {
+        "Cancelado": 22,
+        "Finalizado": 9,
+        "Analisar": 6,
+        "Na fila": 6
+      },
+      "tipo_counts": {
+        "REDboard": 42,
+        "Sem categoria": 1
+      },
+      "area_counts": {},
+      "area_atrasados": {}
+    }
+  },
+  "total": 49,
+  "atrasados": 7,
+  "cancelados": 22,
   "fora_sla": 0,
-  "finalizados": 0,
+  "finalizados": 9,
   "em_aprovacao": 0,
-  "taxa_atraso_geral": 0,
-  "status_counts": {},
-  "tipo_counts": {},
+  "taxa_atraso_geral": 14.3,
+  "status_counts": {
+    "Cancelado": 22,
+    "Analisar": 9,
+    "Na fila": 9,
+    "Finalizado": 9
+  },
+  "tipo_counts": {
+    "REDboard": 48,
+    "Sem categoria": 1
+  },
   "area_counts": {},
   "area_atrasados": {},
   "designers": {
-    "Flávia Lima": {
-      "total": 0,
-      "em_andamento": 0,
-      "finalizadas": 0,
-      "atrasadas": 0,
-      "canceladas": 0,
-      "fora_sla": 0,
-      "taxa_atraso": 0,
-      "tipos": {},
-      "areas": {},
-      "por_mes": {},
-      "demandas_atrasadas": []
-    },
-    "Neemias Amaral": {
-      "total": 0,
-      "em_andamento": 0,
-      "finalizadas": 0,
-      "atrasadas": 0,
-      "canceladas": 0,
-      "fora_sla": 0,
-      "taxa_atraso": 0,
-      "tipos": {},
-      "areas": {},
-      "por_mes": {},
-      "demandas_atrasadas": []
-    },
-    "Pedro Marcondes": {
-      "total": 0,
-      "em_andamento": 0,
-      "finalizadas": 0,
-      "atrasadas": 0,
-      "canceladas": 0,
-      "fora_sla": 0,
-      "taxa_atraso": 0,
-      "tipos": {},
-      "areas": {},
-      "por_mes": {},
-      "demandas_atrasadas": []
-    },
-    "Vitor Santos Serodeo": {
-      "total": 0,
-      "em_andamento": 0,
-      "finalizadas": 0,
-      "atrasadas": 0,
-      "canceladas": 0,
-      "fora_sla": 0,
-      "taxa_atraso": 0,
-      "tipos": {},
-      "areas": {},
-      "por_mes": {},
-      "demandas_atrasadas": []
-    },
-    "Matheus Gonçalves": {
-      "total": 0,
-      "em_andamento": 0,
-      "finalizadas": 0,
-      "atrasadas": 0,
-      "canceladas": 0,
-      "fora_sla": 0,
-      "taxa_atraso": 0,
-      "tipos": {},
-      "areas": {},
-      "por_mes": {},
-      "demandas_atrasadas": []
-    },
     "Juliana Cespedes": {
+      "total": 10,
+      "em_andamento": 4,
+      "finalizadas": 5,
+      "atrasadas": 4,
+      "canceladas": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 40.0,
+      "tipos": {
+        "REDboard": 10
+      },
+      "areas": {},
+      "por_mes": {
+        "2026-04": {
+          "total": 0,
+          "atrasadas": 0
+        },
+        "2026-03": {
+          "total": 10,
+          "atrasadas": 4
+        }
+      },
+      "demandas_atrasadas": [
+        {
+          "titulo": "[2026-000900] Social media - Conteúdo Instagram",
+          "prazo": "2026-03-09",
+          "status": "Na fila",
+          "area": ""
+        },
+        {
+          "titulo": "[2026-000866] Youtube e podcasts - Roteiro YouTube (vídeo lo",
+          "prazo": "2026-03-09",
+          "status": "Na fila",
+          "area": ""
+        },
+        {
+          "titulo": "[2026-000944] Eventos - Roteiro vídeo abertura",
+          "prazo": "2026-03-17",
+          "status": "Na fila",
+          "area": ""
+        },
+        {
+          "titulo": "[2026-000913] Social media - Conteúdo Instagram",
+          "prazo": "2026-03-19",
+          "status": "Na fila",
+          "area": ""
+        }
+      ]
+    },
+    "t.fonseca": {
+      "total": 4,
+      "em_andamento": 0,
+      "finalizadas": 1,
+      "atrasadas": 0,
+      "canceladas": 3,
+      "fora_sla": 0,
+      "taxa_atraso": 0.0,
+      "tipos": {
+        "REDboard": 4
+      },
+      "areas": {},
+      "por_mes": {
+        "2026-04": {
+          "total": 0,
+          "atrasadas": 0
+        },
+        "2026-03": {
+          "total": 4,
+          "atrasadas": 0
+        }
+      },
+      "demandas_atrasadas": []
+    },
+    "Sarah Vitorio": {
       "total": 0,
       "em_andamento": 0,
       "finalizadas": 0,
@@ -89,7 +146,38 @@
       "taxa_atraso": 0,
       "tipos": {},
       "areas": {},
-      "por_mes": {},
+      "por_mes": {
+        "2026-04": {
+          "total": 0,
+          "atrasadas": 0
+        },
+        "2026-03": {
+          "total": 0,
+          "atrasadas": 0
+        }
+      },
+      "demandas_atrasadas": []
+    },
+    "Marcella Mancinelli": {
+      "total": 0,
+      "em_andamento": 0,
+      "finalizadas": 0,
+      "atrasadas": 0,
+      "canceladas": 0,
+      "fora_sla": 0,
+      "taxa_atraso": 0,
+      "tipos": {},
+      "areas": {},
+      "por_mes": {
+        "2026-04": {
+          "total": 0,
+          "atrasadas": 0
+        },
+        "2026-03": {
+          "total": 0,
+          "atrasadas": 0
+        }
+      },
       "demandas_atrasadas": []
     }
   },

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Gera data_creat.json e injeta DATA_CREAT no index.html
-com dados direto do JIRA (projeto CREAT).
+Gera data_creat.json e data_red.json e injeta DATA_CREAT/DATA_RED no index.html
+com dados direto do JIRA (projetos CREAT e RED).
 """
 
 import os
@@ -16,14 +16,14 @@ from collections import Counter
 JIRA_EMAIL = os.environ.get("JIRA_EMAIL", "d.chaves@g4educacao.com")
 JIRA_TOKEN = os.environ.get("JIRA_TOKEN", "")
 JIRA_BASE  = "https://g4educacao.atlassian.net/rest/api/3"
-PROJECT    = "CREAT"
 
 def jira_headers():
     creds = base64.b64encode(f"{JIRA_EMAIL}:{JIRA_TOKEN}".encode()).decode()
     return {"Authorization": f"Basic {creds}", "Accept": "application/json", "Content-Type": "application/json"}
 
-# ── Designers ativos (nomes como aparecem no Jira) ────────────────────────────
-DESIGNERS = ["Flávia Lima", "Matheus Gonçalves", "Pedro Marcondes", "Nathalie Favacho"]
+# ── Designers por time ────────────────────────────────────────────────────────
+DESIGNERS_CREAT = ["Neemias Araujo do Amaral", "Flávia Lima", "Matheus Pio Nunes Gonçalves", "Vitor Santos Serodeo", "Pedro Marcondes"]
+DESIGNERS_RED   = ["Juliana Cespedes", "t.fonseca", "Sarah Vitorio", "Marcella Mancinelli"]
 
 # Campos Jira → mapa de tipo de demanda via labels
 STATUS_ATRASAVEIS = {"Enviada", "Na fila", "Em produção", "Revisão", "Alteração"}
@@ -31,13 +31,13 @@ STATUS_FINALIZADO = {"Finalizado"}
 STATUS_CANCELADO  = {"Cancelado"}
 
 # ── Buscar issues do Jira ─────────────────────────────────────────────────────
-def fetch_all_issues():
+def fetch_all_issues(project):
     issues = []
     fields = ["summary", "status", "assignee", "duedate", "labels", "customfield_10125", "created", "resolutiondate", "issuetype"]
     next_token = None
     while True:
         body = {
-            "jql": f"project = {PROJECT} AND created >= '2026-01-01' ORDER BY created DESC",
+            "jql": f"project = {project} AND created >= '2026-01-01' ORDER BY created DESC",
             "maxResults": 100,
             "fields": fields
         }
@@ -97,7 +97,7 @@ def parse(issue):
     }
 
 # ── Construir summary ─────────────────────────────────────────────────────────
-def build_summary(rows):
+def build_summary(rows, designers):
     hoje   = date.today().isoformat()
     total  = len(rows)
 
@@ -128,7 +128,7 @@ def build_summary(rows):
         }
 
     designers_data = {}
-    for designer in DESIGNERS:
+    for designer in designers:
         dm   = [r for r in rows if r["designer"] == designer]
         da   = [r for r in dm if r["atrasado"]]
         df   = [r for r in dm if r["status"] in STATUS_FINALIZADO]
@@ -217,16 +217,25 @@ def main():
     base = "." if os.path.exists("index.html") else script_dir
     index_path = os.path.join(base, "index.html")
 
-    print(f"\nBuscando dados do JIRA (projeto {PROJECT})...")
-    issues = fetch_all_issues()
-    print(f"  {len(issues)} issues encontradas")
+    # ── CREAT ──
+    print(f"\nBuscando dados do JIRA (projeto CREAT)...")
+    issues_creat = fetch_all_issues("CREAT")
+    print(f"  {len(issues_creat)} issues encontradas")
+    rows_creat = [parse(i) for i in issues_creat]
+    summary_creat = build_summary(rows_creat, DESIGNERS_CREAT)
+    inject_and_save(summary_creat, "creat", index_path, os.path.join(base, "data_creat.json"))
+    print(f"  CREAT: {summary_creat['total']} demandas | {summary_creat['atrasados']} atrasadas | {summary_creat['finalizados']} finalizadas")
 
-    rows = [parse(i) for i in issues]
+    # ── RED ──
+    print(f"\nBuscando dados do JIRA (projeto RED)...")
+    issues_red = fetch_all_issues("RED")
+    print(f"  {len(issues_red)} issues encontradas")
+    rows_red = [parse(i) for i in issues_red]
+    summary_red = build_summary(rows_red, DESIGNERS_RED)
+    inject_and_save(summary_red, "red", index_path, os.path.join(base, "data_red.json"))
+    print(f"  RED: {summary_red['total']} demandas | {summary_red['atrasados']} atrasadas | {summary_red['finalizados']} finalizadas")
 
-    summary = build_summary(rows)
-    inject_and_save(summary, "creat", index_path, os.path.join(base, "data_creat.json"))
-
-    print(f"\nConcluído: {summary['total']} demandas | {summary['atrasados']} atrasadas | {summary['finalizados']} finalizadas")
+    print(f"\nConcluído!")
 
 if __name__ == "__main__":
     main()
