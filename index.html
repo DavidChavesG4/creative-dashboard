@@ -195,7 +195,7 @@
 
 <nav>
   <button class="active" onclick="showPage('geral', this)">Visao Geral</button>
-  <button onclick="showPage('designers', this)">Por Designer</button>
+  <button id="btn-nav-designers" onclick="showPage('designers', this)">Por Designer</button>
   <button onclick="showPage('areas', this)">Por Area</button>
   <button onclick="showPage('atrasos', this)">Atrasos</button>
   <button onclick="showPage('metricas', this)">Metricas</button>
@@ -271,10 +271,14 @@ function showPage(id, btn) {
 }
 
 function switchTeam(team) {
+  // Atualiza label do botao de navegacao
+  const btnDesigners = document.querySelector('nav button[onclick="showPage(\x27designers\x27, this)"]');
   currentTeam = team;
   document.getElementById('btn-creat').className = team === 'creat' ? 'btn-creat-active' : '';
   document.getElementById('btn-red').className   = team === 'red'   ? 'btn-red-active'   : '';
   document.documentElement.style.setProperty('--accent', team === 'creat' ? '#5b8af5' : '#f44b6e');
+  const btnND = document.getElementById('btn-nav-designers');
+  if (btnND) btnND.textContent = team === 'red' ? 'Por Redator' : 'Por Designer';
   currentMes = 'todos';
   buildMesToggle();
   renderAll();
