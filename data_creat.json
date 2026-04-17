@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-04-14",
+  "gerado_em": "2026-04-17",
   "meses": [
     "2026-04",
     "2026-03",
@@ -7,50 +7,59 @@
   ],
   "por_mes": {
     "2026-04": {
-      "total": 89,
-      "atrasados": 3,
-      "finalizados": 23,
-      "cancelados": 6,
+      "total": 106,
+      "atrasados": 17,
+      "finalizados": 31,
+      "cancelados": 11,
       "fora_sla": 0,
-      "taxa_atraso": 3.4,
+      "freelancer": 23,
+      "taxa_atraso": 16.0,
       "status_counts": {
-        "Revisão": 29,
-        "Finalizado": 23,
-        "Na fila": 11,
-        "Enviada": 9,
-        "Cancelado": 6,
-        "Aprovação pendente": 5,
-        "Em produção": 5,
-        "Alteração": 1
+        "Na fila": 31,
+        "Finalizado": 31,
+        "Em produção": 16,
+        "Aprovação pendente": 13,
+        "Cancelado": 11,
+        "Enviada": 4
       },
       "tipo_counts": {
-        "Sem categoria": 66,
-        "IMPRESSO": 9,
+        "Sem categoria": 57,
+        "FREELANCER": 17,
+        "IMPRESSO": 15,
         "G4PBCURITIBA": 8,
-        "Freelancer": 6
+        "Freelancer": 6,
+        "DIGITAL": 2,
+        "Social_Media": 1
       },
       "area_counts": {
-        "Eventos": 8,
-        "G4 Scale": 1,
-        "Programas de Capacitação": 1
+        "Eventos": 24,
+        "Programa de Gestão": 3,
+        "eventos": 1,
+        "Brand Performance": 1,
+        "Paid Performance": 1,
+        "G4CLASS17": 1,
+        "Corporativo": 1,
+        "G4 Scale": 1
       },
-      "area_atrasados": {}
+      "area_atrasados": {
+        "Eventos": 14
+      }
     },
     "2026-03": {
       "total": 315,
-      "atrasados": 2,
-      "finalizados": 232,
-      "cancelados": 44,
+      "atrasados": 6,
+      "finalizados": 234,
+      "cancelados": 47,
       "fora_sla": 0,
-      "taxa_atraso": 0.6,
+      "freelancer": 62,
+      "taxa_atraso": 1.9,
       "status_counts": {
-        "Finalizado": 232,
-        "Cancelado": 44,
-        "Na fila": 25,
-        "Aprovação pendente": 9,
+        "Finalizado": 234,
+        "Cancelado": 47,
+        "Na fila": 23,
+        "Aprovação pendente": 8,
         "Alteração": 2,
-        "Em produção": 2,
-        "Revisão": 1
+        "Em produção": 1
       },
       "tipo_counts": {
         "Sem categoria": 136,
@@ -72,7 +81,10 @@
         "G4 SKILLS": 4,
         "Programa de Gestão": 4
       },
-      "area_atrasados": {}
+      "area_atrasados": {
+        "Programas de Capacitação": 2,
+        "Corporativo": 1
+      }
     },
     "2026-02": {
       "total": 7,
@@ -80,6 +92,7 @@
       "finalizados": 3,
       "cancelados": 4,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 0.0,
       "status_counts": {
         "Cancelado": 4,
@@ -100,55 +113,59 @@
       "area_atrasados": {}
     }
   },
-  "total": 411,
-  "atrasados": 5,
-  "cancelados": 54,
+  "total": 428,
+  "atrasados": 23,
+  "cancelados": 62,
   "fora_sla": 0,
-  "finalizados": 258,
-  "em_aprovacao": 14,
-  "taxa_atraso_geral": 1.2,
+  "finalizados": 268,
+  "em_aprovacao": 21,
+  "freelancer": 85,
+  "taxa_atraso_geral": 5.4,
   "status_counts": {
-    "Finalizado": 258,
-    "Cancelado": 54,
-    "Na fila": 36,
-    "Revisão": 30,
-    "Aprovação pendente": 14,
-    "Enviada": 9,
-    "Em produção": 7,
-    "Alteração": 3
+    "Finalizado": 268,
+    "Cancelado": 62,
+    "Na fila": 54,
+    "Aprovação pendente": 21,
+    "Em produção": 17,
+    "Enviada": 4,
+    "Alteração": 2
   },
   "tipo_counts": {
-    "Sem categoria": 204,
-    "IMPRESSO": 42,
+    "Sem categoria": 195,
+    "IMPRESSO": 48,
     "Apresentação": 34,
-    "DIGITAL": 29,
+    "DIGITAL": 31,
+    "FREELANCER": 29,
     "G4PBVIX": 15,
     "Freelancer": 13,
-    "FREELANCER": 12,
     "Aula": 12
   },
   "area_counts": {
+    "Eventos": 42,
     "EVENTOS": 29,
-    "Eventos": 26,
     "Programas de Capacitação": 22,
-    "Corporativo": 13,
-    "Brand Performance": 9,
+    "Corporativo": 14,
+    "Brand Performance": 10,
+    "Programa de Gestão": 7,
     "G4 SCALE": 5,
-    "G4 SKILLS": 4,
-    "Programa de Gestão": 4
+    "Paid Performance": 4
   },
-  "area_atrasados": {},
+  "area_atrasados": {
+    "Eventos": 14,
+    "Programas de Capacitação": 2,
+    "Corporativo": 1
+  },
   "designers": {
     "Neemias Araujo do Amaral": {
-      "total": 17,
-      "em_andamento": 3,
+      "total": 15,
+      "em_andamento": 1,
       "finalizadas": 13,
-      "atrasadas": 0,
+      "atrasadas": 1,
       "canceladas": 0,
       "fora_sla": 0,
-      "taxa_atraso": 0.0,
+      "taxa_atraso": 6.7,
       "tipos": {
-        "Sem categoria": 11,
+        "Sem categoria": 9,
         "DIGITAL": 3,
         "KV": 1,
         "IMPRESSO": 1,
@@ -161,44 +178,51 @@
       },
       "por_mes": {
         "2026-04": {
-          "total": 3,
+          "total": 1,
           "atrasadas": 0
         },
         "2026-03": {
           "total": 14,
-          "atrasadas": 0
+          "atrasadas": 1
         },
         "2026-02": {
           "total": 0,
           "atrasadas": 0
         }
       },
-      "demandas_atrasadas": []
+      "demandas_atrasadas": [
+        {
+          "titulo": "[2026-001114] [CORP][FOLHETO][PORTFOLIO]",
+          "prazo": "2026-04-15",
+          "status": "Em produção",
+          "area": "Corporativo"
+        }
+      ]
     },
     "Flávia Lima": {
-      "total": 92,
-      "em_andamento": 7,
-      "finalizadas": 82,
-      "atrasadas": 0,
-      "canceladas": 3,
+      "total": 103,
+      "em_andamento": 12,
+      "finalizadas": 89,
+      "atrasadas": 2,
+      "canceladas": 2,
       "fora_sla": 0,
-      "taxa_atraso": 0.0,
+      "taxa_atraso": 1.9,
       "tipos": {
-        "Sem categoria": 34,
-        "IMPRESSO": 33,
+        "Sem categoria": 40,
+        "IMPRESSO": 37,
+        "DIGITAL": 8,
         "G4PBVIX": 8,
-        "DIGITAL": 7,
         "CLASS17": 5
       },
       "areas": {
-        "Eventos": 17,
+        "Eventos": 20,
         "EVENTOS": 9,
-        "Corporativo": 7
+        "Corporativo": 8
       },
       "por_mes": {
         "2026-04": {
-          "total": 15,
-          "atrasadas": 0
+          "total": 26,
+          "atrasadas": 2
         },
         "2026-03": {
           "total": 77,
@@ -209,18 +233,31 @@
           "atrasadas": 0
         }
       },
-      "demandas_atrasadas": []
+      "demandas_atrasadas": [
+        {
+          "titulo": "[2026-001910] [EVENTOS&PP] [PRISMA] [TRACTION COMEMORATIVA]",
+          "prazo": "2026-04-16",
+          "status": "Em produção",
+          "area": "Eventos"
+        },
+        {
+          "titulo": "[2026-001909] [EVENTOS&PP] [CREDENCIAL] [TRACTION COMEMORATI",
+          "prazo": "2026-04-16",
+          "status": "Em produção",
+          "area": "Eventos"
+        }
+      ]
     },
     "Matheus Pio Nunes Gonçalves": {
-      "total": 35,
+      "total": 37,
       "em_andamento": 5,
       "finalizadas": 27,
       "atrasadas": 0,
-      "canceladas": 3,
+      "canceladas": 4,
       "fora_sla": 0,
       "taxa_atraso": 0.0,
       "tipos": {
-        "Sem categoria": 19,
+        "Sem categoria": 21,
         "Apresentação": 4,
         "DIGITAL": 3,
         "Apresentações": 3,
@@ -233,7 +270,7 @@
       },
       "por_mes": {
         "2026-04": {
-          "total": 6,
+          "total": 8,
           "atrasadas": 0
         },
         "2026-03": {
@@ -248,25 +285,27 @@
       "demandas_atrasadas": []
     },
     "Vitor Santos Serodeo": {
-      "total": 13,
-      "em_andamento": 3,
-      "finalizadas": 4,
-      "atrasadas": 0,
+      "total": 16,
+      "em_andamento": 5,
+      "finalizadas": 7,
+      "atrasadas": 1,
       "canceladas": 1,
       "fora_sla": 0,
-      "taxa_atraso": 0.0,
+      "taxa_atraso": 6.2,
       "tipos": {
-        "Sem categoria": 11,
-        "IMPRESSO": 2
+        "Sem categoria": 13,
+        "IMPRESSO": 2,
+        "DIGITAL": 1
       },
       "areas": {
+        "Paid Performance": 1,
         "Programas de Capacitação": 1,
         "G4 SKILLS": 1
       },
       "por_mes": {
         "2026-04": {
-          "total": 9,
-          "atrasadas": 0
+          "total": 12,
+          "atrasadas": 1
         },
         "2026-03": {
           "total": 4,
@@ -277,36 +316,43 @@
           "atrasadas": 0
         }
       },
-      "demandas_atrasadas": []
+      "demandas_atrasadas": [
+        {
+          "titulo": "[2026-001933] [Criação de Convite] [SCL] Criar um modelo de ",
+          "prazo": "2026-04-16",
+          "status": "Na fila",
+          "area": ""
+        }
+      ]
     },
     "Pedro Marcondes": {
-      "total": 34,
-      "em_andamento": 7,
+      "total": 42,
+      "em_andamento": 11,
       "finalizadas": 22,
-      "atrasadas": 2,
-      "canceladas": 1,
+      "atrasadas": 3,
+      "canceladas": 2,
       "fora_sla": 0,
-      "taxa_atraso": 5.9,
+      "taxa_atraso": 7.1,
       "tipos": {
-        "Sem categoria": 22,
+        "Sem categoria": 27,
         "DIGITAL": 5,
-        "CampEspíritoImperial": 2,
-        "G4PBVIX": 2,
-        "Apresentação": 1
+        "IMPRESSO": 2,
+        "Social_Media": 2,
+        "CampEspíritoImperial": 2
       },
       "areas": {
-        "Brand Performance": 2,
+        "Brand Performance": 3,
         "EVENTOS": 2,
         "G4 SKILLS": 2
       },
       "por_mes": {
         "2026-04": {
-          "total": 6,
+          "total": 14,
           "atrasadas": 0
         },
         "2026-03": {
           "total": 28,
-          "atrasadas": 2
+          "atrasadas": 3
         },
         "2026-02": {
           "total": 0,
@@ -324,6 +370,12 @@
           "titulo": "[2026-001498] G4 Valley: onde os heróis do Brasil são forjad",
           "prazo": "2026-04-07",
           "status": "Alteração",
+          "area": ""
+        },
+        {
+          "titulo": "[2026-001568] [PP] [IMPRESSO] [CADERNO DO ALUNO - GDP]",
+          "prazo": "2026-04-16",
+          "status": "Na fila",
           "area": ""
         }
       ]

@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-04-14",
+  "gerado_em": "2026-04-17",
   "meses": [
     "2026-04",
     "2026-03"
@@ -11,6 +11,7 @@
       "finalizados": 0,
       "cancelados": 0,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 16.7,
       "status_counts": {
         "Analisar": 3,
@@ -28,6 +29,7 @@
       "finalizados": 9,
       "cancelados": 22,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 14.0,
       "status_counts": {
         "Cancelado": 22,
@@ -49,6 +51,7 @@
   "fora_sla": 0,
   "finalizados": 9,
   "em_aprovacao": 0,
+  "freelancer": 0,
   "taxa_atraso_geral": 14.3,
   "status_counts": {
     "Cancelado": 22,
