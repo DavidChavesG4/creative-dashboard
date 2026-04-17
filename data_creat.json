@@ -158,6 +158,78 @@
         "IMPRESSO": 1,
         "G4_TRACTION": 1
       },
+      "tipos_detalhes": {
+        "Sem categoria": [
+          {
+            "titulo": "[2026-001961] CARTA DE BOAS VINDAS - FLG - CARTA DE BOAS VIN",
+            "key": "CREAT-405"
+          },
+          {
+            "titulo": "[2026-001670] [G4 ARENA] - BANNERS E ÍCONE",
+            "key": "CREAT-323"
+          },
+          {
+            "titulo": "[2026-001543] CAPA REELS + CENAS BRASIL QUE PODERIA TER SIDO",
+            "key": "CREAT-273"
+          },
+          {
+            "titulo": "[2026-001323] [Brand performance] [Evelyn Moura] [Pink Cheek",
+            "key": "CREAT-204"
+          },
+          {
+            "titulo": "[2026-001226] [KV][GESTAO][G4 ARENA]",
+            "key": "CREAT-183"
+          },
+          {
+            "titulo": "[2026-001162] [PODCAST] [CAPA YOUTUBE E SPOTIFY]",
+            "key": "CREAT-167"
+          },
+          {
+            "titulo": "[2026-001113] TROFÉU DE TÊNIS G4 CLUB",
+            "key": "CREAT-139"
+          },
+          {
+            "titulo": "[2026-001110] MEDALHA ESPORTES G4 CLUB",
+            "key": "CREAT-138"
+          },
+          {
+            "titulo": "[2026-001101] [SCALE] [HIGOR TORCHIA] EXECUÇÃO COMERCIAL",
+            "key": "CREAT-135"
+          }
+        ],
+        "DIGITAL": [
+          {
+            "titulo": "[2026-001447] [DIGITAL][MARKETING][OHH - DOC ESPÍRITO IMPERI",
+            "key": "CREAT-249"
+          },
+          {
+            "titulo": "[2026-001249] [DIGITAL][CORPORATIVO][CRIAÇÃO DO KV FILME - A",
+            "key": "CREAT-191"
+          },
+          {
+            "titulo": "[2026-001160] [THUMBS] [PODCAST]",
+            "key": "CREAT-166"
+          }
+        ],
+        "KV": [
+          {
+            "titulo": "[2026-001116] [DIGITAL][MARCA&COM][KEV-G4NEXT]",
+            "key": "CREAT-142"
+          }
+        ],
+        "IMPRESSO": [
+          {
+            "titulo": "[2026-001114] [CORP][FOLHETO][PORTFOLIO]",
+            "key": "CREAT-140"
+          }
+        ],
+        "G4_TRACTION": [
+          {
+            "titulo": "[2026-000750] [DIGITAL][CORPORATIVO] Imagem Alfredo KV Tract",
+            "key": "CREAT-71"
+          }
+        ]
+      },
       "areas": {
         "Marketing": 1,
         "CORPORATIVO": 1,
@@ -192,6 +264,262 @@
         "DIGITAL": 8,
         "G4PBVIX": 8,
         "CLASS17": 5
+      },
+      "tipos_detalhes": {
+        "Sem categoria": [
+          {
+            "titulo": "[2026-002068] [EVENTOS][CANETA][CTO-CONFERENCE]",
+            "key": "CREAT-429"
+          },
+          {
+            "titulo": "[2026-002048] [EVENTOS][BLOCO-A5][CTO-CONFERENCE]",
+            "key": "CREAT-425"
+          },
+          {
+            "titulo": "[2026-002047] [EVENTOS][CREDENCIAL][CTO-CONFERENCE]",
+            "key": "CREAT-424"
+          },
+          {
+            "titulo": "[2026-002046] [EVENTOS][CORDÃO][CTO-CONFERENCE]",
+            "key": "CREAT-423"
+          },
+          {
+            "titulo": "[2026-001996] [MKK][IMPRESSO][O JORNAL DO FUTURO]",
+            "key": "CREAT-410"
+          },
+          {
+            "titulo": "[2026-001951] [EVENTOS] [IMPRESSOS] [CORDÃO NOVO MEMBRO - CL",
+            "key": "CREAT-402"
+          },
+          {
+            "titulo": "[2026-001913] [EVENTOS&PP] [NOTICIA DE JORNAL][TRACTIONCOMEM",
+            "key": "CREAT-388"
+          },
+          {
+            "titulo": "[2026-001912] [EVENTOS&PP] [GARRAFA] [TRACTION COMEMORATIVA]",
+            "key": "CREAT-387"
+          },
+          {
+            "titulo": "[2026-001836] [VINHETAS MENTORES] [CLASS]",
+            "key": "CREAT-375"
+          },
+          {
+            "titulo": "[2026-001825] [Brand performance] [Evelyn Moura] [G4PB CWB]",
+            "key": "CREAT-370"
+          },
+          {
+            "titulo": "[2026-001816] [G4 CLUB] [BOTTON] [BOTTON CELÍACO] ",
+            "key": "CREAT-367"
+          },
+          {
+            "titulo": "[2026-001742] Ativação G4 Consulting - Expansão e Retenção",
+            "key": "CREAT-338"
+          },
+          {
+            "titulo": "[2026-001689] [EVENTOS PARCERIAS E PATROCINIOS] [IMPRESSO] [",
+            "key": "CREAT-328"
+          },
+          {
+            "titulo": "[2026-001675] [CREATIVE][IMPRESSO][PLAYBOOK MATERIAL IMPRESS",
+            "key": "CREAT-325"
+          },
+          {
+            "titulo": "[2026-001666] [EVENTOS&PP] [TRACTION COMEMORATIVA] [INSIGNA]",
+            "key": "CREAT-321"
+          },
+          {
+            "titulo": "[2026-001646] Placa para a House ",
+            "key": "CREAT-306"
+          },
+          {
+            "titulo": "[2026-001641] [CLUB][G4 ESPORTES 07][CAMISA DE FUTEBOL]",
+            "key": "CREAT-304"
+          },
+          {
+            "titulo": "[2026-001628] [EVENTOS][IMPRESSO][PLACA NOVOS EAGLES CLASS 1",
+            "key": "CREAT-299"
+          },
+          {
+            "titulo": "[2026-001626] [DIGITAL][CREATIVE][TELA EMPREGOMETRO]",
+            "key": "CREAT-298"
+          },
+          {
+            "titulo": "[2026-001604] Carta de Boas Vindas",
+            "key": "CREAT-296"
+          }
+        ],
+        "IMPRESSO": [
+          {
+            "titulo": "[2026-001991] [EVENTOS] [IMPRESSOS] [QR CODE FOTOS CLASS 17]",
+            "key": "CREAT-409"
+          },
+          {
+            "titulo": "[2026-001911] [EVENTOS&PP] [CORDÃO CREDENCIAL] [TRACTION COM",
+            "key": "CREAT-386"
+          },
+          {
+            "titulo": "[2026-001910] [EVENTOS&PP] [PRISMA] [TRACTION COMEMORATIVA]",
+            "key": "CREAT-385"
+          },
+          {
+            "titulo": "[2026-001909] [EVENTOS&PP] [CREDENCIAL] [TRACTION COMEMORATI",
+            "key": "CREAT-384"
+          },
+          {
+            "titulo": "[2026-001899] [EVENTOS] [IMPRESSOS] [G4 MENTOR - BLOQUINHO] ",
+            "key": "CREAT-383"
+          },
+          {
+            "titulo": "[2026-001898] [EVENTOS] [IMPRESSOS] [G4 MENTOR - PRISMA]",
+            "key": "CREAT-382"
+          },
+          {
+            "titulo": "[2026-001897] [EVENTOS] [IMPRESSOS][G4 MENTOR - LOGO PARA CA",
+            "key": "CREAT-381"
+          },
+          {
+            "titulo": "[2026-001896] [EVENTOS] [IMPRESSOS] [G4 MENTOR - CREDENCIAL]",
+            "key": "CREAT-380"
+          },
+          {
+            "titulo": "[2026-001894] [EVENTOS] [IMPRESSOS] [G4 MENTOR - CORDÃO] ",
+            "key": "CREAT-379"
+          },
+          {
+            "titulo": "[2026-001715] [EVENTOS&PP] [TRACTION COMEMORATIVA] [PLACA EN",
+            "key": "CREAT-335"
+          },
+          {
+            "titulo": "[2026-001713] [EVENTOS&PP] [TRACTION COMEMORATIVA] [CAIXA EN",
+            "key": "CREAT-333"
+          },
+          {
+            "titulo": "[2026-001016] [G4 SCALE][IMPRESSO][PULSEIRAS G4 SCALE]",
+            "key": "CREAT-127"
+          },
+          {
+            "titulo": "[2026-000959] [EVENTOS PARCERIAS E PATROCÍNIOS] [IMPRESSO] [",
+            "key": "CREAT-117"
+          },
+          {
+            "titulo": "[2026-000957] [EVENTOS PARCERIAS E PATROCÍNIOS] [ IMPRESSO] ",
+            "key": "CREAT-116"
+          },
+          {
+            "titulo": "[2026-000896] REVISÃO BLOCO DE ANOTAÇÃO G4 CLUB",
+            "key": "CREAT-104"
+          },
+          {
+            "titulo": "[2026-000862] [EVENTOS-CLUB][IMPRESSO-EM-LONA][FLÂMULAS]",
+            "key": "CREAT-99"
+          },
+          {
+            "titulo": "[2026-000851] [G4 CLUB] [IMPRESSOS] [MODELO DE CARTA]",
+            "key": "CREAT-92"
+          },
+          {
+            "titulo": "[2026-000688] [FACILITIES][IMPRESSOS][PLACASVASOSSANITÁRIOS]",
+            "key": "CREAT-29"
+          },
+          {
+            "titulo": "[2026-000687] [FACILITIES][IMPRESSOS][PLACASDEUSO]",
+            "key": "CREAT-28"
+          },
+          {
+            "titulo": "[2026-000686] [FACILITIES][IMPRESSOS[PLACASDESINALIZAÇÃODELI",
+            "key": "CREAT-27"
+          }
+        ],
+        "DIGITAL": [
+          {
+            "titulo": "[2026-001978] Assinatura de email padrão",
+            "key": "CREAT-408"
+          },
+          {
+            "titulo": "[2026-001018] [DIGITAL] [PP] [COMBO ESPECIAL PÓS-TRACTION]",
+            "key": "CREAT-128"
+          },
+          {
+            "titulo": "[2026-000978] [Convite Padrão Open Company] Scale",
+            "key": "CREAT-126"
+          },
+          {
+            "titulo": "[2026-000937] [WHATSAPP][PG][CAPAS DE GRUPOS]",
+            "key": "CREAT-112"
+          },
+          {
+            "titulo": "[2026-000873] [Convite][SCL] Criar um convite editável padrã",
+            "key": "CREAT-101"
+          },
+          {
+            "titulo": "[2026-000861] [CAPAS][GRUPOS DE WHATSAPP - TURMAS]",
+            "key": "CREAT-97"
+          },
+          {
+            "titulo": "[2026-000835] [DIGITAL][G4CLUB] [Certificado Treinamento de ",
+            "key": "CREAT-91"
+          },
+          {
+            "titulo": "[2026-000693] [DIGITAL][ONLINE] Alteração do KV de SKILLS CO",
+            "key": "CREAT-33"
+          }
+        ],
+        "G4PBVIX": [
+          {
+            "titulo": "[2026-001140] [EVENTOS G4PB VIX][IMPRESSOS][FLÂMULAS DE COMU",
+            "key": "CREAT-155"
+          },
+          {
+            "titulo": "[2026-001138] [EVENTOS G4PB VIX][IMPRESSOS][BACKDROP CREDENC",
+            "key": "CREAT-153"
+          },
+          {
+            "titulo": "[2026-001136] [EVENTOS G4PB VIX][IMPRESSOS][BACKDROP CREDENC",
+            "key": "CREAT-151"
+          },
+          {
+            "titulo": "[2026-001135] [EVENTOS G4PB VIX][IMPRESSOS][BALCÃO PARA VEND",
+            "key": "CREAT-150"
+          },
+          {
+            "titulo": "[2026-001132] [EVENTOS G4PB VIX][IMPRESSOS][PLOTAGEM DE COLU",
+            "key": "CREAT-148"
+          },
+          {
+            "titulo": "[2026-001131] [EVENTOS G4PB VIX][IMPRESSOS][LETRA CAIXA G4 E",
+            "key": "CREAT-147"
+          },
+          {
+            "titulo": "[2026-001128] [EVENTOS G4PB VIX][IMPRESSOS][PÓRTICO DE ENTRA",
+            "key": "CREAT-145"
+          },
+          {
+            "titulo": "[2026-000853] [EVENTOS] [IMPRESSO] [CREDENCIAL COMUM G4PB VI",
+            "key": "CREAT-94"
+          }
+        ],
+        "CLASS17": [
+          {
+            "titulo": "[2026-001087] [EVENTOS][Class 17][Caixa Press Kit]",
+            "key": "CREAT-134"
+          },
+          {
+            "titulo": "[2026-000714] [EVENTOS][IMPRESSO][CORDÃO CLASS 17]",
+            "key": "CREAT-49"
+          },
+          {
+            "titulo": "[2026-000713] [EVENTOS][IMPRESSO][MENU IMPRESSO CLASS 17]",
+            "key": "CREAT-48"
+          },
+          {
+            "titulo": "[2026-000713] [EVENTOS][IMPRESSO][TRÍADE DE MESA CLASS 17]",
+            "key": "CREAT-47"
+          },
+          {
+            "titulo": "[2026-000712] [EVENTOS][IMPRESSO][CREDENCIAL CLASS 17]",
+            "key": "CREAT-45"
+          }
+        ]
       },
       "areas": {
         "Eventos": 20,
@@ -228,6 +556,146 @@
         "Apresentações": 3,
         "IMPRESSO": 2
       },
+      "tipos_detalhes": {
+        "Sem categoria": [
+          {
+            "titulo": "[2026-001975][EVENTOS][IMPRESSOS][CARTA ANIVERSARIANTES - CL",
+            "key": "CREAT-406"
+          },
+          {
+            "titulo": "[2026-001833] Refação de artes para Cardoso_ produto Gestão ",
+            "key": "CREAT-373"
+          },
+          {
+            "titulo": "[2026-001804] [CLUB][TRILHA 12][ARTE TUNEL DE LED]",
+            "key": "CREAT-364"
+          },
+          {
+            "titulo": "[2026-001802] [corporativo][impresso][placa para copa]",
+            "key": "CREAT-363"
+          },
+          {
+            "titulo": "[2026-001745] Novo KV CONVERSÃO DE DEMANDA - MANOEL GONÇALVE",
+            "key": "CREAT-341"
+          },
+          {
+            "titulo": "[2026-001682] [SPRINTS][CAMILLA][LAYOUTS]",
+            "key": "CREAT-327"
+          },
+          {
+            "titulo": "[2026-001677] [ONLINE][KV] Skills Conference - [KV] [SKILLS ",
+            "key": "CREAT-326"
+          },
+          {
+            "titulo": "[2026-001650] [G4 CLUB][CLASS17][BOTTON] [BOTTON AIVERSARIAN",
+            "key": "CREAT-308"
+          },
+          {
+            "titulo": "[2026-001648] Sprints_Ariane_Cultura",
+            "key": "CREAT-307"
+          },
+          {
+            "titulo": "[2026-001645] [EVENTOS][APRESENTAÇÃO][TEMPLATE G4PB CURITIBA",
+            "key": "CREAT-305"
+          },
+          {
+            "titulo": "[2026-001635] [BRAND PERFORMANCE][SOCIAL MEDIA] [INSTAGRAM][",
+            "key": "CREAT-301"
+          },
+          {
+            "titulo": "[2026-001595] Mockup de celular com o instagram do G4",
+            "key": "CREAT-295"
+          },
+          {
+            "titulo": "[2026-001537] [EVENTOS][IMPRESSO][TRIADE DE MESA REGIÕES BR]",
+            "key": "CREAT-270"
+          },
+          {
+            "titulo": "[2026-001322] Adequação ao novo KV do (mobile) Deck de venda",
+            "key": "CREAT-203"
+          },
+          {
+            "titulo": "[2026-001321] Adequação de KV - Deck de Traction Mobile",
+            "key": "CREAT-202"
+          },
+          {
+            "titulo": "[2026-001255] [CORPORATIVO][TEMPLATE][G4PB]",
+            "key": "CREAT-192"
+          },
+          {
+            "titulo": "[2026-001212] [PP][G4 MG][DECKDEVENDAS]",
+            "key": "CREAT-180"
+          },
+          {
+            "titulo": "[2026-001161] [POST CONVITE] [PODCAST]",
+            "key": "CREAT-168"
+          },
+          {
+            "titulo": "[2026-001150] [REABAERTURA DE DEMANDA] [SCALE] [CADERNO] [TE",
+            "key": "CREAT-163"
+          },
+          {
+            "titulo": "[2026-001145] (CLUB(CLASS 17)(CARTA PRESS KIT)",
+            "key": "CREAT-160"
+          }
+        ],
+        "Apresentação": [
+          {
+            "titulo": "[2026-001482] [PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]",
+            "key": "CREAT-258"
+          },
+          {
+            "titulo": "[2026-001154] [MX] / [TALLIS] / [KICKOFF MENTORES]",
+            "key": "CREAT-164"
+          },
+          {
+            "titulo": "[2026-001125] [EVENTOS][TEMPLATE G4 PB VIX]",
+            "key": "CREAT-144"
+          },
+          {
+            "titulo": "[2026-000821] [CORPORATIVO][FOTO_ARTE_NOVO_ASSOCIATE][G4_EXP",
+            "key": "CREAT-87"
+          }
+        ],
+        "DIGITAL": [
+          {
+            "titulo": "[2026-001614] MARKETING | SOCIAL | G4 MENTOR |",
+            "key": "CREAT-297"
+          },
+          {
+            "titulo": "[2026-001419] [Brand performance] [Evelyn Moura] [BYD]",
+            "key": "CREAT-239"
+          },
+          {
+            "titulo": "[2026-001215] KV Geração G4",
+            "key": "CREAT-181"
+          }
+        ],
+        "Apresentações": [
+          {
+            "titulo": "AULA | G4PBVIX - Alfredo - Pitch → Advisor",
+            "key": "CREAT-214"
+          },
+          {
+            "titulo": "AULA | G4PBVIX - Painel: Misa + Ricardo Ferraço e o Fernando",
+            "key": "CREAT-212"
+          },
+          {
+            "titulo": "AULA | G4PBVIX - Alfredo - Mentoria coletiva no palco",
+            "key": "CREAT-211"
+          }
+        ],
+        "IMPRESSO": [
+          {
+            "titulo": "[2026-001760] [SCALE] CARTA DE BOAS VINDAS",
+            "key": "CREAT-347"
+          },
+          {
+            "titulo": "[2026-001570] [PP] [IMPRESSO] [FOLHA DE EXERCÍCIO - GDP]",
+            "key": "CREAT-290"
+          }
+        ]
+      },
       "areas": {
         "Brand Performance": 4,
         "Eventos": 2,
@@ -260,6 +728,78 @@
         "Sem categoria": 13,
         "IMPRESSO": 2,
         "DIGITAL": 1
+      },
+      "tipos_detalhes": {
+        "Sem categoria": [
+          {
+            "titulo": "[2026-002021] [KV][ANIVERSÁRIO G4]",
+            "key": "CREAT-417"
+          },
+          {
+            "titulo": "[2026-001958] [ADS][FG4 VITALÍCIO]",
+            "key": "CREAT-403"
+          },
+          {
+            "titulo": "[2026-001933] [Criação de Convite] [SCL] Criar um modelo de ",
+            "key": "CREAT-401"
+          },
+          {
+            "titulo": "[2026-001881] [CERTIFICADO JOURNEY]",
+            "key": "CREAT-378"
+          },
+          {
+            "titulo": "[2026-001863] DEMANDA TESTE",
+            "key": "CREAT-376"
+          },
+          {
+            "titulo": "[2026-001830] [BANNER][ABRIL][ECOMEMRCE] - 4 Banners",
+            "key": "CREAT-372"
+          },
+          {
+            "titulo": "[2026-001795] [HEADER][EMAIL MKT][RELANÇAMENTO DE FG4] - 8 H",
+            "key": "CREAT-362"
+          },
+          {
+            "titulo": "[2026-001714] [EVENTOS&PP] [TRACTION COMEMORATIVA] [BLOCO DE",
+            "key": "CREAT-334"
+          },
+          {
+            "titulo": "[2026-001711]  Cards Mentores",
+            "key": "CREAT-332"
+          },
+          {
+            "titulo": "[2026-001706] [DIGITAL] BU Online | Thumb Novo Formação G4",
+            "key": "CREAT-331"
+          },
+          {
+            "titulo": "[2026-001667] [PG][DECK DE VENDAS][FOUNDER LED GROWTH]",
+            "key": "CREAT-322"
+          },
+          {
+            "titulo": "[2026-001640] [CLUB][CLASS 17][CARTA WELCOME KIT]",
+            "key": "CREAT-303"
+          },
+          {
+            "titulo": "[2026-001548] IMAGEM DE DESCANSO PARA TURMAS PRESENCIAIS - D",
+            "key": "CREAT-278"
+          }
+        ],
+        "IMPRESSO": [
+          {
+            "titulo": "[2026-001757] [PP][caderno impresso][Caderno_do_aluno]",
+            "key": "CREAT-346"
+          },
+          {
+            "titulo": "[2026-001592] [ONLINE][IMPRESSO][FLYER] FLYER DO SKILLS no K",
+            "key": "CREAT-293"
+          }
+        ],
+        "DIGITAL": [
+          {
+            "titulo": "[2026-002022] [ADS][CATALOGO][META ADS] - Ajuste em alguns c",
+            "key": "CREAT-418"
+          }
+        ]
       },
       "areas": {
         "Paid Performance": 1,
@@ -295,6 +835,142 @@
         "IMPRESSO": 2,
         "Social_Media": 2,
         "CampEspíritoImperial": 2
+      },
+      "tipos_detalhes": {
+        "Sem categoria": [
+          {
+            "titulo": "[2026-002023] [Ebook] Líderes que transformam: Quem constrói",
+            "key": "CREAT-419"
+          },
+          {
+            "titulo": "[2026-001977] [DIGITAL][TOOLS][VTEXDAY]",
+            "key": "CREAT-407"
+          },
+          {
+            "titulo": "[2026-001959] [ADS][FG4 POR 30 DIAS][R$897 ou 12x de 74,65] ",
+            "key": "CREAT-404"
+          },
+          {
+            "titulo": "[2026-001877] [ADS][FG4][NOVAS VARIAÇÕES] - 10 Estáticos: No",
+            "key": "CREAT-377"
+          },
+          {
+            "titulo": "[2026-001834] [EVENTOS][CLASS17][TEMPLATE DE AULAS]",
+            "key": "CREAT-374"
+          },
+          {
+            "titulo": "[2026-001826] [FEED][WHATSAPP][RELANÇAMENTO DE FG4] - 8 What",
+            "key": "CREAT-371"
+          },
+          {
+            "titulo": "[2026-001824] [CLUB][CLASS 17][PPT APRESENTAÇÃO]",
+            "key": "CREAT-369"
+          },
+          {
+            "titulo": "[2026-001808] [TOOLS][SOCIAL MEDIA][PODCAST] - [DIGITAL][TOO",
+            "key": "CREAT-366"
+          },
+          {
+            "titulo": "[2026-001770] FLG T2 | BG -  ADAPTAÇÃO E CRIAÇÃO DE PEÇA PAR",
+            "key": "CREAT-351"
+          },
+          {
+            "titulo": "[2026-001722] [DIGITAL][CREATIVE][PACK DE IMAGENS - MENTORES",
+            "key": "CREAT-337"
+          },
+          {
+            "titulo": "[2026-001696] [G4][CAMILLA][MIDIA DE CORTES]",
+            "key": "CREAT-329"
+          },
+          {
+            "titulo": "[2026-001582] [Enxoval][Flow][Inteligência]",
+            "key": "CREAT-292"
+          },
+          {
+            "titulo": "[2026-001568] [PP] [IMPRESSO] [CADERNO DO ALUNO - GDP]",
+            "key": "CREAT-288"
+          },
+          {
+            "titulo": "[2026-001562] Traction Comemorativa - TEMPLATE de aulas",
+            "key": "CREAT-283"
+          },
+          {
+            "titulo": "[2026-001544] PESQUISA PERCEPÇÃO DE MARCA (HEADER PARA EMAIL",
+            "key": "CREAT-274"
+          },
+          {
+            "titulo": "[2026-001542] REVISÃO LP - A VERDADE",
+            "key": "CREAT-272"
+          },
+          {
+            "titulo": "[2026-001499] Líderes que transformam: Quem constrói o Brasi",
+            "key": "CREAT-264"
+          },
+          {
+            "titulo": "[2026-001498] G4 Valley: onde os heróis do Brasil são forjad",
+            "key": "CREAT-263"
+          },
+          {
+            "titulo": "[2026-001400] [Brand performance] [Evelyn Moura] [Frameworks",
+            "key": "CREAT-237"
+          },
+          {
+            "titulo": "[2026-001389] É HOJE",
+            "key": "CREAT-236"
+          }
+        ],
+        "DIGITAL": [
+          {
+            "titulo": "[2026-001636] Relatório Diagnóstico Tools",
+            "key": "CREAT-302"
+          },
+          {
+            "titulo": "[2026-001440] [Brand performance] [Evelyn Moura] [G4PB Vitór",
+            "key": "CREAT-248"
+          },
+          {
+            "titulo": "[2026-001171] [Qr Code][Podcast Flow]",
+            "key": "CREAT-173"
+          },
+          {
+            "titulo": "[2026-000862] [DIGITAL][CORPORATIVO-TECH][BANNER PARA AULA A",
+            "key": "CREAT-98"
+          },
+          {
+            "titulo": "[2026-000692] [SKL][Aquisição] Header Email",
+            "key": "CREAT-32"
+          }
+        ],
+        "IMPRESSO": [
+          {
+            "titulo": "[2026-002067] [EVENTOS][FICHA-DE-PALCO][CTO-CONFERENCE]",
+            "key": "CREAT-428"
+          },
+          {
+            "titulo": "[2026-002066] [EVENTOS][BACKDROP][CTO-CONFERENCE]",
+            "key": "CREAT-427"
+          }
+        ],
+        "Social_Media": [
+          {
+            "titulo": "[2026-002065] [MKT][SOCIAL MEDIA] [CARROSSEL HARVARD BUSINES",
+            "key": "CREAT-426"
+          },
+          {
+            "titulo": "[2026-001059] [Brand Performance] [Evelyn Moura] [Eskimó Sor",
+            "key": "CREAT-130"
+          }
+        ],
+        "CampEspíritoImperial": [
+          {
+            "titulo": "[2026-001546] DESTAQUE  (FEED E STORY) CAMPANHA ESPIRITO IMP",
+            "key": "CREAT-276"
+          },
+          {
+            "titulo": "[2026-001333] [BRANDING] [SOCIAL MEDIA] [Quem foi Barão de M",
+            "key": "CREAT-205"
+          }
+        ]
       },
       "areas": {
         "Brand Performance": 3,
@@ -343,6 +1019,314 @@
         "G4CLASS17": 12,
         "G4PBCURITIBA": 12,
         "Aula": 10
+      },
+      "tipos_detalhes": {
+        "Apresentação": [
+          {
+            "titulo": "[2026-001564] Traction Comemorativa - Aula Cultura e Lideran",
+            "key": "CREAT-285"
+          },
+          {
+            "titulo": "[2026-001523] [BRAND PERFORMANCE] [G4] [STORIES AGENDA DOS P",
+            "key": "CREAT-269"
+          },
+          {
+            "titulo": "[2026-001483] [PP][PAGOTTO][MAQUINADEVENDAS]",
+            "key": "CREAT-259"
+          },
+          {
+            "titulo": "[2026-001481] [PP][MANOELGONÇALVEZ][GESTAODEOPORTUNIDADES]",
+            "key": "CREAT-257"
+          },
+          {
+            "titulo": "[2026-001480] [PP][THEOOROCOS][GESTAODEOPORTUNIDADE]",
+            "key": "CREAT-256"
+          },
+          {
+            "titulo": "[2026-001479] [PP][YAGOMARTINS][ARQUITETURADERECEITA]",
+            "key": "CREAT-255"
+          },
+          {
+            "titulo": "[2026-001478] [PP][ENCERRAMENTOSALES]",
+            "key": "CREAT-254"
+          },
+          {
+            "titulo": "[2026-001477] [PP][ABERTURADESALES]",
+            "key": "CREAT-253"
+          },
+          {
+            "titulo": "[2026-001358] [PP][JOAOMOTTA][GROWTH]",
+            "key": "CREAT-231"
+          },
+          {
+            "titulo": "[2026-001357] [PP][JULIANALOCH][ESTRATEGIASDECANALDEAQUISIÇÃ",
+            "key": "CREAT-230"
+          },
+          {
+            "titulo": "[2026-001356] [PP][MINEIRO][RETENÇÃO]",
+            "key": "CREAT-229"
+          },
+          {
+            "titulo": "[2026-001353] [PP][DENNISWANG]AULAAERADAEXPERIENCIADOCLIENTE",
+            "key": "CREAT-226"
+          },
+          {
+            "titulo": "[2026-001348] [PP][DOUGLASMEDEIROS][AULAGESTÃODECARTEIRA]",
+            "key": "CREAT-221"
+          },
+          {
+            "titulo": "[2026-001264] [PG][JOÃO VITOR][CONSTRUÇÃO DE CONTEÚDO COM AI",
+            "key": "CREAT-197"
+          },
+          {
+            "titulo": "[2026-001262] [PFG][ERICH SHIBATA][Autoridade e viralização]",
+            "key": "CREAT-195"
+          },
+          {
+            "titulo": "[2026-001261] [PG][ALFREDO SOARES][Autoridade, canais, conex",
+            "key": "CREAT-194"
+          },
+          {
+            "titulo": "[2026-001244] [PP] [MAURÍLIO NUNES] [GDP]",
+            "key": "CREAT-190"
+          },
+          {
+            "titulo": "[2026-001243] [PP][PAULA PIMENTA] [GDP]",
+            "key": "CREAT-189"
+          },
+          {
+            "titulo": "[2026-001242] [PP] [DAVID LEDSON] [GDP]",
+            "key": "CREAT-188"
+          },
+          {
+            "titulo": "[2026-001241] [PP] [CADU ALTONA] [GDP]",
+            "key": "CREAT-187"
+          }
+        ],
+        "Sem categoria": [
+          {
+            "titulo": "[2026-002008] Traction Comemorativa - Encerramento - Adequaç",
+            "key": "CREAT-416"
+          },
+          {
+            "titulo": "[2026-002007] Traction Comemorativa - Planejamento Estratégi",
+            "key": "CREAT-415"
+          },
+          {
+            "titulo": "[2026-002006] Traction Comemorativa - Tela de fundo para pai",
+            "key": "CREAT-414"
+          },
+          {
+            "titulo": "[2026-001997] Traction Comemorativa - Aula Vendas Estratégic",
+            "key": "CREAT-413"
+          },
+          {
+            "titulo": "[2026-002001] Traction Comemorativa - Planejamento Tático - ",
+            "key": "CREAT-412"
+          },
+          {
+            "titulo": "[2026-002000] Traction Comemorativa - Gestão financeira - At",
+            "key": "CREAT-411"
+          },
+          {
+            "titulo": "[2026-001778] G4PB CURITIBA | A Fábrica de Receita - Fernand",
+            "key": "CREAT-360"
+          },
+          {
+            "titulo": "[2026-001764] [PP][MG][ABERTURA]",
+            "key": "CREAT-348"
+          },
+          {
+            "titulo": "[2026-001751] PG - PROCESSOS E ROTINAS DE GESTÃO - RODRIGO M",
+            "key": "CREAT-345"
+          },
+          {
+            "titulo": "[2026-001750] PG - POSICIONAMENTO ESTRATÉGICO - MANOEL LINS",
+            "key": "CREAT-344"
+          },
+          {
+            "titulo": "[2026-001746] INSERIR NOVO kV DIRECIONAMENTO DO NEGÓCIO - AN",
+            "key": "CREAT-342"
+          },
+          {
+            "titulo": "[2026-001744] Novo KV no PPT de CANAIS DE AQUISIÇÃO - EMILIA",
+            "key": "CREAT-340"
+          },
+          {
+            "titulo": "[2026-001551] ISCA - REPORT INTELIGENCIA ESTRATEGICA",
+            "key": "CREAT-280"
+          },
+          {
+            "titulo": "[2026-001436] [MATERIAL RICO] [SEO] [REBRAND]",
+            "key": "CREAT-246"
+          },
+          {
+            "titulo": "[2026-001435]  [MATERIAL RICO] [SEO] [REBRAND]",
+            "key": "CREAT-245"
+          },
+          {
+            "titulo": "[2026-001434] [MATERIAL RICO] [SEO] [REBRAND]",
+            "key": "CREAT-244"
+          },
+          {
+            "titulo": "[2026-001433] [MATERIAL RICO] [SEO] [REBRAND]",
+            "key": "CREAT-243"
+          },
+          {
+            "titulo": "[2026-001432] [MATERIAL RICO] [SEO] [REBRAND]",
+            "key": "CREAT-242"
+          },
+          {
+            "titulo": "[2026-001431] [MATERIAL RICO] [SEO] [REBRAND]",
+            "key": "CREAT-241"
+          },
+          {
+            "titulo": "[2026-001146] [Expansão] Abertura do Jantar de Aceleração de",
+            "key": "CREAT-161"
+          }
+        ],
+        "G4CLASS17": [
+          {
+            "titulo": "[2026-001926] [CLASS17][IMPRESSO] Totem receptivo uma face",
+            "key": "CREAT-400"
+          },
+          {
+            "titulo": "[2026-001925] [CLASS17][IMPRESSO] Painel frente de palco dup",
+            "key": "CREAT-399"
+          },
+          {
+            "titulo": "[2026-001924] [CLASS17][IMPRESSO] Painel fundo de palco uma ",
+            "key": "CREAT-398"
+          },
+          {
+            "titulo": "[2026-001923]  [CLASS17][IMPRESSO] Paineis foyer com laterai",
+            "key": "CREAT-397"
+          },
+          {
+            "titulo": "[2026-001922] [CLASS17][IMPRESSO] Paineis foyer uma face com",
+            "key": "CREAT-396"
+          },
+          {
+            "titulo": "[2026-001921]  [CLASS17][IMPRESSO] Painel pórtico uma face c",
+            "key": "CREAT-395"
+          },
+          {
+            "titulo": "[2026-001920] [CLASS17][IMPRESSO] Painel fundo de palco uma ",
+            "key": "CREAT-394"
+          },
+          {
+            "titulo": "[2026-001919]  [CLASS17][IMPRESSO] Pórtico uma face com late",
+            "key": "CREAT-393"
+          },
+          {
+            "titulo": "[2026-001918] [CLASS17][IMPRESSO] Painel foto OPP 02 uma fac",
+            "key": "CREAT-392"
+          },
+          {
+            "titulo": "[2026-001916]  [CLASS17][IMPRESSO] Painel foto opp duplaface",
+            "key": "CREAT-391"
+          },
+          {
+            "titulo": "[2026-001915]  [CLASS17][IMPRESSO] Painel foto OPP 01",
+            "key": "CREAT-390"
+          },
+          {
+            "titulo": "[2026-001914]  [CLASS17][IMPRESSO] Painel receptivo",
+            "key": "CREAT-389"
+          }
+        ],
+        "G4PBCURITIBA": [
+          {
+            "titulo": "[2026-001664] G4PB Curitiba | Letreiro 3D",
+            "key": "CREAT-320"
+          },
+          {
+            "titulo": "[2026-001663] G4PB Curitiba | Sala VIP ",
+            "key": "CREAT-319"
+          },
+          {
+            "titulo": "[2026-001662] G4PB Curitiba | Foyer: Pórtico;",
+            "key": "CREAT-318"
+          },
+          {
+            "titulo": "[2026-001661] G4PB Curitiba | Balcão vendas",
+            "key": "CREAT-317"
+          },
+          {
+            "titulo": "[2026-001660] G4PB Curitiba | Ponto de  vendas",
+            "key": "CREAT-316"
+          },
+          {
+            "titulo": "[2026-001659] G4PB Curitiba | 2X Foto Point (frente e verso)",
+            "key": "CREAT-315"
+          },
+          {
+            "titulo": "[2026-001658] G4PB Curitiba | Ativação G4",
+            "key": "CREAT-314"
+          },
+          {
+            "titulo": "[2026-001655] G4PB Curitiba | Balcão credenciamento FRENTE ;",
+            "key": "CREAT-313"
+          },
+          {
+            "titulo": "[2026-001654] G4PB Curitiba | Backdroop CREDENCIAMENTO",
+            "key": "CREAT-312"
+          },
+          {
+            "titulo": "[2026-001653] G4PB Curitiba | Balcão credenciamento FRENTE v",
+            "key": "CREAT-311"
+          },
+          {
+            "titulo": "[2026-001652] G4PB Curitba | Backdroop FRENTE CRED VIP",
+            "key": "CREAT-310"
+          },
+          {
+            "titulo": "[2026-001651] G4PB Curitiba | Entrada externa | Testeira",
+            "key": "CREAT-309"
+          }
+        ],
+        "Aula": [
+          {
+            "titulo": "[2026-000971] FREELANCER [JOURNEY] - [Aula 2] Marketing orie",
+            "key": "CREAT-121"
+          },
+          {
+            "titulo": "[2026-000970] FREELANCER - [JOURNEY] - [Aula 1] Análise das ",
+            "key": "CREAT-120"
+          },
+          {
+            "titulo": "[2026-000920] [GE][MARIA CANDIDA][CULTURA]",
+            "key": "CREAT-108"
+          },
+          {
+            "titulo": "[2026-000742] [FREELA] [PP] [DENNIS WANG] [A ERA DA EXPERIÊN",
+            "key": "CREAT-70"
+          },
+          {
+            "titulo": "[2026-000737] [G4SALES] [DOUGLAS MEDEIROS] [GESTÃO DE CARTEI",
+            "key": "CREAT-65"
+          },
+          {
+            "titulo": "[2026-000732] [PP] [PAULA PIMENTA] [PLANEJAMENTO ESTRATÉGICO",
+            "key": "CREAT-60"
+          },
+          {
+            "titulo": "[2026-000729] [PP] [GUSTAVO PAGOTTO] [TREINAMENTO ONLINE DE ",
+            "key": "CREAT-57"
+          },
+          {
+            "titulo": "[2026-000726] [PP][JOAO VITOR][ACADEMIA DE IA]",
+            "key": "CREAT-54"
+          },
+          {
+            "titulo": "[2026-000716] [FREELA][AULA] Gestão Comercial com Gustavo Pa",
+            "key": "CREAT-51"
+          },
+          {
+            "titulo": "[2026-000700] [FREELANCER][AULA] Aula de Processo Comercial ",
+            "key": "CREAT-37"
+          }
+        ]
       },
       "areas": {
         "Programas de Capacitação": 19,

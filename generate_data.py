@@ -157,6 +157,10 @@ def build_summary(rows, designers):
             "freelancer":   sum(1 for r in dm if r["freelancer"]),
             "taxa_atraso":  round(len(da)/len(dm)*100, 1) if dm else 0,
             "tipos":        dict(Counter(r["tipo"] for r in dm if r["tipo"]).most_common(5)),
+            "tipos_detalhes": {
+                tipo: [{"titulo": r["titulo"], "key": r["key"]} for r in dm if r["tipo"] == tipo][:20]
+                for tipo in list(dict(Counter(r["tipo"] for r in dm if r["tipo"]).most_common(5)).keys())
+            },
             "areas":        dict(Counter(r["area"] for r in dm if r["area"]).most_common(3)),
             "por_mes":      designer_por_mes,
             "demandas_atrasadas": [
