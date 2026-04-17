@@ -23,13 +23,13 @@
         "Enviada": 4
       },
       "tipo_counts": {
-        "Sem categoria": 57,
-        "FREELANCER": 17,
+        "Sem categoria": 67,
         "IMPRESSO": 15,
+        "G4CLASS17": 12,
         "G4PBCURITIBA": 8,
-        "Freelancer": 6,
         "DIGITAL": 2,
-        "Social_Media": 1
+        "Social_Media": 1,
+        "G4PBCWB": 1
       },
       "area_counts": {
         "Eventos": 24,
@@ -47,12 +47,12 @@
     },
     "2026-03": {
       "total": 315,
-      "atrasados": 6,
+      "atrasados": 5,
       "finalizados": 234,
       "cancelados": 47,
       "fora_sla": 0,
       "freelancer": 62,
-      "taxa_atraso": 1.9,
+      "taxa_atraso": 1.6,
       "status_counts": {
         "Finalizado": 234,
         "Cancelado": 47,
@@ -62,12 +62,12 @@
         "Em produção": 1
       },
       "tipo_counts": {
-        "Sem categoria": 136,
+        "Sem categoria": 141,
+        "IMPRESSO": 34,
         "Apresentação": 34,
-        "IMPRESSO": 33,
         "DIGITAL": 29,
         "G4PBVIX": 15,
-        "FREELANCER": 12,
+        "G4PBCURITIBA": 12,
         "Aula": 12,
         "Apresentações": 10
       },
@@ -82,8 +82,7 @@
         "Programa de Gestão": 4
       },
       "area_atrasados": {
-        "Programas de Capacitação": 2,
-        "Corporativo": 1
+        "Programas de Capacitação": 2
       }
     },
     "2026-02": {
@@ -114,13 +113,13 @@
     }
   },
   "total": 428,
-  "atrasados": 23,
+  "atrasados": 22,
   "cancelados": 62,
   "fora_sla": 0,
   "finalizados": 268,
   "em_aprovacao": 21,
   "freelancer": 85,
-  "taxa_atraso_geral": 5.4,
+  "taxa_atraso_geral": 5.1,
   "status_counts": {
     "Finalizado": 268,
     "Cancelado": 62,
@@ -131,13 +130,13 @@
     "Alteração": 2
   },
   "tipo_counts": {
-    "Sem categoria": 195,
-    "IMPRESSO": 48,
+    "Sem categoria": 210,
+    "IMPRESSO": 49,
     "Apresentação": 34,
     "DIGITAL": 31,
-    "FREELANCER": 29,
+    "G4PBCURITIBA": 20,
     "G4PBVIX": 15,
-    "Freelancer": 13,
+    "G4CLASS17": 12,
     "Aula": 12
   },
   "area_counts": {
@@ -152,19 +151,18 @@
   },
   "area_atrasados": {
     "Eventos": 14,
-    "Programas de Capacitação": 2,
-    "Corporativo": 1
+    "Programas de Capacitação": 2
   },
   "designers": {
     "Neemias Araujo do Amaral": {
       "total": 15,
       "em_andamento": 1,
       "finalizadas": 13,
-      "atrasadas": 1,
+      "atrasadas": 0,
       "canceladas": 0,
       "fora_sla": 0,
       "freelancer": 0,
-      "taxa_atraso": 6.7,
+      "taxa_atraso": 0.0,
       "tipos": {
         "Sem categoria": 9,
         "DIGITAL": 3,
@@ -185,7 +183,7 @@
         },
         "2026-03": {
           "total": 14,
-          "atrasadas": 1,
+          "atrasadas": 0,
           "freelancer": 0
         },
         "2026-02": {
@@ -194,14 +192,7 @@
           "freelancer": 0
         }
       },
-      "demandas_atrasadas": [
-        {
-          "titulo": "[2026-001114] [CORP][FOLHETO][PORTFOLIO]",
-          "prazo": "2026-04-15",
-          "status": "Em produção",
-          "area": "Corporativo"
-        }
-      ]
+      "demandas_atrasadas": []
     },
     "Flávia Lima": {
       "total": 103,
@@ -266,7 +257,7 @@
       "freelancer": 2,
       "taxa_atraso": 0.0,
       "tipos": {
-        "Sem categoria": 21,
+        "Sem categoria": 22,
         "Apresentação": 4,
         "DIGITAL": 3,
         "Apresentações": 3,

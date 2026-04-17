@@ -69,7 +69,7 @@ def parse(issue):
 
     # Tipo via labels (primeira label que não seja controle)
     tipo = "Sem categoria"
-    control_labels = {"sem-capacidade", "prazo-invalido", "FREELA"}
+    control_labels = {"sem-capacidade", "prazo-invalido", "FREELA", "FREELANCER", "Freelancer"}
     for lbl in labels:
         if lbl not in control_labels:
             tipo = lbl
