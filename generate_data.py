@@ -142,7 +142,7 @@ def build_summary(rows, designers):
         for mes in meses:
             dmm = [r for r in dm if r["mes"] == mes]
             dma = [r for r in dmm if r["atrasado"]]
-            designer_por_mes[mes] = {"total": len(dmm), "atrasadas": len(dma)}
+            designer_por_mes[mes] = {"total": len(dmm), "atrasadas": len(dma), "freelancer": sum(1 for r in dmm if r["freelancer"])}
 
         designers_data[designer] = {
             "total":        len(dm),
@@ -151,6 +151,7 @@ def build_summary(rows, designers):
             "atrasadas":    len(da),
             "canceladas":   len(dc),
             "fora_sla":     0,
+            "freelancer":   sum(1 for r in dm if r["freelancer"]),
             "taxa_atraso":  round(len(da)/len(dm)*100, 1) if dm else 0,
             "tipos":        dict(Counter(r["tipo"] for r in dm if r["tipo"]).most_common(5)),
             "areas":        dict(Counter(r["area"] for r in dm if r["area"]).most_common(3)),

@@ -163,6 +163,7 @@
       "atrasadas": 1,
       "canceladas": 0,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 6.7,
       "tipos": {
         "Sem categoria": 9,
@@ -179,15 +180,18 @@
       "por_mes": {
         "2026-04": {
           "total": 1,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         },
         "2026-03": {
           "total": 14,
-          "atrasadas": 1
+          "atrasadas": 1,
+          "freelancer": 0
         },
         "2026-02": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": [
@@ -206,6 +210,7 @@
       "atrasadas": 2,
       "canceladas": 2,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 1.9,
       "tipos": {
         "Sem categoria": 40,
@@ -222,15 +227,18 @@
       "por_mes": {
         "2026-04": {
           "total": 26,
-          "atrasadas": 2
+          "atrasadas": 2,
+          "freelancer": 0
         },
         "2026-03": {
           "total": 77,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         },
         "2026-02": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": [
@@ -255,6 +263,7 @@
       "atrasadas": 0,
       "canceladas": 4,
       "fora_sla": 0,
+      "freelancer": 2,
       "taxa_atraso": 0.0,
       "tipos": {
         "Sem categoria": 21,
@@ -271,15 +280,18 @@
       "por_mes": {
         "2026-04": {
           "total": 8,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 1
         },
         "2026-03": {
           "total": 29,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 1
         },
         "2026-02": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": []
@@ -291,6 +303,7 @@
       "atrasadas": 1,
       "canceladas": 1,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 6.2,
       "tipos": {
         "Sem categoria": 13,
@@ -305,15 +318,18 @@
       "por_mes": {
         "2026-04": {
           "total": 12,
-          "atrasadas": 1
+          "atrasadas": 1,
+          "freelancer": 0
         },
         "2026-03": {
           "total": 4,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         },
         "2026-02": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": [
@@ -332,6 +348,7 @@
       "atrasadas": 3,
       "canceladas": 2,
       "fora_sla": 0,
+      "freelancer": 1,
       "taxa_atraso": 7.1,
       "tipos": {
         "Sem categoria": 27,
@@ -348,15 +365,18 @@
       "por_mes": {
         "2026-04": {
           "total": 14,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         },
         "2026-03": {
           "total": 28,
-          "atrasadas": 3
+          "atrasadas": 3,
+          "freelancer": 1
         },
         "2026-02": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": [

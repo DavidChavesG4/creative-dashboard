@@ -73,6 +73,7 @@
       "atrasadas": 4,
       "canceladas": 0,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 40.0,
       "tipos": {
         "REDboard": 10
@@ -81,11 +82,13 @@
       "por_mes": {
         "2026-04": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         },
         "2026-03": {
           "total": 10,
-          "atrasadas": 4
+          "atrasadas": 4,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": [
@@ -122,6 +125,7 @@
       "atrasadas": 0,
       "canceladas": 3,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 0.0,
       "tipos": {
         "REDboard": 4
@@ -130,11 +134,13 @@
       "por_mes": {
         "2026-04": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         },
         "2026-03": {
           "total": 4,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": []
@@ -146,17 +152,20 @@
       "atrasadas": 0,
       "canceladas": 0,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 0,
       "tipos": {},
       "areas": {},
       "por_mes": {
         "2026-04": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         },
         "2026-03": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": []
@@ -168,17 +177,20 @@
       "atrasadas": 0,
       "canceladas": 0,
       "fora_sla": 0,
+      "freelancer": 0,
       "taxa_atraso": 0,
       "tipos": {},
       "areas": {},
       "por_mes": {
         "2026-04": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         },
         "2026-03": {
           "total": 0,
-          "atrasadas": 0
+          "atrasadas": 0,
+          "freelancer": 0
         }
       },
       "demandas_atrasadas": []
