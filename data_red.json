@@ -79,16 +79,66 @@
       "tipos": {
         "REDboard": 10
       },
+      "tipos_detalhes": {
+        "REDboard": [
+          {
+            "titulo": "[2026-001643] Eventos - Texto para convite",
+            "key": "RED-43"
+          },
+          {
+            "titulo": "[2026-001195] Youtube e podcasts - Roteiro Podcast (episódio",
+            "key": "RED-34"
+          },
+          {
+            "titulo": "[2026-001026] Youtube e podcasts - Roteiro Podcast (episódio",
+            "key": "RED-30"
+          },
+          {
+            "titulo": "[2026-000944] Eventos - Roteiro vídeo abertura",
+            "key": "RED-28"
+          },
+          {
+            "titulo": "[2026-000913] Social media - Conteúdo Instagram",
+            "key": "RED-26"
+          },
+          {
+            "titulo": "[2026-000900] Social media - Conteúdo Instagram",
+            "key": "RED-21"
+          },
+          {
+            "titulo": "[2026-000872] Youtube e podcasts - Roteiro YouTube (vídeo lo",
+            "key": "RED-20"
+          },
+          {
+            "titulo": "[2026-000866] Youtube e podcasts - Roteiro YouTube (vídeo lo",
+            "key": "RED-19"
+          },
+          {
+            "titulo": "[2026-000826] Eventos - Roteiro vídeo abertura - Pessoas",
+            "key": "RED-17"
+          },
+          {
+            "titulo": "[2026-000762] Nova Solicitação",
+            "key": "RED-2"
+          }
+        ]
+      },
       "areas": {},
       "por_mes": {
         "2026-04": {
           "total": 0,
           "atrasadas": 0,
+          "finalizadas": 0,
+          "canceladas": 0,
+          "em_andamento": 0,
           "freelancer": 0
         },
         "2026-03": {
           "total": 10,
           "atrasadas": 4,
+          "finalizadas": 5,
+          "canceladas": 0,
+          "em_andamento": 4,
           "freelancer": 0
         }
       },
@@ -131,16 +181,42 @@
       "tipos": {
         "REDboard": 4
       },
+      "tipos_detalhes": {
+        "REDboard": [
+          {
+            "titulo": "[2026-000912] Lifecycle - Régua e-mail documentário Heróis d",
+            "key": "RED-25"
+          },
+          {
+            "titulo": "[2026-000911] Lifecycle - E-mail pontual",
+            "key": "RED-24"
+          },
+          {
+            "titulo": "[2026-000910] Lifecycle - Régua E-mail pontual",
+            "key": "RED-23"
+          },
+          {
+            "titulo": "[2026-000904] Campanhas e ações de marca - Conceito de campa",
+            "key": "RED-22"
+          }
+        ]
+      },
       "areas": {},
       "por_mes": {
         "2026-04": {
           "total": 0,
           "atrasadas": 0,
+          "finalizadas": 0,
+          "canceladas": 0,
+          "em_andamento": 0,
           "freelancer": 0
         },
         "2026-03": {
           "total": 4,
           "atrasadas": 0,
+          "finalizadas": 1,
+          "canceladas": 3,
+          "em_andamento": 0,
           "freelancer": 0
         }
       },
@@ -156,16 +232,23 @@
       "freelancer": 0,
       "taxa_atraso": 0,
       "tipos": {},
+      "tipos_detalhes": {},
       "areas": {},
       "por_mes": {
         "2026-04": {
           "total": 0,
           "atrasadas": 0,
+          "finalizadas": 0,
+          "canceladas": 0,
+          "em_andamento": 0,
           "freelancer": 0
         },
         "2026-03": {
           "total": 0,
           "atrasadas": 0,
+          "finalizadas": 0,
+          "canceladas": 0,
+          "em_andamento": 0,
           "freelancer": 0
         }
       },
@@ -181,16 +264,23 @@
       "freelancer": 0,
       "taxa_atraso": 0,
       "tipos": {},
+      "tipos_detalhes": {},
       "areas": {},
       "por_mes": {
         "2026-04": {
           "total": 0,
           "atrasadas": 0,
+          "finalizadas": 0,
+          "canceladas": 0,
+          "em_andamento": 0,
           "freelancer": 0
         },
         "2026-03": {
           "total": 0,
           "atrasadas": 0,
+          "finalizadas": 0,
+          "canceladas": 0,
+          "em_andamento": 0,
           "freelancer": 0
         }
       },

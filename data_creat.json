@@ -239,11 +239,17 @@
         "2026-04": {
           "total": 1,
           "atrasadas": 0,
+          "finalizadas": 0,
+          "canceladas": 0,
+          "em_andamento": 0,
           "freelancer": 0
         },
         "2026-03": {
           "total": 14,
           "atrasadas": 0,
+          "finalizadas": 13,
+          "canceladas": 0,
+          "em_andamento": 1,
           "freelancer": 0
         }
       },
@@ -530,11 +536,17 @@
         "2026-04": {
           "total": 26,
           "atrasadas": 0,
+          "finalizadas": 15,
+          "canceladas": 0,
+          "em_andamento": 11,
           "freelancer": 0
         },
         "2026-03": {
           "total": 77,
           "atrasadas": 0,
+          "finalizadas": 74,
+          "canceladas": 2,
+          "em_andamento": 1,
           "freelancer": 0
         }
       },
@@ -705,11 +717,17 @@
         "2026-04": {
           "total": 8,
           "atrasadas": 0,
+          "finalizadas": 1,
+          "canceladas": 2,
+          "em_andamento": 4,
           "freelancer": 1
         },
         "2026-03": {
           "total": 29,
           "atrasadas": 0,
+          "finalizadas": 26,
+          "canceladas": 2,
+          "em_andamento": 1,
           "freelancer": 1
         }
       },
@@ -810,11 +828,17 @@
         "2026-04": {
           "total": 12,
           "atrasadas": 0,
+          "finalizadas": 4,
+          "canceladas": 1,
+          "em_andamento": 5,
           "freelancer": 0
         },
         "2026-03": {
           "total": 4,
           "atrasadas": 0,
+          "finalizadas": 3,
+          "canceladas": 0,
+          "em_andamento": 0,
           "freelancer": 0
         }
       },
@@ -981,11 +1005,17 @@
         "2026-04": {
           "total": 14,
           "atrasadas": 0,
+          "finalizadas": 1,
+          "canceladas": 1,
+          "em_andamento": 7,
           "freelancer": 0
         },
         "2026-03": {
           "total": 28,
           "atrasadas": 2,
+          "finalizadas": 21,
+          "canceladas": 1,
+          "em_andamento": 4,
           "freelancer": 1
         }
       },
@@ -1337,11 +1367,17 @@
         "2026-04": {
           "total": 25,
           "atrasadas": 1,
+          "finalizadas": 2,
+          "canceladas": 0,
+          "em_andamento": 7,
           "freelancer": 22
         },
         "2026-03": {
           "total": 77,
           "atrasadas": 2,
+          "finalizadas": 48,
+          "canceladas": 5,
+          "em_andamento": 19,
           "freelancer": 58
         }
       },

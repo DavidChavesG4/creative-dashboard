@@ -142,9 +142,19 @@ def build_summary(rows, designers):
 
         designer_por_mes = {}
         for mes in meses:
-            dmm = [r for r in dm if r["mes"] == mes]
-            dma = [r for r in dmm if r["atrasado"]]
-            designer_por_mes[mes] = {"total": len(dmm), "atrasadas": len(dma), "freelancer": sum(1 for r in dmm if r["freelancer"])}
+            dmm  = [r for r in dm if r["mes"] == mes]
+            dma  = [r for r in dmm if r["atrasado"]]
+            dmf  = [r for r in dmm if r["status"] in STATUS_FINALIZADO]
+            dmc  = [r for r in dmm if r["status"] in STATUS_CANCELADO]
+            dmand = [r for r in dmm if r["status"] in STATUS_ATRASAVEIS]
+            designer_por_mes[mes] = {
+                "total":        len(dmm),
+                "atrasadas":    len(dma),
+                "finalizadas":  len(dmf),
+                "canceladas":   len(dmc),
+                "em_andamento": len(dmand),
+                "freelancer":   sum(1 for r in dmm if r["freelancer"]),
+            }
 
         display_name = DISPLAY_NAME_MAP.get(designer, designer)
         designers_data[display_name] = {
