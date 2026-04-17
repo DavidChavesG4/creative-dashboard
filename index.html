@@ -379,9 +379,11 @@ function makeChart(id, type, labels, datasets, opts={}) {
           color: '#ffffff',
           font: { size: 11, weight: 'bold' },
           formatter: (value) => value > 0 ? value : '',
-          anchor: isDoughnut ? 'center' : 'center',
-          align: isDoughnut ? 'center' : 'center',
+          anchor: 'center',
+          align: 'center',
           padding: 0,
+          textStrokeColor: 'rgba(0,0,0,0.6)',
+          textStrokeWidth: 3,
           display: (context) => context.dataset.data[context.dataIndex] > 0,
         },
         ...opts.plugins
