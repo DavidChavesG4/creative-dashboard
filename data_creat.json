@@ -7,7 +7,7 @@
   ],
   "por_mes": {
     "2026-04": {
-      "total": 106,
+      "total": 107,
       "atrasados": 2,
       "finalizados": 31,
       "cancelados": 11,
@@ -19,11 +19,11 @@
         "Finalizado": 31,
         "Aprovação pendente": 25,
         "Cancelado": 11,
-        "Enviada": 4,
+        "Enviada": 5,
         "Em produção": 4
       },
       "tipo_counts": {
-        "Sem categoria": 67,
+        "Sem categoria": 68,
         "IMPRESSO": 15,
         "G4CLASS17": 12,
         "G4PBCURITIBA": 8,
@@ -110,7 +110,7 @@
       "area_atrasados": {}
     }
   },
-  "total": 428,
+  "total": 429,
   "atrasados": 6,
   "cancelados": 62,
   "fora_sla": 0,
@@ -123,12 +123,12 @@
     "Cancelado": 62,
     "Na fila": 54,
     "Aprovação pendente": 33,
+    "Enviada": 5,
     "Em produção": 5,
-    "Enviada": 4,
     "Alteração": 2
   },
   "tipo_counts": {
-    "Sem categoria": 210,
+    "Sem categoria": 211,
     "IMPRESSO": 49,
     "Apresentação": 34,
     "DIGITAL": 31,
@@ -377,6 +377,65 @@
           "prazo": "2026-04-07",
           "status": "Alteração",
           "area": ""
+        }
+      ]
+    },
+    "David Chaves": {
+      "total": 104,
+      "em_andamento": 26,
+      "finalizadas": 50,
+      "atrasadas": 3,
+      "canceladas": 7,
+      "fora_sla": 0,
+      "freelancer": 80,
+      "taxa_atraso": 2.9,
+      "tipos": {
+        "Apresentação": 29,
+        "Sem categoria": 24,
+        "G4CLASS17": 12,
+        "G4PBCURITIBA": 12,
+        "Aula": 10
+      },
+      "areas": {
+        "Programas de Capacitação": 19,
+        "Eventos": 13,
+        "EVENTOS": 12
+      },
+      "por_mes": {
+        "2026-04": {
+          "total": 25,
+          "atrasadas": 1,
+          "freelancer": 22
+        },
+        "2026-03": {
+          "total": 77,
+          "atrasadas": 2,
+          "freelancer": 58
+        },
+        "2026-02": {
+          "total": 2,
+          "atrasadas": 0,
+          "freelancer": 0
+        }
+      },
+      "demandas_atrasadas": [
+        {
+          "titulo": "[2026-001764] [PP][MG][ABERTURA]",
+          "prazo": "2026-04-16",
+          "status": "Na fila",
+          "area": ""
+        },
+        {
+          "titulo": "[2026-001481] [PP][MANOELGONÇALVEZ][GESTAODEOPORTUNIDADES]",
+          "prazo": "2026-04-16",
+          "status": "Na fila",
+          "area": "Programas de Capacitação"
+        },
+        {
+          "titulo": "[2026-001347] [PP][MANOELGONÇALVES][AULAGESTAODEPIPELINE]",
+          "prazo": "2026-04-16",
+          "status": "Na fila",
+          "area": "Programas de Capacitação"
         }
       ]
     }

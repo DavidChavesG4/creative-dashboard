@@ -22,7 +22,7 @@ def jira_headers():
     return {"Authorization": f"Basic {creds}", "Accept": "application/json", "Content-Type": "application/json"}
 
 # ── Designers por time ────────────────────────────────────────────────────────
-DESIGNERS_CREAT = ["Neemias Araujo do Amaral", "Flávia Lima", "Matheus Pio Nunes Gonçalves", "Vitor Santos Serodeo", "Pedro Marcondes"]
+DESIGNERS_CREAT = ["Neemias Araujo do Amaral", "Flávia Lima", "Matheus Pio Nunes Gonçalves", "Vitor Santos Serodeo", "Pedro Marcondes", "David Chaves"]
 DESIGNERS_RED   = ["Juliana Cespedes", "t.fonseca", "Sarah Vitorio", "Marcella Mancinelli"]
 
 # Campos Jira → mapa de tipo de demanda via labels
