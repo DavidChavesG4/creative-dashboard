@@ -327,9 +327,9 @@ function getView() {
   const d = getData();
   if (currentMes === 'todos') return d;
   const m = d.por_mes?.[currentMes];
-  if (!m) return { total:0, atrasados:0, cancelados:0, fora_sla:0, finalizados:0, em_aprovacao:0, taxa_atraso_geral:0, status_counts:{}, tipo_counts:{}, area_counts:{}, area_atrasados:{}, metricas: d.metricas };
+  if (!m) return { total:0, atrasados:0, cancelados:0, fora_sla:0, finalizados:0, em_aprovacao:0, freelancer:0, taxa_atraso_geral:0, status_counts:{}, tipo_counts:{}, area_counts:{}, area_atrasados:{}, metricas: d.metricas };
   // metricas de qualidade sempre do global (calculadas sobre finalizados, independente de mês de criação)
-  return { ...d, ...m, metricas: d.metricas };
+  return { ...d, ...m, freelancer: m.freelancer ?? 0, metricas: d.metricas };
 }
 
 function statusClass(s) {
@@ -410,7 +410,8 @@ function renderGeral() {
     kpiHtml('Em Aprovacao', v.em_aprovacao || (v.status_counts?.['Aprovação pendente']||0), '', 'warn') +
     kpiHtml('Finalizadas', v.finalizados, '', 'ok') +
     kpiHtml('Canceladas', v.cancelados, '', v.cancelados > 0 ? 'warn' : '') +
-    kpiHtml('Fora de SLA', v.fora_sla, 'na criacao', v.fora_sla > 0 ? 'warn' : 'ok');
+    kpiHtml('Fora de SLA', v.fora_sla, 'na criacao', v.fora_sla > 0 ? 'warn' : 'ok') +
+    kpiHtml('Freelancer', v.freelancer || 0, 'label FREELANCER no JIRA', v.freelancer > 0 ? 'info' : '');
 
   const sc = v.status_counts || {};
   makeChart('chart-status', 'doughnut',
@@ -710,6 +711,7 @@ function renderMetricas() {
         ${metCard('Atrasadas', atr, `${txAtr}% do total`, atr > 0 ? 'danger' : 'ok')}
         ${metCard('Canceladas', canc, `${txCanc}% do total`, canc > 0 ? 'warn' : '')}
         ${metCard('Fora de SLA na criacao', fSla, 'prazo < SLA minimo ao criar', fSla > 0 ? 'warn' : 'ok')}
+        ${metCard('Demandas Freelancer', v.freelancer || 0, 'label FREELANCER no JIRA', v.freelancer > 0 ? 'info' : '')}
       </div>
     </div>
 

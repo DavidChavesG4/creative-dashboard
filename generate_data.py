@@ -75,7 +75,8 @@ def parse(issue):
             tipo = lbl
             break
 
-    atrasado = bool(prazo and prazo < hoje and status in STATUS_ATRASAVEIS)
+    atrasado   = bool(prazo and prazo < hoje and status in STATUS_ATRASAVEIS)
+    freelancer = "FREELANCER" in [l.upper() for l in labels]
     no_prazo = None
     if resol and prazo:
         no_prazo = resol <= prazo
@@ -92,6 +93,7 @@ def parse(issue):
         "criado":       criado,
         "mes":          mes,
         "atrasado":     atrasado,
+        "freelancer":   freelancer,
         "no_prazo":     no_prazo,
         "fora_sla":     False,  # calculado pelo SLA watcher
     }
@@ -120,6 +122,7 @@ def build_summary(rows, designers):
             "finalizados":  len(mf),
             "cancelados":   len(mc),
             "fora_sla":     0,
+            "freelancer":   sum(1 for r in mr if r["freelancer"]),
             "taxa_atraso":  round(len(ma)/len(mr)*100, 1) if mr else 0,
             "status_counts": dict(Counter(r["status"] for r in mr).most_common()),
             "tipo_counts":   dict(Counter(r["tipo"] for r in mr if r["tipo"]).most_common(8)),
@@ -167,6 +170,8 @@ def build_summary(rows, designers):
         "rating_medio": None, "rating_amostras": 0, "rating_dist": {},
     }
 
+    freelancers = [r for r in rows if r["freelancer"]]
+
     return {
         "gerado_em":         hoje,
         "meses":             meses,
@@ -177,6 +182,7 @@ def build_summary(rows, designers):
         "fora_sla":          0,
         "finalizados":       len(finalizados),
         "em_aprovacao":      len(em_aprov),
+        "freelancer":        len(freelancers),
         "taxa_atraso_geral": round(len(atrasados)/total*100, 1) if total else 0,
         "status_counts":     dict(Counter(r["status"] for r in rows).most_common()),
         "tipo_counts":       dict(Counter(r["tipo"] for r in rows if r["tipo"]).most_common(8)),
