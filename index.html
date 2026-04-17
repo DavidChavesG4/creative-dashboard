@@ -211,7 +211,7 @@
   </div>
   <div class="charts-grid">
     <div class="card"><h3>Volume por Area Solicitante</h3><div class="chart-wrap"><canvas id="chart-area"></canvas></div></div>
-    <div class="card"><h3>Demandas por Designer</h3><div class="chart-wrap"><canvas id="chart-designer"></canvas></div></div>
+    <div class="card"><h3 id="chart-designer-title">Demandas por Designer</h3><div class="chart-wrap"><canvas id="chart-designer"></canvas></div></div>
   </div>
 </div>
 
@@ -237,7 +237,7 @@
 <div id="page-atrasos" class="page">
   <div class="kpi-grid" id="kpis-atrasos"></div>
   <div class="card">
-    <h3>Atrasadas por Designer</h3>
+    <h3 id="chart-atrasos-designer-title">Atrasadas por Designer</h3>
     <div class="chart-wrap"><canvas id="chart-atrasos-designer"></canvas></div>
   </div>
   <div class="card" style="margin-top:14px">
@@ -379,9 +379,9 @@ function makeChart(id, type, labels, datasets, opts={}) {
           color: '#ffffff',
           font: { size: 11, weight: 'bold' },
           formatter: (value) => value > 0 ? value : '',
-          anchor: isDoughnut ? 'center' : (isHBar ? 'end' : 'end'),
-          align: isDoughnut ? 'center' : (isHBar ? 'right' : 'top'),
-          padding: isDoughnut ? 0 : 2,
+          anchor: isDoughnut ? 'center' : 'center',
+          align: isDoughnut ? 'center' : 'center',
+          padding: 0,
           display: (context) => context.dataset.data[context.dataIndex] > 0,
         },
         ...opts.plugins
@@ -436,6 +436,10 @@ function renderGeral() {
     let total = currentMes === 'todos' ? info.total : (info.por_mes?.[currentMes]?.total || 0);
     return { name, total };
   }).filter(x => x.total > 0).sort((a,b) => b.total - a.total);
+
+  const designerLabel = currentTeam === 'red' ? 'Redator' : 'Designer';
+  const titleEl = document.getElementById('chart-designer-title');
+  if (titleEl) titleEl.textContent = `Demandas por ${designerLabel}`;
 
   makeChart('chart-designer', 'bar',
     designers.map(x => x.name.split(' ')[0]),
@@ -594,6 +598,10 @@ function renderAtrasos() {
       return { name: name.split(' ')[0], atr };
     })
     .filter(x => x.atr > 0).sort((a,b) => b.atr - a.atr);
+
+  const atrasosLabel = currentTeam === 'red' ? 'Redator' : 'Designer';
+  const atrasosTitle = document.getElementById('chart-atrasos-designer-title');
+  if (atrasosTitle) atrasosTitle.textContent = `Atrasadas por ${atrasosLabel}`;
 
   makeChart('chart-atrasos-designer', 'bar',
     dd.map(x => x.name),
