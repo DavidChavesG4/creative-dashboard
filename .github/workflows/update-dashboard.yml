@@ -2,7 +2,7 @@ name: Update Creative Dashboard
 
 on:
   schedule:
-    - cron: '0 12,21 * * 1-5'   # 9h e 18h horário de Brasília (UTC-3)
+    - cron: '0 12-22 * * 1-5'   # de 9h às 19h, a cada hora (UTC-3)
   workflow_dispatch:              # permite rodar manualmente
 
 permissions:
