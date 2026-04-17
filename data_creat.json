@@ -2,28 +2,27 @@
   "gerado_em": "2026-04-17",
   "meses": [
     "2026-04",
-    "2026-03",
-    "2026-02"
+    "2026-03"
   ],
   "por_mes": {
     "2026-04": {
-      "total": 107,
+      "total": 110,
       "atrasados": 2,
       "finalizados": 31,
       "cancelados": 11,
       "fora_sla": 0,
       "freelancer": 23,
-      "taxa_atraso": 1.9,
+      "taxa_atraso": 1.8,
       "status_counts": {
         "Na fila": 31,
         "Finalizado": 31,
         "Aprovação pendente": 25,
         "Cancelado": 11,
-        "Enviada": 5,
+        "Enviada": 8,
         "Em produção": 4
       },
       "tipo_counts": {
-        "Sem categoria": 68,
+        "Sem categoria": 71,
         "IMPRESSO": 15,
         "G4CLASS17": 12,
         "G4PBCURITIBA": 8,
@@ -82,35 +81,9 @@
       "area_atrasados": {
         "Programas de Capacitação": 2
       }
-    },
-    "2026-02": {
-      "total": 7,
-      "atrasados": 0,
-      "finalizados": 3,
-      "cancelados": 4,
-      "fora_sla": 0,
-      "freelancer": 0,
-      "taxa_atraso": 0.0,
-      "status_counts": {
-        "Cancelado": 4,
-        "Finalizado": 3
-      },
-      "tipo_counts": {
-        "Sem categoria": 2,
-        "Post_Carrossel": 2,
-        "BRAND_PERFORMANCE": 1,
-        "G4PBPOA": 1,
-        "freela": 1
-      },
-      "area_counts": {
-        "BRAND PERFORMANCE": 1,
-        "Brand Peromance": 1,
-        "Brand Performance": 1
-      },
-      "area_atrasados": {}
     }
   },
-  "total": 429,
+  "total": 432,
   "atrasados": 6,
   "cancelados": 62,
   "fora_sla": 0,
@@ -123,12 +96,12 @@
     "Cancelado": 62,
     "Na fila": 54,
     "Aprovação pendente": 33,
-    "Enviada": 5,
+    "Enviada": 8,
     "Em produção": 5,
     "Alteração": 2
   },
   "tipo_counts": {
-    "Sem categoria": 211,
+    "Sem categoria": 214,
     "IMPRESSO": 49,
     "Apresentação": 34,
     "DIGITAL": 31,
@@ -200,11 +173,6 @@
           "total": 14,
           "atrasadas": 0,
           "freelancer": 0
-        },
-        "2026-02": {
-          "total": 0,
-          "atrasadas": 0,
-          "freelancer": 0
         }
       },
       "demandas_atrasadas": []
@@ -238,11 +206,6 @@
         },
         "2026-03": {
           "total": 77,
-          "atrasadas": 0,
-          "freelancer": 0
-        },
-        "2026-02": {
-          "total": 0,
           "atrasadas": 0,
           "freelancer": 0
         }
@@ -280,11 +243,6 @@
           "total": 29,
           "atrasadas": 0,
           "freelancer": 1
-        },
-        "2026-02": {
-          "total": 0,
-          "atrasadas": 0,
-          "freelancer": 0
         }
       },
       "demandas_atrasadas": []
@@ -316,11 +274,6 @@
         },
         "2026-03": {
           "total": 4,
-          "atrasadas": 0,
-          "freelancer": 0
-        },
-        "2026-02": {
-          "total": 0,
           "atrasadas": 0,
           "freelancer": 0
         }
@@ -358,11 +311,6 @@
           "total": 28,
           "atrasadas": 2,
           "freelancer": 1
-        },
-        "2026-02": {
-          "total": 0,
-          "atrasadas": 0,
-          "freelancer": 0
         }
       },
       "demandas_atrasadas": [
@@ -380,7 +328,7 @@
         }
       ]
     },
-    "David Chaves": {
+    "Freelancer": {
       "total": 104,
       "em_andamento": 26,
       "finalizadas": 50,
@@ -411,11 +359,6 @@
           "total": 77,
           "atrasadas": 2,
           "freelancer": 58
-        },
-        "2026-02": {
-          "total": 2,
-          "atrasadas": 0,
-          "freelancer": 0
         }
       },
       "demandas_atrasadas": [

@@ -108,7 +108,7 @@ def build_summary(rows, designers):
     finalizados = [r for r in rows if r["status"] in STATUS_FINALIZADO]
     em_aprov    = [r for r in rows if r["status"] == "Aprovação pendente"]
 
-    meses = sorted(set(r["mes"] for r in rows if r["mes"]), reverse=True)
+    meses = sorted(set(r["mes"] for r in rows if r["mes"] and r["mes"] != "2026-02"), reverse=True)
 
     por_mes = {}
     for mes in meses:
@@ -130,6 +130,8 @@ def build_summary(rows, designers):
             "area_atrasados":dict(Counter(r["area"] for r in ma if r["area"]).most_common(8)),
         }
 
+    DISPLAY_NAME_MAP = {"David Chaves": "Freelancer"}
+
     designers_data = {}
     for designer in designers:
         dm   = [r for r in rows if r["designer"] == designer]
@@ -144,7 +146,8 @@ def build_summary(rows, designers):
             dma = [r for r in dmm if r["atrasado"]]
             designer_por_mes[mes] = {"total": len(dmm), "atrasadas": len(dma), "freelancer": sum(1 for r in dmm if r["freelancer"])}
 
-        designers_data[designer] = {
+        display_name = DISPLAY_NAME_MAP.get(designer, designer)
+        designers_data[display_name] = {
             "total":        len(dm),
             "em_andamento": len(dand),
             "finalizadas":  len(df),
