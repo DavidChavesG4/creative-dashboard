@@ -189,6 +189,14 @@ def build_summary(rows, designers):
         "tipo_counts":       dict(Counter(r["tipo"] for r in rows if r["tipo"]).most_common(8)),
         "area_counts":       dict(Counter(r["area"] for r in rows if r["area"]).most_common(8)),
         "area_atrasados":    dict(Counter(r["area"] for r in atrasados if r["area"]).most_common(8)),
+        "demandas_atrasadas_por_area": {
+            area: [
+                {"titulo": r["titulo"], "key": r["key"], "prazo": r["prazo"], "status": r["status"], "designer": r["designer"]}
+                for r in sorted(atrasados, key=lambda x: x["prazo"])
+                if r["area"] == area
+            ]
+            for area in set(r["area"] for r in atrasados if r["area"])
+        },
         "designers":         designers_data,
         "metricas":          metricas,
     }

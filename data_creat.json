@@ -8,19 +8,19 @@
   "por_mes": {
     "2026-04": {
       "total": 106,
-      "atrasados": 17,
+      "atrasados": 2,
       "finalizados": 31,
       "cancelados": 11,
       "fora_sla": 0,
       "freelancer": 23,
-      "taxa_atraso": 16.0,
+      "taxa_atraso": 1.9,
       "status_counts": {
         "Na fila": 31,
         "Finalizado": 31,
-        "Em produção": 16,
-        "Aprovação pendente": 13,
+        "Aprovação pendente": 25,
         "Cancelado": 11,
-        "Enviada": 4
+        "Enviada": 4,
+        "Em produção": 4
       },
       "tipo_counts": {
         "Sem categoria": 67,
@@ -41,18 +41,16 @@
         "Corporativo": 1,
         "G4 Scale": 1
       },
-      "area_atrasados": {
-        "Eventos": 14
-      }
+      "area_atrasados": {}
     },
     "2026-03": {
       "total": 315,
-      "atrasados": 5,
+      "atrasados": 4,
       "finalizados": 234,
       "cancelados": 47,
       "fora_sla": 0,
       "freelancer": 62,
-      "taxa_atraso": 1.6,
+      "taxa_atraso": 1.3,
       "status_counts": {
         "Finalizado": 234,
         "Cancelado": 47,
@@ -113,19 +111,19 @@
     }
   },
   "total": 428,
-  "atrasados": 22,
+  "atrasados": 6,
   "cancelados": 62,
   "fora_sla": 0,
   "finalizados": 268,
-  "em_aprovacao": 21,
+  "em_aprovacao": 33,
   "freelancer": 85,
-  "taxa_atraso_geral": 5.1,
+  "taxa_atraso_geral": 1.4,
   "status_counts": {
     "Finalizado": 268,
     "Cancelado": 62,
     "Na fila": 54,
-    "Aprovação pendente": 21,
-    "Em produção": 17,
+    "Aprovação pendente": 33,
+    "Em produção": 5,
     "Enviada": 4,
     "Alteração": 2
   },
@@ -150,8 +148,25 @@
     "Paid Performance": 4
   },
   "area_atrasados": {
-    "Eventos": 14,
     "Programas de Capacitação": 2
+  },
+  "demandas_atrasadas_por_area": {
+    "Programas de Capacitação": [
+      {
+        "titulo": "[2026-001481] [PP][MANOELGONÇALVEZ][GESTAODEOPORTUNIDADES]",
+        "key": "CREAT-257",
+        "prazo": "2026-04-16",
+        "status": "Na fila",
+        "designer": "David Chaves"
+      },
+      {
+        "titulo": "[2026-001347] [PP][MANOELGONÇALVES][AULAGESTAODEPIPELINE]",
+        "key": "CREAT-220",
+        "prazo": "2026-04-16",
+        "status": "Na fila",
+        "designer": "David Chaves"
+      }
+    ]
   },
   "designers": {
     "Neemias Araujo do Amaral": {
@@ -198,11 +213,11 @@
       "total": 103,
       "em_andamento": 12,
       "finalizadas": 89,
-      "atrasadas": 2,
+      "atrasadas": 0,
       "canceladas": 2,
       "fora_sla": 0,
       "freelancer": 0,
-      "taxa_atraso": 1.9,
+      "taxa_atraso": 0.0,
       "tipos": {
         "Sem categoria": 40,
         "IMPRESSO": 37,
@@ -218,7 +233,7 @@
       "por_mes": {
         "2026-04": {
           "total": 26,
-          "atrasadas": 2,
+          "atrasadas": 0,
           "freelancer": 0
         },
         "2026-03": {
@@ -232,20 +247,7 @@
           "freelancer": 0
         }
       },
-      "demandas_atrasadas": [
-        {
-          "titulo": "[2026-001910] [EVENTOS&PP] [PRISMA] [TRACTION COMEMORATIVA]",
-          "prazo": "2026-04-16",
-          "status": "Em produção",
-          "area": "Eventos"
-        },
-        {
-          "titulo": "[2026-001909] [EVENTOS&PP] [CREDENCIAL] [TRACTION COMEMORATI",
-          "prazo": "2026-04-16",
-          "status": "Em produção",
-          "area": "Eventos"
-        }
-      ]
+      "demandas_atrasadas": []
     },
     "Matheus Pio Nunes Gonçalves": {
       "total": 37,
@@ -291,11 +293,11 @@
       "total": 16,
       "em_andamento": 5,
       "finalizadas": 7,
-      "atrasadas": 1,
+      "atrasadas": 0,
       "canceladas": 1,
       "fora_sla": 0,
       "freelancer": 0,
-      "taxa_atraso": 6.2,
+      "taxa_atraso": 0.0,
       "tipos": {
         "Sem categoria": 13,
         "IMPRESSO": 2,
@@ -309,7 +311,7 @@
       "por_mes": {
         "2026-04": {
           "total": 12,
-          "atrasadas": 1,
+          "atrasadas": 0,
           "freelancer": 0
         },
         "2026-03": {
@@ -323,24 +325,17 @@
           "freelancer": 0
         }
       },
-      "demandas_atrasadas": [
-        {
-          "titulo": "[2026-001933] [Criação de Convite] [SCL] Criar um modelo de ",
-          "prazo": "2026-04-16",
-          "status": "Na fila",
-          "area": ""
-        }
-      ]
+      "demandas_atrasadas": []
     },
     "Pedro Marcondes": {
       "total": 42,
       "em_andamento": 11,
       "finalizadas": 22,
-      "atrasadas": 3,
+      "atrasadas": 2,
       "canceladas": 2,
       "fora_sla": 0,
       "freelancer": 1,
-      "taxa_atraso": 7.1,
+      "taxa_atraso": 4.8,
       "tipos": {
         "Sem categoria": 27,
         "DIGITAL": 5,
@@ -361,7 +356,7 @@
         },
         "2026-03": {
           "total": 28,
-          "atrasadas": 3,
+          "atrasadas": 2,
           "freelancer": 1
         },
         "2026-02": {
@@ -381,12 +376,6 @@
           "titulo": "[2026-001498] G4 Valley: onde os heróis do Brasil são forjad",
           "prazo": "2026-04-07",
           "status": "Alteração",
-          "area": ""
-        },
-        {
-          "titulo": "[2026-001568] [PP] [IMPRESSO] [CADERNO DO ALUNO - GDP]",
-          "prazo": "2026-04-16",
-          "status": "Na fila",
           "area": ""
         }
       ]

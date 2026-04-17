@@ -65,6 +65,7 @@
   },
   "area_counts": {},
   "area_atrasados": {},
+  "demandas_atrasadas_por_area": {},
   "designers": {
     "Juliana Cespedes": {
       "total": 10,
