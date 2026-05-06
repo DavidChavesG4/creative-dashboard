@@ -3,857 +3,546 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Creative — G4</title>
+<title>Dashboard Creative 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #222536;
-    --border: #2e3150;
-    --text: #e8eaf6;
-    --text-muted: #7b82a8;
-    --green: #4caf7d;
-    --red: #f44b6e;
-    --yellow: #f5a623;
-    --blue: #5b8af5;
-    --purple: #a78bfa;
-    --cyan: #22d3ee;
-    --accent: #5b8af5;
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+    --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+    --blue: #58a6ff; --green: #3fb950; --yellow: #d29922;
+    --red: #f85149; --purple: #bc8cff; --orange: #ffa657;
+    --teal: #39d353;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 14px; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; min-height: 100vh; }
 
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    gap: 12px; flex-wrap: wrap;
-  }
-  header h1 { font-size: 15px; font-weight: 600; letter-spacing: .3px; white-space: nowrap; }
-  .header-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .meta { color: var(--text-muted); font-size: 11px; }
+  /* HEADER */
+  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .header h1 { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  .header h1 span { background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .last-updated { color: var(--muted); font-size: 12px; }
+  .btn-refresh { background: var(--blue); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: opacity .2s; }
+  .btn-refresh:hover { opacity: .85; }
+  .btn-refresh:disabled { opacity: .5; cursor: not-allowed; }
 
-  .toggle-group {
-    display: flex;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 3px;
-    gap: 2px;
-  }
-  .toggle-group button {
-    background: none; border: none;
-    padding: 4px 14px; border-radius: 6px;
-    font-size: 12px; font-weight: 700; letter-spacing: .4px;
-    cursor: pointer; color: var(--text-muted); transition: .15s;
-  }
-  .toggle-group button:hover { background: var(--surface2); color: var(--text); }
-  .btn-creat-active { background: #1e3a5f !important; color: #5b8af5 !important; }
-  .btn-red-active   { background: #3d1a1a !important; color: #f44b6e !important; }
-  .btn-mes-active   { background: var(--surface2) !important; color: var(--accent) !important; }
+  /* FILTERS */
+  .filters { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .filter-label { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+  select { background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 13px; cursor: pointer; outline: none; min-width: 140px; }
+  select:focus { border-color: var(--blue); }
+  .btn-clear { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all .2s; }
+  .btn-clear:hover { color: var(--text); border-color: var(--muted); }
 
-  nav {
-    display: flex; gap: 4px;
-    padding: 10px 24px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-  }
-  nav button {
-    background: none; border: none; color: var(--text-muted);
-    padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500;
-    transition: .15s;
-  }
-  nav button:hover { background: var(--surface2); color: var(--text); }
-  nav button.active { background: var(--surface2); color: var(--accent); }
+  /* LAYOUT */
+  .main { padding: 20px 24px; max-width: 1600px; margin: 0 auto; }
 
-  .page { display: none; padding: 20px 24px; }
-  .page.active { display: block; }
+  /* KPI CARDS */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; transition: border-color .2s; }
+  .kpi-card:hover { border-color: var(--blue); }
+  .kpi-label { color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+  .kpi-value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .kpi-sub { color: var(--muted); font-size: 11px; margin-top: 4px; }
+  .kpi-card.blue .kpi-value { color: var(--blue); }
+  .kpi-card.green .kpi-value { color: var(--green); }
+  .kpi-card.yellow .kpi-value { color: var(--yellow); }
+  .kpi-card.red .kpi-value { color: var(--red); }
+  .kpi-card.purple .kpi-value { color: var(--purple); }
+  .kpi-card.orange .kpi-value { color: var(--orange); }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
-  .kpi {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px 14px;
-  }
-  .kpi .label { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
-  .kpi .value { font-size: 26px; font-weight: 700; line-height: 1; }
-  .kpi .sub { color: var(--text-muted); font-size: 11px; margin-top: 4px; }
-  .kpi.danger { border-color: rgba(244,75,110,.4); }
-  .kpi.warn   { border-color: rgba(245,166,35,.4); }
-  .kpi.ok     { border-color: rgba(76,175,125,.4); }
-  .kpi.info   { border-color: rgba(91,138,245,.3); }
+  /* CHARTS GRID */
+  .charts-grid { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; margin-bottom: 20px; }
+  .charts-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .chart-card.full { grid-column: 1 / -1; }
+  .chart-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 14px; }
+  .chart-wrap { position: relative; height: 220px; }
+  .chart-wrap.tall { height: 280px; }
 
-  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
-  @media(max-width:900px){ .charts-grid { grid-template-columns: 1fr; } }
-
-  .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px;
-  }
-  .card h3 { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; }
-  .chart-wrap { position: relative; height: 200px; }
-
-  .designer-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
-  .designer-tab {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 8px; padding: 7px 13px; cursor: pointer;
-    font-size: 13px; font-weight: 500; transition: .15s;
-  }
-  .designer-tab:hover { border-color: var(--accent); }
-  .designer-tab.active { border-color: var(--accent); background: rgba(91,138,245,.1); color: var(--accent); }
-
-  .designer-panel { display: none; }
-  .designer-panel.active { display: block; }
-  .designer-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-bottom: 18px; }
-
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; padding: 7px 10px; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
-  td { padding: 8px 10px; border-bottom: 1px solid rgba(46,49,80,.5); }
+  /* TABLE */
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+  .table-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .table-header h3 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .table-count { color: var(--muted); font-size: 12px; }
+  .table-wrap { overflow-x: auto; max-height: 400px; overflow-y: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--surface2); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; position: sticky; top: 0; white-space: nowrap; cursor: pointer; user-select: none; }
+  th:hover { color: var(--text); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 13px; white-space: nowrap; max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(255,255,255,.02); }
+  tr:hover td { background: var(--surface2); }
 
-  .status-pill {
-    display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600;
-  }
-  .s-na-fila    { background: rgba(91,138,245,.15);  color: var(--blue); }
-  .s-enviado    { background: rgba(34,211,238,.15);   color: var(--cyan); }
-  .s-producao   { background: rgba(167,139,250,.15);  color: var(--purple); }
-  .s-aprovado   { background: rgba(76,175,125,.15);   color: var(--green); }
-  .s-finalizado { background: rgba(76,175,125,.15);   color: var(--green); }
-  .s-cancelada  { background: rgba(244,75,110,.15);   color: var(--red); }
-  .s-revisao    { background: rgba(245,166,35,.15);   color: var(--yellow); }
-  .s-alteracao  { background: rgba(245,166,35,.15);   color: var(--yellow); }
-  .s-aprovpend  { background: rgba(245,166,35,.15);   color: var(--yellow); }
-  .s-default    { background: rgba(123,130,168,.15);  color: var(--text-muted); }
-  .atraso-tag   { color: var(--red); font-size: 11px; font-weight: 600; }
+  /* BADGES */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-aprovado { background: #1a4731; color: var(--green); }
+  .badge-finalizado { background: #0d2d6b; color: var(--blue); }
+  .badge-producao { background: #2d1f4b; color: var(--purple); }
+  .badge-revisao { background: #3d2d0d; color: var(--yellow); }
+  .badge-cancelada { background: #3d1515; color: var(--red); }
+  .badge-erro { background: #4d1010; color: #ff6b6b; }
+  .badge-fila { background: #1a2a3a; color: #79c0ff; }
+  .badge-default { background: var(--surface2); color: var(--muted); }
 
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .badge-green  { background: rgba(76,175,125,.15);  color: var(--green); }
-  .badge-red    { background: rgba(244,75,110,.15);  color: var(--red); }
-  .badge-yellow { background: rgba(245,166,35,.15);  color: var(--yellow); }
+  /* LOADING */
+  .loading { display: flex; align-items: center; justify-content: center; min-height: 300px; flex-direction: column; gap: 12px; color: var(--muted); }
+  .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  footer { text-align: center; padding: 16px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 8px; }
+  /* TOKEN INPUT */
+  .token-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .token-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; max-width: 440px; width: 100%; }
+  .token-card h2 { margin-bottom: 8px; font-size: 20px; }
+  .token-card p { color: var(--muted); margin-bottom: 20px; font-size: 13px; line-height: 1.6; }
+  .token-input { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 13px; font-family: monospace; margin-bottom: 12px; }
+  .token-input:focus { outline: none; border-color: var(--blue); }
+  .btn-connect { width: 100%; background: var(--blue); color: #fff; border: none; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
 
-  .empty-state { color: var(--text-muted); padding: 32px; text-align: center; font-size: 13px; }
+  /* EMPTY */
+  .empty { text-align: center; padding: 40px; color: var(--muted); }
 
-  /* Metricas */
-  .met-section { margin-bottom: 24px; }
-  .met-section-title {
-    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px;
-    color: var(--text-muted); margin-bottom: 12px; padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .charts-grid, .charts-grid.three { grid-template-columns: 1fr; }
+    .filters { flex-direction: column; align-items: flex-start; }
   }
-  .met-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-  .met-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px 14px; position: relative;
-  }
-  .met-card.ok     { border-left: 3px solid var(--green); }
-  .met-card.warn   { border-left: 3px solid var(--yellow); }
-  .met-card.danger { border-left: 3px solid var(--red); }
-  .met-card.empty  { border-left: 3px solid rgba(123,130,168,.4); opacity: .7; }
-  .met-card .m-label { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
-  .met-card .m-value { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
-  .met-card .m-sub   { color: var(--text-muted); font-size: 11px; }
-  .met-card .m-empty { color: var(--text-muted); font-size: 12px; font-style: italic; margin-top: 4px; }
-  .met-bar-list { display: flex; flex-direction: column; gap: 8px; }
-  .met-bar-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-  .met-bar-label { flex: 0 0 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
-  .met-bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 6px; }
-  .met-bar-fill  { height: 6px; border-radius: 4px; background: var(--accent); }
-  .met-bar-val   { flex: 0 0 30px; text-align: right; color: var(--text-muted); font-size: 11px; }
-  .notion-link {
-    display: inline-flex; align-items: center; gap: 5px;
-    color: var(--blue); font-size: 11px; font-weight: 600;
-    text-decoration: none; padding: 4px 10px;
-    border: 1px solid rgba(91,138,245,.3); border-radius: 6px;
-    transition: .15s;
-  }
-  .notion-link:hover { background: rgba(91,138,245,.08); border-color: var(--blue); }
-
-  /* Tooltip de demandas por tipo */
-  .tipo-tooltip-wrap { position: relative; cursor: default; }
-  .tipo-tooltip-wrap:hover .tipo-tooltip { display: block; }
-  .tipo-tooltip {
-    display: none;
-    position: absolute; left: 0; top: 100%; z-index: 200;
-    background: #1a1d27; border: 1px solid var(--border);
-    border-radius: 8px; padding: 8px 0; min-width: 320px; max-width: 420px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.5);
-  }
-  .tipo-tooltip-item {
-    padding: 5px 12px; display: flex; align-items: baseline; gap: 8px;
-    font-size: 12px; line-height: 1.4;
-  }
-  .tipo-tooltip-item:hover { background: rgba(255,255,255,.03); }
-  .tipo-tooltip-key {
-    flex-shrink: 0; color: var(--accent); font-size: 10px; font-weight: 600;
-    font-family: monospace; white-space: nowrap;
-  }
-  .tipo-tooltip-title { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .tipo-tooltip-more { padding: 4px 12px; font-size: 11px; color: var(--text-muted); font-style: italic; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-left">
-    <h1>Dashboard Creative — G4</h1>
-    <!-- Toggle Time -->
-    <div class="toggle-group" id="team-toggle">
-      <button id="btn-creat" class="btn-creat-active" onclick="switchTeam('creat')">CREAT</button>
-      <button id="btn-red" onclick="switchTeam('red')">RED</button>
+<!-- TOKEN SCREEN -->
+<div id="tokenScreen" class="token-screen">
+  <div class="token-card">
+    <h2>🎨 Dashboard Creative 2026</h2>
+    <p>Conecte ao Notion para visualizar as demandas em tempo real. O token fica salvo no navegador.</p>
+    <input id="tokenInput" class="token-input" type="password" placeholder="ntn_..." value="">
+    <button class="btn-connect" onclick="connect()">Conectar ao Notion</button>
+    <p id="tokenError" style="color:var(--red);font-size:12px;margin-top:8px;display:none;"></p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none;">
+  <div class="header">
+    <h1>🎨 <span>Dashboard Creative</span> 2026</h1>
+    <div class="header-right">
+      <span class="last-updated" id="lastUpdated">—</span>
+      <button class="btn-refresh" id="btnRefresh" onclick="loadData()">↻ Atualizar</button>
+      <button class="btn-clear" onclick="logout()" style="font-size:11px;">Sair</button>
     </div>
-    <!-- Filtro de Mês -->
-    <div class="toggle-group" id="mes-toggle"></div>
   </div>
-  <div class="meta" id="header-meta">Carregando...</div>
-</header>
 
-<nav>
-  <button class="active" onclick="showPage('geral', this)">Visao Geral</button>
-  <button id="btn-nav-designers" onclick="showPage('designers', this)">Por Designer</button>
-  <button onclick="showPage('areas', this)">Por Area</button>
-  <button onclick="showPage('atrasos', this)">Atrasos</button>
-  <button onclick="showPage('metricas', this)">Metricas</button>
-</nav>
-
-<!-- VISAO GERAL -->
-<div id="page-geral" class="page active">
-  <div class="kpi-grid" id="kpis-geral"></div>
-  <div class="charts-grid">
-    <div class="card"><h3>Status das Demandas</h3><div class="chart-wrap"><canvas id="chart-status"></canvas></div></div>
-    <div class="card"><h3>Tipo de Demanda</h3><div class="chart-wrap"><canvas id="chart-tipo"></canvas></div></div>
+  <div class="filters" id="filtersBar">
+    <span class="filter-label">Filtros:</span>
+    <select id="fStatus" onchange="applyFilters()"><option value="">Todos os Status</option></select>
+    <select id="fTipo" onchange="applyFilters()"><option value="">Todos os Tipos</option></select>
+    <select id="fArea" onchange="applyFilters()"><option value="">Todas as Áreas</option></select>
+    <select id="fAreaDem" onchange="applyFilters()"><option value="">Todas as BUs</option></select>
+    <select id="fCreative" onchange="applyFilters()"><option value="">Todos os Criativos</option></select>
+    <select id="fFreelancer" onchange="applyFilters()">
+      <option value="">Interno + Freelancer</option>
+      <option value="1">Freelancer</option>
+      <option value="0">Interno</option>
+    </select>
+    <select id="fMes" onchange="applyFilters()"><option value="">Todos os Meses</option></select>
+    <button class="btn-clear" onclick="clearFilters()">✕ Limpar</button>
   </div>
-  <div class="charts-grid">
-    <div class="card"><h3>Volume por Area Solicitante</h3><div class="chart-wrap"><canvas id="chart-area"></canvas></div></div>
-    <div class="card"><h3 id="chart-designer-title">Demandas por Designer</h3><div class="chart-wrap"><canvas id="chart-designer"></canvas></div></div>
+
+  <div class="main" id="mainContent">
+    <div class="loading"><div class="spinner"></div><span>Carregando dados...</span></div>
   </div>
 </div>
-
-<!-- POR DESIGNER -->
-<div id="page-designers" class="page">
-  <div class="designer-tabs" id="designer-tabs"></div>
-  <div id="designer-panels"></div>
-</div>
-
-<!-- POR AREA -->
-<div id="page-areas" class="page">
-  <div class="charts-grid">
-    <div class="card"><h3>Volume Total por Area</h3><div class="chart-wrap"><canvas id="chart-area2"></canvas></div></div>
-    <div class="card"><h3>Atrasos por Area <span style="font-size:10px;color:var(--text-muted);font-weight:400">(clique para ver demandas)</span></h3><div class="chart-wrap"><canvas id="chart-area-atraso"></canvas></div></div>
-  </div>
-  <div id="area-drill-down" style="display:none;margin-top:14px"></div>
-  <div class="card" style="margin-top:14px">
-    <h3>Detalhamento por Area</h3>
-    <div class="table-wrap"><table id="table-areas"></table></div>
-  </div>
-</div>
-
-<!-- ATRASOS -->
-<div id="page-atrasos" class="page">
-  <div class="kpi-grid" id="kpis-atrasos"></div>
-  <div class="card">
-    <h3 id="chart-atrasos-designer-title">Atrasadas por Designer</h3>
-    <div class="chart-wrap"><canvas id="chart-atrasos-designer"></canvas></div>
-  </div>
-  <div class="card" style="margin-top:14px">
-    <h3>Tabela de Atrasos</h3>
-    <div class="table-wrap"><table id="table-atrasos"></table></div>
-  </div>
-</div>
-
-<!-- METRICAS -->
-<div id="page-metricas" class="page">
-  <div id="metricas-content"></div>
-</div>
-
-<footer id="footer-updated"></footer>
 
 <script>
-// ── DADOS (injetados pelo generate_data.py) ────────────────────────────────
-const DATA_CREAT = {"gerado_em": "2026-04-17", "meses": ["2026-04", "2026-03"], "por_mes": {"2026-04": {"total": 110, "atrasados": 2, "finalizados": 31, "cancelados": 11, "fora_sla": 0, "freelancer": 23, "taxa_atraso": 1.8, "status_counts": {"Na fila": 31, "Finalizado": 31, "Aprovação pendente": 25, "Cancelado": 11, "Enviada": 8, "Em produção": 4}, "tipo_counts": {"Sem categoria": 71, "IMPRESSO": 15, "G4CLASS17": 12, "G4PBCURITIBA": 8, "DIGITAL": 2, "Social_Media": 1, "G4PBCWB": 1}, "area_counts": {"Eventos": 24, "Programa de Gestão": 3, "eventos": 1, "Brand Performance": 1, "Paid Performance": 1, "G4CLASS17": 1, "Corporativo": 1, "G4 Scale": 1}, "area_atrasados": {}}, "2026-03": {"total": 315, "atrasados": 4, "finalizados": 234, "cancelados": 47, "fora_sla": 0, "freelancer": 62, "taxa_atraso": 1.3, "status_counts": {"Finalizado": 234, "Cancelado": 47, "Na fila": 23, "Aprovação pendente": 8, "Alteração": 2, "Em produção": 1}, "tipo_counts": {"Sem categoria": 141, "IMPRESSO": 34, "Apresentação": 34, "DIGITAL": 29, "G4PBVIX": 15, "G4PBCURITIBA": 12, "Aula": 12, "Apresentações": 10}, "area_counts": {"EVENTOS": 29, "Programas de Capacitação": 21, "Eventos": 18, "Corporativo": 13, "Brand Performance": 8, "G4 SCALE": 5, "G4 SKILLS": 4, "Programa de Gestão": 4}, "area_atrasados": {"Programas de Capacitação": 2}}}, "total": 432, "atrasados": 6, "cancelados": 62, "fora_sla": 0, "finalizados": 268, "em_aprovacao": 33, "freelancer": 85, "taxa_atraso_geral": 1.4, "status_counts": {"Finalizado": 268, "Cancelado": 62, "Na fila": 54, "Aprovação pendente": 33, "Enviada": 8, "Em produção": 5, "Alteração": 2}, "tipo_counts": {"Sem categoria": 214, "IMPRESSO": 49, "Apresentação": 34, "DIGITAL": 31, "G4PBCURITIBA": 20, "G4PBVIX": 15, "G4CLASS17": 12, "Aula": 12}, "area_counts": {"Eventos": 42, "EVENTOS": 29, "Programas de Capacitação": 22, "Corporativo": 14, "Brand Performance": 10, "Programa de Gestão": 7, "G4 SCALE": 5, "Paid Performance": 4}, "area_atrasados": {"Programas de Capacitação": 2}, "demandas_atrasadas_por_area": {"Programas de Capacitação": [{"titulo": "[2026-001481] [PP][MANOELGONÇALVEZ][GESTAODEOPORTUNIDADES]", "key": "CREAT-257", "prazo": "2026-04-16", "status": "Na fila", "designer": "David Chaves"}, {"titulo": "[2026-001347] [PP][MANOELGONÇALVES][AULAGESTAODEPIPELINE]", "key": "CREAT-220", "prazo": "2026-04-16", "status": "Na fila", "designer": "David Chaves"}]}, "designers": {"Neemias Araujo do Amaral": {"total": 15, "em_andamento": 1, "finalizadas": 13, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 0.0, "tipos": {"Sem categoria": 9, "DIGITAL": 3, "KV": 1, "IMPRESSO": 1, "G4_TRACTION": 1}, "tipos_detalhes": {"Sem categoria": [{"titulo": "[2026-001961] CARTA DE BOAS VINDAS - FLG - CARTA DE BOAS VIN", "key": "CREAT-405"}, {"titulo": "[2026-001670] [G4 ARENA] - BANNERS E ÍCONE", "key": "CREAT-323"}, {"titulo": "[2026-001543] CAPA REELS + CENAS BRASIL QUE PODERIA TER SIDO", "key": "CREAT-273"}, {"titulo": "[2026-001323] [Brand performance] [Evelyn Moura] [Pink Cheek", "key": "CREAT-204"}, {"titulo": "[2026-001226] [KV][GESTAO][G4 ARENA]", "key": "CREAT-183"}, {"titulo": "[2026-001162] [PODCAST] [CAPA YOUTUBE E SPOTIFY]", "key": "CREAT-167"}, {"titulo": "[2026-001113] TROFÉU DE TÊNIS G4 CLUB", "key": "CREAT-139"}, {"titulo": "[2026-001110] MEDALHA ESPORTES G4 CLUB", "key": "CREAT-138"}, {"titulo": "[2026-001101] [SCALE] [HIGOR TORCHIA] EXECUÇÃO COMERCIAL", "key": "CREAT-135"}], "DIGITAL": [{"titulo": "[2026-001447] [DIGITAL][MARKETING][OHH - DOC ESPÍRITO IMPERI", "key": "CREAT-249"}, {"titulo": "[2026-001249] [DIGITAL][CORPORATIVO][CRIAÇÃO DO KV FILME - A", "key": "CREAT-191"}, {"titulo": "[2026-001160] [THUMBS] [PODCAST]", "key": "CREAT-166"}], "KV": [{"titulo": "[2026-001116] [DIGITAL][MARCA&COM][KEV-G4NEXT]", "key": "CREAT-142"}], "IMPRESSO": [{"titulo": "[2026-001114] [CORP][FOLHETO][PORTFOLIO]", "key": "CREAT-140"}], "G4_TRACTION": [{"titulo": "[2026-000750] [DIGITAL][CORPORATIVO] Imagem Alfredo KV Tract", "key": "CREAT-71"}]}, "areas": {"Marketing": 1, "CORPORATIVO": 1, "Comunicação e Marca": 1}, "por_mes": {"2026-04": {"total": 1, "atrasadas": 0, "finalizadas": 0, "canceladas": 0, "em_andamento": 0, "freelancer": 0}, "2026-03": {"total": 14, "atrasadas": 0, "finalizadas": 13, "canceladas": 0, "em_andamento": 1, "freelancer": 0}}, "demandas_atrasadas": []}, "Flávia Lima": {"total": 103, "em_andamento": 12, "finalizadas": 89, "atrasadas": 0, "canceladas": 2, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 0.0, "tipos": {"Sem categoria": 40, "IMPRESSO": 37, "DIGITAL": 8, "G4PBVIX": 8, "CLASS17": 5}, "tipos_detalhes": {"Sem categoria": [{"titulo": "[2026-002068] [EVENTOS][CANETA][CTO-CONFERENCE]", "key": "CREAT-429"}, {"titulo": "[2026-002048] [EVENTOS][BLOCO-A5][CTO-CONFERENCE]", "key": "CREAT-425"}, {"titulo": "[2026-002047] [EVENTOS][CREDENCIAL][CTO-CONFERENCE]", "key": "CREAT-424"}, {"titulo": "[2026-002046] [EVENTOS][CORDÃO][CTO-CONFERENCE]", "key": "CREAT-423"}, {"titulo": "[2026-001996] [MKK][IMPRESSO][O JORNAL DO FUTURO]", "key": "CREAT-410"}, {"titulo": "[2026-001951] [EVENTOS] [IMPRESSOS] [CORDÃO NOVO MEMBRO - CL", "key": "CREAT-402"}, {"titulo": "[2026-001913] [EVENTOS&PP] [NOTICIA DE JORNAL][TRACTIONCOMEM", "key": "CREAT-388"}, {"titulo": "[2026-001912] [EVENTOS&PP] [GARRAFA] [TRACTION COMEMORATIVA]", "key": "CREAT-387"}, {"titulo": "[2026-001836] [VINHETAS MENTORES] [CLASS]", "key": "CREAT-375"}, {"titulo": "[2026-001825] [Brand performance] [Evelyn Moura] [G4PB CWB]", "key": "CREAT-370"}, {"titulo": "[2026-001816] [G4 CLUB] [BOTTON] [BOTTON CELÍACO] ", "key": "CREAT-367"}, {"titulo": "[2026-001742] Ativação G4 Consulting - Expansão e Retenção", "key": "CREAT-338"}, {"titulo": "[2026-001689] [EVENTOS PARCERIAS E PATROCINIOS] [IMPRESSO] [", "key": "CREAT-328"}, {"titulo": "[2026-001675] [CREATIVE][IMPRESSO][PLAYBOOK MATERIAL IMPRESS", "key": "CREAT-325"}, {"titulo": "[2026-001666] [EVENTOS&PP] [TRACTION COMEMORATIVA] [INSIGNA]", "key": "CREAT-321"}, {"titulo": "[2026-001646] Placa para a House ", "key": "CREAT-306"}, {"titulo": "[2026-001641] [CLUB][G4 ESPORTES 07][CAMISA DE FUTEBOL]", "key": "CREAT-304"}, {"titulo": "[2026-001628] [EVENTOS][IMPRESSO][PLACA NOVOS EAGLES CLASS 1", "key": "CREAT-299"}, {"titulo": "[2026-001626] [DIGITAL][CREATIVE][TELA EMPREGOMETRO]", "key": "CREAT-298"}, {"titulo": "[2026-001604] Carta de Boas Vindas", "key": "CREAT-296"}], "IMPRESSO": [{"titulo": "[2026-001991] [EVENTOS] [IMPRESSOS] [QR CODE FOTOS CLASS 17]", "key": "CREAT-409"}, {"titulo": "[2026-001911] [EVENTOS&PP] [CORDÃO CREDENCIAL] [TRACTION COM", "key": "CREAT-386"}, {"titulo": "[2026-001910] [EVENTOS&PP] [PRISMA] [TRACTION COMEMORATIVA]", "key": "CREAT-385"}, {"titulo": "[2026-001909] [EVENTOS&PP] [CREDENCIAL] [TRACTION COMEMORATI", "key": "CREAT-384"}, {"titulo": "[2026-001899] [EVENTOS] [IMPRESSOS] [G4 MENTOR - BLOQUINHO] ", "key": "CREAT-383"}, {"titulo": "[2026-001898] [EVENTOS] [IMPRESSOS] [G4 MENTOR - PRISMA]", "key": "CREAT-382"}, {"titulo": "[2026-001897] [EVENTOS] [IMPRESSOS][G4 MENTOR - LOGO PARA CA", "key": "CREAT-381"}, {"titulo": "[2026-001896] [EVENTOS] [IMPRESSOS] [G4 MENTOR - CREDENCIAL]", "key": "CREAT-380"}, {"titulo": "[2026-001894] [EVENTOS] [IMPRESSOS] [G4 MENTOR - CORDÃO] ", "key": "CREAT-379"}, {"titulo": "[2026-001715] [EVENTOS&PP] [TRACTION COMEMORATIVA] [PLACA EN", "key": "CREAT-335"}, {"titulo": "[2026-001713] [EVENTOS&PP] [TRACTION COMEMORATIVA] [CAIXA EN", "key": "CREAT-333"}, {"titulo": "[2026-001016] [G4 SCALE][IMPRESSO][PULSEIRAS G4 SCALE]", "key": "CREAT-127"}, {"titulo": "[2026-000959] [EVENTOS PARCERIAS E PATROCÍNIOS] [IMPRESSO] [", "key": "CREAT-117"}, {"titulo": "[2026-000957] [EVENTOS PARCERIAS E PATROCÍNIOS] [ IMPRESSO] ", "key": "CREAT-116"}, {"titulo": "[2026-000896] REVISÃO BLOCO DE ANOTAÇÃO G4 CLUB", "key": "CREAT-104"}, {"titulo": "[2026-000862] [EVENTOS-CLUB][IMPRESSO-EM-LONA][FLÂMULAS]", "key": "CREAT-99"}, {"titulo": "[2026-000851] [G4 CLUB] [IMPRESSOS] [MODELO DE CARTA]", "key": "CREAT-92"}, {"titulo": "[2026-000688] [FACILITIES][IMPRESSOS][PLACASVASOSSANITÁRIOS]", "key": "CREAT-29"}, {"titulo": "[2026-000687] [FACILITIES][IMPRESSOS][PLACASDEUSO]", "key": "CREAT-28"}, {"titulo": "[2026-000686] [FACILITIES][IMPRESSOS[PLACASDESINALIZAÇÃODELI", "key": "CREAT-27"}], "DIGITAL": [{"titulo": "[2026-001978] Assinatura de email padrão", "key": "CREAT-408"}, {"titulo": "[2026-001018] [DIGITAL] [PP] [COMBO ESPECIAL PÓS-TRACTION]", "key": "CREAT-128"}, {"titulo": "[2026-000978] [Convite Padrão Open Company] Scale", "key": "CREAT-126"}, {"titulo": "[2026-000937] [WHATSAPP][PG][CAPAS DE GRUPOS]", "key": "CREAT-112"}, {"titulo": "[2026-000873] [Convite][SCL] Criar um convite editável padrã", "key": "CREAT-101"}, {"titulo": "[2026-000861] [CAPAS][GRUPOS DE WHATSAPP - TURMAS]", "key": "CREAT-97"}, {"titulo": "[2026-000835] [DIGITAL][G4CLUB] [Certificado Treinamento de ", "key": "CREAT-91"}, {"titulo": "[2026-000693] [DIGITAL][ONLINE] Alteração do KV de SKILLS CO", "key": "CREAT-33"}], "G4PBVIX": [{"titulo": "[2026-001140] [EVENTOS G4PB VIX][IMPRESSOS][FLÂMULAS DE COMU", "key": "CREAT-155"}, {"titulo": "[2026-001138] [EVENTOS G4PB VIX][IMPRESSOS][BACKDROP CREDENC", "key": "CREAT-153"}, {"titulo": "[2026-001136] [EVENTOS G4PB VIX][IMPRESSOS][BACKDROP CREDENC", "key": "CREAT-151"}, {"titulo": "[2026-001135] [EVENTOS G4PB VIX][IMPRESSOS][BALCÃO PARA VEND", "key": "CREAT-150"}, {"titulo": "[2026-001132] [EVENTOS G4PB VIX][IMPRESSOS][PLOTAGEM DE COLU", "key": "CREAT-148"}, {"titulo": "[2026-001131] [EVENTOS G4PB VIX][IMPRESSOS][LETRA CAIXA G4 E", "key": "CREAT-147"}, {"titulo": "[2026-001128] [EVENTOS G4PB VIX][IMPRESSOS][PÓRTICO DE ENTRA", "key": "CREAT-145"}, {"titulo": "[2026-000853] [EVENTOS] [IMPRESSO] [CREDENCIAL COMUM G4PB VI", "key": "CREAT-94"}], "CLASS17": [{"titulo": "[2026-001087] [EVENTOS][Class 17][Caixa Press Kit]", "key": "CREAT-134"}, {"titulo": "[2026-000714] [EVENTOS][IMPRESSO][CORDÃO CLASS 17]", "key": "CREAT-49"}, {"titulo": "[2026-000713] [EVENTOS][IMPRESSO][MENU IMPRESSO CLASS 17]", "key": "CREAT-48"}, {"titulo": "[2026-000713] [EVENTOS][IMPRESSO][TRÍADE DE MESA CLASS 17]", "key": "CREAT-47"}, {"titulo": "[2026-000712] [EVENTOS][IMPRESSO][CREDENCIAL CLASS 17]", "key": "CREAT-45"}]}, "areas": {"Eventos": 20, "EVENTOS": 9, "Corporativo": 8}, "por_mes": {"2026-04": {"total": 26, "atrasadas": 0, "finalizadas": 15, "canceladas": 0, "em_andamento": 11, "freelancer": 0}, "2026-03": {"total": 77, "atrasadas": 0, "finalizadas": 74, "canceladas": 2, "em_andamento": 1, "freelancer": 0}}, "demandas_atrasadas": []}, "Matheus Pio Nunes Gonçalves": {"total": 37, "em_andamento": 5, "finalizadas": 27, "atrasadas": 0, "canceladas": 4, "fora_sla": 0, "freelancer": 2, "taxa_atraso": 0.0, "tipos": {"Sem categoria": 22, "Apresentação": 4, "DIGITAL": 3, "Apresentações": 3, "IMPRESSO": 2}, "tipos_detalhes": {"Sem categoria": [{"titulo": "[2026-001975][EVENTOS][IMPRESSOS][CARTA ANIVERSARIANTES - CL", "key": "CREAT-406"}, {"titulo": "[2026-001833] Refação de artes para Cardoso_ produto Gestão ", "key": "CREAT-373"}, {"titulo": "[2026-001804] [CLUB][TRILHA 12][ARTE TUNEL DE LED]", "key": "CREAT-364"}, {"titulo": "[2026-001802] [corporativo][impresso][placa para copa]", "key": "CREAT-363"}, {"titulo": "[2026-001745] Novo KV CONVERSÃO DE DEMANDA - MANOEL GONÇALVE", "key": "CREAT-341"}, {"titulo": "[2026-001682] [SPRINTS][CAMILLA][LAYOUTS]", "key": "CREAT-327"}, {"titulo": "[2026-001677] [ONLINE][KV] Skills Conference - [KV] [SKILLS ", "key": "CREAT-326"}, {"titulo": "[2026-001650] [G4 CLUB][CLASS17][BOTTON] [BOTTON AIVERSARIAN", "key": "CREAT-308"}, {"titulo": "[2026-001648] Sprints_Ariane_Cultura", "key": "CREAT-307"}, {"titulo": "[2026-001645] [EVENTOS][APRESENTAÇÃO][TEMPLATE G4PB CURITIBA", "key": "CREAT-305"}, {"titulo": "[2026-001635] [BRAND PERFORMANCE][SOCIAL MEDIA] [INSTAGRAM][", "key": "CREAT-301"}, {"titulo": "[2026-001595] Mockup de celular com o instagram do G4", "key": "CREAT-295"}, {"titulo": "[2026-001537] [EVENTOS][IMPRESSO][TRIADE DE MESA REGIÕES BR]", "key": "CREAT-270"}, {"titulo": "[2026-001322] Adequação ao novo KV do (mobile) Deck de venda", "key": "CREAT-203"}, {"titulo": "[2026-001321] Adequação de KV - Deck de Traction Mobile", "key": "CREAT-202"}, {"titulo": "[2026-001255] [CORPORATIVO][TEMPLATE][G4PB]", "key": "CREAT-192"}, {"titulo": "[2026-001212] [PP][G4 MG][DECKDEVENDAS]", "key": "CREAT-180"}, {"titulo": "[2026-001161] [POST CONVITE] [PODCAST]", "key": "CREAT-168"}, {"titulo": "[2026-001150] [REABAERTURA DE DEMANDA] [SCALE] [CADERNO] [TE", "key": "CREAT-163"}, {"titulo": "[2026-001145] (CLUB(CLASS 17)(CARTA PRESS KIT)", "key": "CREAT-160"}], "Apresentação": [{"titulo": "[2026-001482] [PP][DOUGLASMEDEIROS][GESTAODECARTEIRA]", "key": "CREAT-258"}, {"titulo": "[2026-001154] [MX] / [TALLIS] / [KICKOFF MENTORES]", "key": "CREAT-164"}, {"titulo": "[2026-001125] [EVENTOS][TEMPLATE G4 PB VIX]", "key": "CREAT-144"}, {"titulo": "[2026-000821] [CORPORATIVO][FOTO_ARTE_NOVO_ASSOCIATE][G4_EXP", "key": "CREAT-87"}], "DIGITAL": [{"titulo": "[2026-001614] MARKETING | SOCIAL | G4 MENTOR |", "key": "CREAT-297"}, {"titulo": "[2026-001419] [Brand performance] [Evelyn Moura] [BYD]", "key": "CREAT-239"}, {"titulo": "[2026-001215] KV Geração G4", "key": "CREAT-181"}], "Apresentações": [{"titulo": "AULA | G4PBVIX - Alfredo - Pitch → Advisor", "key": "CREAT-214"}, {"titulo": "AULA | G4PBVIX - Painel: Misa + Ricardo Ferraço e o Fernando", "key": "CREAT-212"}, {"titulo": "AULA | G4PBVIX - Alfredo - Mentoria coletiva no palco", "key": "CREAT-211"}], "IMPRESSO": [{"titulo": "[2026-001760] [SCALE] CARTA DE BOAS VINDAS", "key": "CREAT-347"}, {"titulo": "[2026-001570] [PP] [IMPRESSO] [FOLHA DE EXERCÍCIO - GDP]", "key": "CREAT-290"}]}, "areas": {"Brand Performance": 4, "Eventos": 2, "Corporativo": 2}, "por_mes": {"2026-04": {"total": 8, "atrasadas": 0, "finalizadas": 1, "canceladas": 2, "em_andamento": 4, "freelancer": 1}, "2026-03": {"total": 29, "atrasadas": 0, "finalizadas": 26, "canceladas": 2, "em_andamento": 1, "freelancer": 1}}, "demandas_atrasadas": []}, "Vitor Santos Serodeo": {"total": 16, "em_andamento": 5, "finalizadas": 7, "atrasadas": 0, "canceladas": 1, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 0.0, "tipos": {"Sem categoria": 13, "IMPRESSO": 2, "DIGITAL": 1}, "tipos_detalhes": {"Sem categoria": [{"titulo": "[2026-002021] [KV][ANIVERSÁRIO G4]", "key": "CREAT-417"}, {"titulo": "[2026-001958] [ADS][FG4 VITALÍCIO]", "key": "CREAT-403"}, {"titulo": "[2026-001933] [Criação de Convite] [SCL] Criar um modelo de ", "key": "CREAT-401"}, {"titulo": "[2026-001881] [CERTIFICADO JOURNEY]", "key": "CREAT-378"}, {"titulo": "[2026-001863] DEMANDA TESTE", "key": "CREAT-376"}, {"titulo": "[2026-001830] [BANNER][ABRIL][ECOMEMRCE] - 4 Banners", "key": "CREAT-372"}, {"titulo": "[2026-001795] [HEADER][EMAIL MKT][RELANÇAMENTO DE FG4] - 8 H", "key": "CREAT-362"}, {"titulo": "[2026-001714] [EVENTOS&PP] [TRACTION COMEMORATIVA] [BLOCO DE", "key": "CREAT-334"}, {"titulo": "[2026-001711]  Cards Mentores", "key": "CREAT-332"}, {"titulo": "[2026-001706] [DIGITAL] BU Online | Thumb Novo Formação G4", "key": "CREAT-331"}, {"titulo": "[2026-001667] [PG][DECK DE VENDAS][FOUNDER LED GROWTH]", "key": "CREAT-322"}, {"titulo": "[2026-001640] [CLUB][CLASS 17][CARTA WELCOME KIT]", "key": "CREAT-303"}, {"titulo": "[2026-001548] IMAGEM DE DESCANSO PARA TURMAS PRESENCIAIS - D", "key": "CREAT-278"}], "IMPRESSO": [{"titulo": "[2026-001757] [PP][caderno impresso][Caderno_do_aluno]", "key": "CREAT-346"}, {"titulo": "[2026-001592] [ONLINE][IMPRESSO][FLYER] FLYER DO SKILLS no K", "key": "CREAT-293"}], "DIGITAL": [{"titulo": "[2026-002022] [ADS][CATALOGO][META ADS] - Ajuste em alguns c", "key": "CREAT-418"}]}, "areas": {"Paid Performance": 1, "Programas de Capacitação": 1, "G4 SKILLS": 1}, "por_mes": {"2026-04": {"total": 12, "atrasadas": 0, "finalizadas": 4, "canceladas": 1, "em_andamento": 5, "freelancer": 0}, "2026-03": {"total": 4, "atrasadas": 0, "finalizadas": 3, "canceladas": 0, "em_andamento": 0, "freelancer": 0}}, "demandas_atrasadas": []}, "Pedro Marcondes": {"total": 42, "em_andamento": 11, "finalizadas": 22, "atrasadas": 2, "canceladas": 2, "fora_sla": 0, "freelancer": 1, "taxa_atraso": 4.8, "tipos": {"Sem categoria": 27, "DIGITAL": 5, "IMPRESSO": 2, "Social_Media": 2, "CampEspíritoImperial": 2}, "tipos_detalhes": {"Sem categoria": [{"titulo": "[2026-002023] [Ebook] Líderes que transformam: Quem constrói", "key": "CREAT-419"}, {"titulo": "[2026-001977] [DIGITAL][TOOLS][VTEXDAY]", "key": "CREAT-407"}, {"titulo": "[2026-001959] [ADS][FG4 POR 30 DIAS][R$897 ou 12x de 74,65] ", "key": "CREAT-404"}, {"titulo": "[2026-001877] [ADS][FG4][NOVAS VARIAÇÕES] - 10 Estáticos: No", "key": "CREAT-377"}, {"titulo": "[2026-001834] [EVENTOS][CLASS17][TEMPLATE DE AULAS]", "key": "CREAT-374"}, {"titulo": "[2026-001826] [FEED][WHATSAPP][RELANÇAMENTO DE FG4] - 8 What", "key": "CREAT-371"}, {"titulo": "[2026-001824] [CLUB][CLASS 17][PPT APRESENTAÇÃO]", "key": "CREAT-369"}, {"titulo": "[2026-001808] [TOOLS][SOCIAL MEDIA][PODCAST] - [DIGITAL][TOO", "key": "CREAT-366"}, {"titulo": "[2026-001770] FLG T2 | BG -  ADAPTAÇÃO E CRIAÇÃO DE PEÇA PAR", "key": "CREAT-351"}, {"titulo": "[2026-001722] [DIGITAL][CREATIVE][PACK DE IMAGENS - MENTORES", "key": "CREAT-337"}, {"titulo": "[2026-001696] [G4][CAMILLA][MIDIA DE CORTES]", "key": "CREAT-329"}, {"titulo": "[2026-001582] [Enxoval][Flow][Inteligência]", "key": "CREAT-292"}, {"titulo": "[2026-001568] [PP] [IMPRESSO] [CADERNO DO ALUNO - GDP]", "key": "CREAT-288"}, {"titulo": "[2026-001562] Traction Comemorativa - TEMPLATE de aulas", "key": "CREAT-283"}, {"titulo": "[2026-001544] PESQUISA PERCEPÇÃO DE MARCA (HEADER PARA EMAIL", "key": "CREAT-274"}, {"titulo": "[2026-001542] REVISÃO LP - A VERDADE", "key": "CREAT-272"}, {"titulo": "[2026-001499] Líderes que transformam: Quem constrói o Brasi", "key": "CREAT-264"}, {"titulo": "[2026-001498] G4 Valley: onde os heróis do Brasil são forjad", "key": "CREAT-263"}, {"titulo": "[2026-001400] [Brand performance] [Evelyn Moura] [Frameworks", "key": "CREAT-237"}, {"titulo": "[2026-001389] É HOJE", "key": "CREAT-236"}], "DIGITAL": [{"titulo": "[2026-001636] Relatório Diagnóstico Tools", "key": "CREAT-302"}, {"titulo": "[2026-001440] [Brand performance] [Evelyn Moura] [G4PB Vitór", "key": "CREAT-248"}, {"titulo": "[2026-001171] [Qr Code][Podcast Flow]", "key": "CREAT-173"}, {"titulo": "[2026-000862] [DIGITAL][CORPORATIVO-TECH][BANNER PARA AULA A", "key": "CREAT-98"}, {"titulo": "[2026-000692] [SKL][Aquisição] Header Email", "key": "CREAT-32"}], "IMPRESSO": [{"titulo": "[2026-002067] [EVENTOS][FICHA-DE-PALCO][CTO-CONFERENCE]", "key": "CREAT-428"}, {"titulo": "[2026-002066] [EVENTOS][BACKDROP][CTO-CONFERENCE]", "key": "CREAT-427"}], "Social_Media": [{"titulo": "[2026-002065] [MKT][SOCIAL MEDIA] [CARROSSEL HARVARD BUSINES", "key": "CREAT-426"}, {"titulo": "[2026-001059] [Brand Performance] [Evelyn Moura] [Eskimó Sor", "key": "CREAT-130"}], "CampEspíritoImperial": [{"titulo": "[2026-001546] DESTAQUE  (FEED E STORY) CAMPANHA ESPIRITO IMP", "key": "CREAT-276"}, {"titulo": "[2026-001333] [BRANDING] [SOCIAL MEDIA] [Quem foi Barão de M", "key": "CREAT-205"}]}, "areas": {"Brand Performance": 3, "EVENTOS": 2, "G4 SKILLS": 2}, "por_mes": {"2026-04": {"total": 14, "atrasadas": 0, "finalizadas": 1, "canceladas": 1, "em_andamento": 7, "freelancer": 0}, "2026-03": {"total": 28, "atrasadas": 2, "finalizadas": 21, "canceladas": 1, "em_andamento": 4, "freelancer": 1}}, "demandas_atrasadas": [{"titulo": "[2026-001499] Líderes que transformam: Quem constrói o Brasi", "prazo": "2026-04-07", "status": "Alteração", "area": ""}, {"titulo": "[2026-001498] G4 Valley: onde os heróis do Brasil são forjad", "prazo": "2026-04-07", "status": "Alteração", "area": ""}]}, "Freelancer": {"total": 104, "em_andamento": 26, "finalizadas": 50, "atrasadas": 3, "canceladas": 7, "fora_sla": 0, "freelancer": 80, "taxa_atraso": 2.9, "tipos": {"Apresentação": 29, "Sem categoria": 24, "G4CLASS17": 12, "G4PBCURITIBA": 12, "Aula": 10}, "tipos_detalhes": {"Apresentação": [{"titulo": "[2026-001564] Traction Comemorativa - Aula Cultura e Lideran", "key": "CREAT-285"}, {"titulo": "[2026-001523] [BRAND PERFORMANCE] [G4] [STORIES AGENDA DOS P", "key": "CREAT-269"}, {"titulo": "[2026-001483] [PP][PAGOTTO][MAQUINADEVENDAS]", "key": "CREAT-259"}, {"titulo": "[2026-001481] [PP][MANOELGONÇALVEZ][GESTAODEOPORTUNIDADES]", "key": "CREAT-257"}, {"titulo": "[2026-001480] [PP][THEOOROCOS][GESTAODEOPORTUNIDADE]", "key": "CREAT-256"}, {"titulo": "[2026-001479] [PP][YAGOMARTINS][ARQUITETURADERECEITA]", "key": "CREAT-255"}, {"titulo": "[2026-001478] [PP][ENCERRAMENTOSALES]", "key": "CREAT-254"}, {"titulo": "[2026-001477] [PP][ABERTURADESALES]", "key": "CREAT-253"}, {"titulo": "[2026-001358] [PP][JOAOMOTTA][GROWTH]", "key": "CREAT-231"}, {"titulo": "[2026-001357] [PP][JULIANALOCH][ESTRATEGIASDECANALDEAQUISIÇÃ", "key": "CREAT-230"}, {"titulo": "[2026-001356] [PP][MINEIRO][RETENÇÃO]", "key": "CREAT-229"}, {"titulo": "[2026-001353] [PP][DENNISWANG]AULAAERADAEXPERIENCIADOCLIENTE", "key": "CREAT-226"}, {"titulo": "[2026-001348] [PP][DOUGLASMEDEIROS][AULAGESTÃODECARTEIRA]", "key": "CREAT-221"}, {"titulo": "[2026-001264] [PG][JOÃO VITOR][CONSTRUÇÃO DE CONTEÚDO COM AI", "key": "CREAT-197"}, {"titulo": "[2026-001262] [PFG][ERICH SHIBATA][Autoridade e viralização]", "key": "CREAT-195"}, {"titulo": "[2026-001261] [PG][ALFREDO SOARES][Autoridade, canais, conex", "key": "CREAT-194"}, {"titulo": "[2026-001244] [PP] [MAURÍLIO NUNES] [GDP]", "key": "CREAT-190"}, {"titulo": "[2026-001243] [PP][PAULA PIMENTA] [GDP]", "key": "CREAT-189"}, {"titulo": "[2026-001242] [PP] [DAVID LEDSON] [GDP]", "key": "CREAT-188"}, {"titulo": "[2026-001241] [PP] [CADU ALTONA] [GDP]", "key": "CREAT-187"}], "Sem categoria": [{"titulo": "[2026-002008] Traction Comemorativa - Encerramento - Adequaç", "key": "CREAT-416"}, {"titulo": "[2026-002007] Traction Comemorativa - Planejamento Estratégi", "key": "CREAT-415"}, {"titulo": "[2026-002006] Traction Comemorativa - Tela de fundo para pai", "key": "CREAT-414"}, {"titulo": "[2026-001997] Traction Comemorativa - Aula Vendas Estratégic", "key": "CREAT-413"}, {"titulo": "[2026-002001] Traction Comemorativa - Planejamento Tático - ", "key": "CREAT-412"}, {"titulo": "[2026-002000] Traction Comemorativa - Gestão financeira - At", "key": "CREAT-411"}, {"titulo": "[2026-001778] G4PB CURITIBA | A Fábrica de Receita - Fernand", "key": "CREAT-360"}, {"titulo": "[2026-001764] [PP][MG][ABERTURA]", "key": "CREAT-348"}, {"titulo": "[2026-001751] PG - PROCESSOS E ROTINAS DE GESTÃO - RODRIGO M", "key": "CREAT-345"}, {"titulo": "[2026-001750] PG - POSICIONAMENTO ESTRATÉGICO - MANOEL LINS", "key": "CREAT-344"}, {"titulo": "[2026-001746] INSERIR NOVO kV DIRECIONAMENTO DO NEGÓCIO - AN", "key": "CREAT-342"}, {"titulo": "[2026-001744] Novo KV no PPT de CANAIS DE AQUISIÇÃO - EMILIA", "key": "CREAT-340"}, {"titulo": "[2026-001551] ISCA - REPORT INTELIGENCIA ESTRATEGICA", "key": "CREAT-280"}, {"titulo": "[2026-001436] [MATERIAL RICO] [SEO] [REBRAND]", "key": "CREAT-246"}, {"titulo": "[2026-001435]  [MATERIAL RICO] [SEO] [REBRAND]", "key": "CREAT-245"}, {"titulo": "[2026-001434] [MATERIAL RICO] [SEO] [REBRAND]", "key": "CREAT-244"}, {"titulo": "[2026-001433] [MATERIAL RICO] [SEO] [REBRAND]", "key": "CREAT-243"}, {"titulo": "[2026-001432] [MATERIAL RICO] [SEO] [REBRAND]", "key": "CREAT-242"}, {"titulo": "[2026-001431] [MATERIAL RICO] [SEO] [REBRAND]", "key": "CREAT-241"}, {"titulo": "[2026-001146] [Expansão] Abertura do Jantar de Aceleração de", "key": "CREAT-161"}], "G4CLASS17": [{"titulo": "[2026-001926] [CLASS17][IMPRESSO] Totem receptivo uma face", "key": "CREAT-400"}, {"titulo": "[2026-001925] [CLASS17][IMPRESSO] Painel frente de palco dup", "key": "CREAT-399"}, {"titulo": "[2026-001924] [CLASS17][IMPRESSO] Painel fundo de palco uma ", "key": "CREAT-398"}, {"titulo": "[2026-001923]  [CLASS17][IMPRESSO] Paineis foyer com laterai", "key": "CREAT-397"}, {"titulo": "[2026-001922] [CLASS17][IMPRESSO] Paineis foyer uma face com", "key": "CREAT-396"}, {"titulo": "[2026-001921]  [CLASS17][IMPRESSO] Painel pórtico uma face c", "key": "CREAT-395"}, {"titulo": "[2026-001920] [CLASS17][IMPRESSO] Painel fundo de palco uma ", "key": "CREAT-394"}, {"titulo": "[2026-001919]  [CLASS17][IMPRESSO] Pórtico uma face com late", "key": "CREAT-393"}, {"titulo": "[2026-001918] [CLASS17][IMPRESSO] Painel foto OPP 02 uma fac", "key": "CREAT-392"}, {"titulo": "[2026-001916]  [CLASS17][IMPRESSO] Painel foto opp duplaface", "key": "CREAT-391"}, {"titulo": "[2026-001915]  [CLASS17][IMPRESSO] Painel foto OPP 01", "key": "CREAT-390"}, {"titulo": "[2026-001914]  [CLASS17][IMPRESSO] Painel receptivo", "key": "CREAT-389"}], "G4PBCURITIBA": [{"titulo": "[2026-001664] G4PB Curitiba | Letreiro 3D", "key": "CREAT-320"}, {"titulo": "[2026-001663] G4PB Curitiba | Sala VIP ", "key": "CREAT-319"}, {"titulo": "[2026-001662] G4PB Curitiba | Foyer: Pórtico;", "key": "CREAT-318"}, {"titulo": "[2026-001661] G4PB Curitiba | Balcão vendas", "key": "CREAT-317"}, {"titulo": "[2026-001660] G4PB Curitiba | Ponto de  vendas", "key": "CREAT-316"}, {"titulo": "[2026-001659] G4PB Curitiba | 2X Foto Point (frente e verso)", "key": "CREAT-315"}, {"titulo": "[2026-001658] G4PB Curitiba | Ativação G4", "key": "CREAT-314"}, {"titulo": "[2026-001655] G4PB Curitiba | Balcão credenciamento FRENTE ;", "key": "CREAT-313"}, {"titulo": "[2026-001654] G4PB Curitiba | Backdroop CREDENCIAMENTO", "key": "CREAT-312"}, {"titulo": "[2026-001653] G4PB Curitiba | Balcão credenciamento FRENTE v", "key": "CREAT-311"}, {"titulo": "[2026-001652] G4PB Curitba | Backdroop FRENTE CRED VIP", "key": "CREAT-310"}, {"titulo": "[2026-001651] G4PB Curitiba | Entrada externa | Testeira", "key": "CREAT-309"}], "Aula": [{"titulo": "[2026-000971] FREELANCER [JOURNEY] - [Aula 2] Marketing orie", "key": "CREAT-121"}, {"titulo": "[2026-000970] FREELANCER - [JOURNEY] - [Aula 1] Análise das ", "key": "CREAT-120"}, {"titulo": "[2026-000920] [GE][MARIA CANDIDA][CULTURA]", "key": "CREAT-108"}, {"titulo": "[2026-000742] [FREELA] [PP] [DENNIS WANG] [A ERA DA EXPERIÊN", "key": "CREAT-70"}, {"titulo": "[2026-000737] [G4SALES] [DOUGLAS MEDEIROS] [GESTÃO DE CARTEI", "key": "CREAT-65"}, {"titulo": "[2026-000732] [PP] [PAULA PIMENTA] [PLANEJAMENTO ESTRATÉGICO", "key": "CREAT-60"}, {"titulo": "[2026-000729] [PP] [GUSTAVO PAGOTTO] [TREINAMENTO ONLINE DE ", "key": "CREAT-57"}, {"titulo": "[2026-000726] [PP][JOAO VITOR][ACADEMIA DE IA]", "key": "CREAT-54"}, {"titulo": "[2026-000716] [FREELA][AULA] Gestão Comercial com Gustavo Pa", "key": "CREAT-51"}, {"titulo": "[2026-000700] [FREELANCER][AULA] Aula de Processo Comercial ", "key": "CREAT-37"}]}, "areas": {"Programas de Capacitação": 19, "Eventos": 13, "EVENTOS": 12}, "por_mes": {"2026-04": {"total": 25, "atrasadas": 1, "finalizadas": 2, "canceladas": 0, "em_andamento": 7, "freelancer": 22}, "2026-03": {"total": 77, "atrasadas": 2, "finalizadas": 48, "canceladas": 5, "em_andamento": 19, "freelancer": 58}}, "demandas_atrasadas": [{"titulo": "[2026-001764] [PP][MG][ABERTURA]", "prazo": "2026-04-16", "status": "Na fila", "area": ""}, {"titulo": "[2026-001481] [PP][MANOELGONÇALVEZ][GESTAODEOPORTUNIDADES]", "prazo": "2026-04-16", "status": "Na fila", "area": "Programas de Capacitação"}, {"titulo": "[2026-001347] [PP][MANOELGONÇALVES][AULAGESTAODEPIPELINE]", "prazo": "2026-04-16", "status": "Na fila", "area": "Programas de Capacitação"}]}}, "metricas": {"sla_medio_dias": null, "sla_amostras": 0, "sla_por_tipo": {}, "taxa_pontualidade": null, "pont_amostras": 0, "taxa_aprov_1a": null, "aprov_1a_amostras": 0, "rev_medio": null, "rev_amostras": 0, "rating_medio": null, "rating_amostras": 0, "rating_dist": {}}};
-const DATA_RED = {"gerado_em": "2026-04-17", "meses": ["2026-04", "2026-03"], "por_mes": {"2026-04": {"total": 6, "atrasados": 1, "finalizados": 0, "cancelados": 0, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 16.7, "status_counts": {"Analisar": 3, "Na fila": 3}, "tipo_counts": {"REDboard": 6}, "area_counts": {}, "area_atrasados": {}}, "2026-03": {"total": 43, "atrasados": 6, "finalizados": 9, "cancelados": 22, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 14.0, "status_counts": {"Cancelado": 22, "Finalizado": 9, "Analisar": 6, "Na fila": 6}, "tipo_counts": {"REDboard": 42, "Sem categoria": 1}, "area_counts": {}, "area_atrasados": {}}}, "total": 49, "atrasados": 7, "cancelados": 22, "fora_sla": 0, "finalizados": 9, "em_aprovacao": 0, "freelancer": 0, "taxa_atraso_geral": 14.3, "status_counts": {"Cancelado": 22, "Analisar": 9, "Na fila": 9, "Finalizado": 9}, "tipo_counts": {"REDboard": 48, "Sem categoria": 1}, "area_counts": {}, "area_atrasados": {}, "demandas_atrasadas_por_area": {}, "designers": {"Juliana Cespedes": {"total": 10, "em_andamento": 4, "finalizadas": 5, "atrasadas": 4, "canceladas": 0, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 40.0, "tipos": {"REDboard": 10}, "tipos_detalhes": {"REDboard": [{"titulo": "[2026-001643] Eventos - Texto para convite", "key": "RED-43"}, {"titulo": "[2026-001195] Youtube e podcasts - Roteiro Podcast (episódio", "key": "RED-34"}, {"titulo": "[2026-001026] Youtube e podcasts - Roteiro Podcast (episódio", "key": "RED-30"}, {"titulo": "[2026-000944] Eventos - Roteiro vídeo abertura", "key": "RED-28"}, {"titulo": "[2026-000913] Social media - Conteúdo Instagram", "key": "RED-26"}, {"titulo": "[2026-000900] Social media - Conteúdo Instagram", "key": "RED-21"}, {"titulo": "[2026-000872] Youtube e podcasts - Roteiro YouTube (vídeo lo", "key": "RED-20"}, {"titulo": "[2026-000866] Youtube e podcasts - Roteiro YouTube (vídeo lo", "key": "RED-19"}, {"titulo": "[2026-000826] Eventos - Roteiro vídeo abertura - Pessoas", "key": "RED-17"}, {"titulo": "[2026-000762] Nova Solicitação", "key": "RED-2"}]}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0, "finalizadas": 0, "canceladas": 0, "em_andamento": 0, "freelancer": 0}, "2026-03": {"total": 10, "atrasadas": 4, "finalizadas": 5, "canceladas": 0, "em_andamento": 4, "freelancer": 0}}, "demandas_atrasadas": [{"titulo": "[2026-000900] Social media - Conteúdo Instagram", "prazo": "2026-03-09", "status": "Na fila", "area": ""}, {"titulo": "[2026-000866] Youtube e podcasts - Roteiro YouTube (vídeo lo", "prazo": "2026-03-09", "status": "Na fila", "area": ""}, {"titulo": "[2026-000944] Eventos - Roteiro vídeo abertura", "prazo": "2026-03-17", "status": "Na fila", "area": ""}, {"titulo": "[2026-000913] Social media - Conteúdo Instagram", "prazo": "2026-03-19", "status": "Na fila", "area": ""}]}, "t.fonseca": {"total": 4, "em_andamento": 0, "finalizadas": 1, "atrasadas": 0, "canceladas": 3, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 0.0, "tipos": {"REDboard": 4}, "tipos_detalhes": {"REDboard": [{"titulo": "[2026-000912] Lifecycle - Régua e-mail documentário Heróis d", "key": "RED-25"}, {"titulo": "[2026-000911] Lifecycle - E-mail pontual", "key": "RED-24"}, {"titulo": "[2026-000910] Lifecycle - Régua E-mail pontual", "key": "RED-23"}, {"titulo": "[2026-000904] Campanhas e ações de marca - Conceito de campa", "key": "RED-22"}]}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0, "finalizadas": 0, "canceladas": 0, "em_andamento": 0, "freelancer": 0}, "2026-03": {"total": 4, "atrasadas": 0, "finalizadas": 1, "canceladas": 3, "em_andamento": 0, "freelancer": 0}}, "demandas_atrasadas": []}, "Sarah Vitorio": {"total": 0, "em_andamento": 0, "finalizadas": 0, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 0, "tipos": {}, "tipos_detalhes": {}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0, "finalizadas": 0, "canceladas": 0, "em_andamento": 0, "freelancer": 0}, "2026-03": {"total": 0, "atrasadas": 0, "finalizadas": 0, "canceladas": 0, "em_andamento": 0, "freelancer": 0}}, "demandas_atrasadas": []}, "Marcella Mancinelli": {"total": 0, "em_andamento": 0, "finalizadas": 0, "atrasadas": 0, "canceladas": 0, "fora_sla": 0, "freelancer": 0, "taxa_atraso": 0, "tipos": {}, "tipos_detalhes": {}, "areas": {}, "por_mes": {"2026-04": {"total": 0, "atrasadas": 0, "finalizadas": 0, "canceladas": 0, "em_andamento": 0, "freelancer": 0}, "2026-03": {"total": 0, "atrasadas": 0, "finalizadas": 0, "canceladas": 0, "em_andamento": 0, "freelancer": 0}}, "demandas_atrasadas": []}}, "metricas": {"sla_medio_dias": null, "sla_amostras": 0, "sla_por_tipo": {}, "taxa_pontualidade": null, "pont_amostras": 0, "taxa_aprov_1a": null, "aprov_1a_amostras": 0, "rev_medio": null, "rev_amostras": 0, "rating_medio": null, "rating_amostras": 0, "rating_dist": {}}};
+const DB_ID = '2e0b431349e180498fe0cbaf43c58f21';
+let TOKEN = '';
+let allData = [];
+let filteredData = [];
+let charts = {};
 
-// ── STATE ──────────────────────────────────────────────────────────────────
-let currentTeam = 'creat';
-let currentMes  = 'todos';
-let chartInstances = {};
-
-// ── HELPERS ────────────────────────────────────────────────────────────────
-function showPage(id, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  btn.classList.add('active');
+// ---- AUTH ----
+function connect() {
+  const t = document.getElementById('tokenInput').value.trim();
+  if (!t) return;
+  TOKEN = t;
+  localStorage.setItem('notion_token_dash', t);
+  document.getElementById('tokenScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadData();
 }
 
-function switchTeam(team) {
-  // Atualiza label do botao de navegacao
-  const btnDesigners = document.querySelector('nav button[onclick="showPage(\x27designers\x27, this)"]');
-  currentTeam = team;
-  document.getElementById('btn-creat').className = team === 'creat' ? 'btn-creat-active' : '';
-  document.getElementById('btn-red').className   = team === 'red'   ? 'btn-red-active'   : '';
-  document.documentElement.style.setProperty('--accent', team === 'creat' ? '#5b8af5' : '#f44b6e');
-  const btnND = document.getElementById('btn-nav-designers');
-  if (btnND) btnND.textContent = team === 'red' ? 'Por Redator' : 'Por Designer';
-  currentMes = 'todos';
-  buildMesToggle();
-  renderAll();
+function logout() {
+  localStorage.removeItem('notion_token_dash');
+  location.reload();
 }
 
-function switchMes(mes) {
-  currentMes = mes;
-  document.querySelectorAll('#mes-toggle button').forEach(b => b.classList.remove('btn-mes-active'));
-  const btn = document.querySelector(`#mes-toggle button[data-mes="${mes}"]`);
-  if (btn) btn.classList.add('btn-mes-active');
-  renderAll();
+// Check saved token
+const saved = localStorage.getItem('notion_token_dash');
+if (saved) {
+  TOKEN = saved;
+  document.getElementById('tokenInput').value = saved;
+  document.getElementById('tokenScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
 }
 
-function buildMesToggle() {
-  const d = getData();
-  const el = document.getElementById('mes-toggle');
-  el.innerHTML = '';
-  const meses = d.meses || [];
+// ---- DATA LOAD ----
+async function fetchAll() {
+  let results = [], cursor = null;
+  const PROXY = 'https://notion-proxy-g4.vercel.app/api/notion';
+  
+  do {
+    const body = { page_size: 100, sorts: [{ property: 'Criado em', direction: 'descending' }] };
+    if (cursor) body.start_cursor = cursor;
 
-  const todos = document.createElement('button');
-  todos.textContent = 'Todos';
-  todos.dataset.mes = 'todos';
-  todos.onclick = () => switchMes('todos');
-  if (currentMes === 'todos') todos.classList.add('btn-mes-active');
-  el.appendChild(todos);
-
-  meses.forEach(mes => {
-    const btn = document.createElement('button');
-    const [ano, m] = mes.split('-');
-    const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-    btn.textContent = nomes[parseInt(m)-1] + '/' + ano.slice(2);
-    btn.dataset.mes = mes;
-    btn.onclick = () => switchMes(mes);
-    if (currentMes === mes) btn.classList.add('btn-mes-active');
-    el.appendChild(btn);
-  });
-}
-
-function getData() {
-  return currentTeam === 'creat' ? DATA_CREAT : DATA_RED;
-}
-
-// Retorna os dados filtrados pelo mês selecionado
-function getView() {
-  const d = getData();
-  if (currentMes === 'todos') return d;
-  const m = d.por_mes?.[currentMes];
-  if (!m) return { total:0, atrasados:0, cancelados:0, fora_sla:0, finalizados:0, em_aprovacao:0, freelancer:0, taxa_atraso_geral:0, status_counts:{}, tipo_counts:{}, area_counts:{}, area_atrasados:{}, metricas: d.metricas };
-  // metricas de qualidade sempre do global (calculadas sobre finalizados, independente de mês de criação)
-  return { ...d, ...m, freelancer: m.freelancer ?? 0, metricas: d.metricas };
-}
-
-function statusClass(s) {
-  const m = {
-    'Na fila': 's-na-fila', 'Enviado': 's-enviado', 'Em producao': 's-producao', 'Em produção': 's-producao',
-    'Aprovado': 's-aprovado', 'Finalizado': 's-finalizado', 'Cancelada': 's-cancelada',
-    'Revisao': 's-revisao', 'Revisão': 's-revisao',
-    'Alteracao': 's-alteracao', 'Alteração': 's-alteracao',
-    'Aprovacao pendente': 's-aprovpend', 'Aprovação pendente': 's-aprovpend',
-  };
-  return m[s] || 's-default';
-}
-
-function kpiHtml(label, value, sub, cls) {
-  return `<div class="kpi ${cls||''}">
-    <div class="label">${label}</div>
-    <div class="value">${value}</div>
-    ${sub ? `<div class="sub">${sub}</div>` : ''}
-  </div>`;
-}
-
-function mesLabel(mes) {
-  if (!mes || mes === 'todos') return 'todos os meses';
-  const [ano, m] = mes.split('-');
-  const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  return nomes[parseInt(m)-1] + '/' + ano;
-}
-
-const COLORS = ['#5b8af5','#a78bfa','#22d3ee','#4caf7d','#f5a623','#f44b6e','#fb923c','#34d399','#818cf8','#f472b6'];
-
-Chart.register(ChartDataLabels);
-function makeChart(id, type, labels, datasets, opts={}) {
-  if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
-  const ctx = document.getElementById(id);
-  if (!ctx) return;
-  const isBar = type === 'bar';
-  const isDoughnut = type === 'doughnut';
-  const isHBar = opts.indexAxis === 'y';
-  chartInstances[id] = new Chart(ctx, {
-    type,
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#7b82a8', font: { size: 11 } } },
-        datalabels: {
-          font: { size: 11, weight: 'bold' },
-          formatter: (value) => value > 0 ? value : '',
-          anchor: isDoughnut ? 'center' : (isHBar ? 'end' : 'center'),
-          align: isDoughnut ? 'center' : (isHBar ? 'start' : 'center'),
-          color: (context) => {
-            if (isDoughnut) return '#ffffff';
-            if (!isHBar) return '#ffffff';
-            // barra horizontal: dentro se valor grande, fora se pequeno
-            const data = context.dataset.data;
-            const max = Math.max(...data);
-            const val = data[context.dataIndex];
-            return (val / max) > 0.25 ? '#ffffff' : '#e8eaf6';
-          },
-          textStrokeColor: (context) => {
-            if (!isHBar) return 'rgba(0,0,0,0.5)';
-            const data = context.dataset.data;
-            const max = Math.max(...data);
-            return (data[context.dataIndex] / max) > 0.25 ? 'rgba(0,0,0,0.5)' : 'transparent';
-          },
-          textStrokeWidth: 3,
-          padding: isHBar ? { right: 4 } : 0,
-          display: (context) => context.dataset.data[context.dataIndex] > 0,
+    // Try direct first, fallback to proxy pattern
+    let resp;
+    try {
+      resp = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${TOKEN}`,
+          'Notion-Version': '2022-06-28',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         },
-        ...opts.plugins
-      },
-      scales: isBar ? {
-        x: { ticks: { color: '#7b82a8', font:{size:10} }, grid: { color: 'rgba(46,49,80,.4)' } },
-        y: { ticks: { color: '#7b82a8', font:{size:10} }, grid: { color: 'rgba(46,49,80,.4)' } }
-      } : {},
-      ...opts
-    }
-  });
-}
-
-// ── VISAO GERAL ────────────────────────────────────────────────────────────
-function renderGeral() {
-  const d    = getData();
-  const v    = getView();
-  const team = currentTeam.toUpperCase();
-  const accentColor = currentTeam === 'creat' ? '#5b8af5' : '#f44b6e';
-
-  document.getElementById('kpis-geral').innerHTML =
-    kpiHtml('Time', team, mesLabel(currentMes)) +
-    kpiHtml('Total', v.total, 'demandas') +
-    kpiHtml('Em Andamento', (v.status_counts?.['Na fila']||0) + (v.status_counts?.['Em produção']||0) + (v.status_counts?.['Enviado']||0) + (v.status_counts?.['Revisão']||0) + (v.status_counts?.['Alteração']||0), '', 'info') +
-    kpiHtml('Atrasadas', v.atrasados, `${v.taxa_atraso_geral}% do total`, v.atrasados > 0 ? 'danger' : 'ok') +
-    kpiHtml('Em Aprovacao', v.em_aprovacao || (v.status_counts?.['Aprovação pendente']||0), '', 'warn') +
-    kpiHtml('Finalizadas', v.finalizados, '', 'ok') +
-    kpiHtml('Canceladas', v.cancelados, '', v.cancelados > 0 ? 'warn' : '') +
-    kpiHtml('Fora de SLA', v.fora_sla, 'na criacao', v.fora_sla > 0 ? 'warn' : 'ok') +
-    kpiHtml('Freelancer', v.freelancer || 0, 'label FREELANCER no JIRA', v.freelancer > 0 ? 'info' : '');
-
-  const sc = v.status_counts || {};
-  makeChart('chart-status', 'doughnut',
-    Object.keys(sc), [{data: Object.values(sc), backgroundColor: Object.keys(sc).map((_,i) => COLORS[i%COLORS.length]), borderWidth:0}],
-    { plugins: { legend: { position: 'right', labels: { color:'#7b82a8', font:{size:11}, boxWidth:10 } } } }
-  );
-
-  const tc = v.tipo_counts || {};
-  makeChart('chart-tipo', 'bar', Object.keys(tc),
-    [{ data: Object.values(tc), backgroundColor: accentColor, borderRadius: 4 }],
-    { plugins: { legend: { display: false } }, indexAxis: 'y' }
-  );
-
-  const ac = v.area_counts || {};
-  makeChart('chart-area', 'bar', Object.keys(ac),
-    [{ data: Object.values(ac), backgroundColor: '#a78bfa', borderRadius: 4 }],
-    { plugins: { legend: { display: false } }, indexAxis: 'y' }
-  );
-
-  // Demandas por designer no período
-  const designers = Object.entries(d.designers).map(([name, info]) => {
-    let total = currentMes === 'todos' ? info.total : (info.por_mes?.[currentMes]?.total || 0);
-    return { name, total };
-  }).filter(x => x.total > 0).sort((a,b) => b.total - a.total);
-
-  const designerLabel = currentTeam === 'red' ? 'Redator' : 'Designer';
-  const titleEl = document.getElementById('chart-designer-title');
-  if (titleEl) titleEl.textContent = `Demandas por ${designerLabel}`;
-
-  makeChart('chart-designer', 'bar',
-    designers.map(x => x.name.split(' ')[0]),
-    [{ data: designers.map(x => x.total), backgroundColor: '#22d3ee', borderRadius: 4 }],
-    { plugins: { legend: { display: false } } }
-  );
-}
-
-// ── POR DESIGNER ───────────────────────────────────────────────────────────
-function renderDesigners() {
-  const tabsEl   = document.getElementById('designer-tabs');
-  const panelsEl = document.getElementById('designer-panels');
-  tabsEl.innerHTML = '';
-  panelsEl.innerHTML = '';
-
-  const d = getData();
-  const designers = Object.entries(d.designers).filter(([_, info]) => {
-    const t = currentMes === 'todos' ? info.total : (info.por_mes?.[currentMes]?.total || 0);
-    return t > 0;
-  });
-
-  if (!designers.length) {
-    panelsEl.innerHTML = '<div class="empty-state">Sem dados para este periodo.</div>';
-    return;
-  }
-
-  designers.forEach(([name, info], idx) => {
-    const id  = 'dp-' + idx;
-    const tab = document.createElement('div');
-    tab.className = 'designer-tab' + (idx === 0 ? ' active' : '');
-    tab.textContent = name;
-    tab.onclick = () => {
-      document.querySelectorAll('.designer-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.designer-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(id).classList.add('active');
-    };
-    tabsEl.appendChild(tab);
-
-    // Valores filtrados pelo mês
-    let total, atrasadas, finalizadas, canceladas, fora_sla, em_andamento, taxa_atraso, freelancer;
-    if (currentMes === 'todos') {
-      total        = info.total;
-      atrasadas    = info.atrasadas;
-      finalizadas  = info.finalizadas;
-      canceladas   = info.canceladas;
-      fora_sla     = info.fora_sla;
-      em_andamento = info.em_andamento;
-      taxa_atraso  = info.taxa_atraso;
-      freelancer   = info.freelancer || 0;
-    } else {
-      const pm = info.por_mes?.[currentMes] || {};
-      total        = pm.total || 0;
-      atrasadas    = pm.atrasadas || 0;
-      finalizadas  = pm.finalizadas || 0;
-      canceladas   = pm.canceladas || 0;
-      fora_sla     = 0;
-      em_andamento = pm.em_andamento || 0;
-      taxa_atraso  = total > 0 ? Math.round(atrasadas/total*100) : 0;
-      freelancer   = pm.freelancer || 0;
+        body: JSON.stringify(body)
+      });
+    } catch(e) {
+      throw new Error('CORS: use a extensão Notion ou acesse via app desktop');
     }
 
-    const atrasoClass = taxa_atraso >= 50 ? 'danger' : taxa_atraso >= 20 ? 'warn' : 'ok';
-
-    const tiposHtml = Object.entries(info.tipos).map(([t,v]) => {
-      const dets = (info.tipos_detalhes || {})[t] || [];
-      const items = dets.slice(0,15).map(d =>
-        `<div class="tipo-tooltip-item">
-          <span class="tipo-tooltip-key">${d.key}</span>
-          <span class="tipo-tooltip-title">${d.titulo}</span>
-        </div>`).join('');
-      const more = dets.length > 15 ? `<div class="tipo-tooltip-more">+ ${dets.length - 15} demandas</div>` : '';
-      const tooltip = dets.length ? `<div class="tipo-tooltip">${items}${more}</div>` : '';
-      return `<tr><td><div class="tipo-tooltip-wrap">${t}${tooltip}</div></td><td><b>${v}</b></td></tr>`;
-    }).join('') ||
-      '<tr><td colspan="2" style="color:var(--text-muted)">Sem dados</td></tr>';
-
-    const atrasadasHtml = info.demandas_atrasadas.map(dem =>
-      `<tr>
-        <td>${dem.titulo || '—'}</td>
-        <td><span class="status-pill ${statusClass(dem.status)}">${dem.status}</span></td>
-        <td>${dem.area || '—'}</td>
-        <td class="atraso-tag">${dem.prazo}</td>
-      </tr>`).join('') ||
-      '<tr><td colspan="4" style="color:var(--text-muted)">Nenhuma atrasada</td></tr>';
-
-    const panel = document.createElement('div');
-    panel.id = id;
-    panel.className = 'designer-panel' + (idx === 0 ? ' active' : '');
-    panel.innerHTML = `
-      <div class="designer-kpis">
-        ${kpiHtml('Total', total)}
-        ${kpiHtml('Em Andamento', em_andamento)}
-        ${kpiHtml('Finalizadas', finalizadas, '', 'ok')}
-        ${kpiHtml('Atrasadas', atrasadas, taxa_atraso + '%', atrasoClass)}
-        ${kpiHtml('Canceladas', canceladas)}
-        ${kpiHtml('Fora de SLA', fora_sla, 'na criacao', fora_sla > 0 ? 'warn' : 'ok')}
-        ${kpiHtml('Freelancer', freelancer, 'demandas com label FREELANCER', freelancer > 0 ? 'info' : '')}
-      </div>
-      <div class="charts-grid">
-        <div class="card">
-          <h3>Tipos de Demanda</h3>
-          <div class="table-wrap">
-            <table><thead><tr><th>Tipo</th><th>Qtd</th></tr></thead><tbody>${tiposHtml}</tbody></table>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Demandas Atrasadas</h3>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Demanda</th><th>Status</th><th>Area</th><th>Prazo</th></tr></thead>
-              <tbody>${atrasadasHtml}</tbody>
-            </table>
-          </div>
-        </div>
-      </div>`;
-    panelsEl.appendChild(panel);
-  });
-}
-
-// ── DRILL DOWN DE AREA ─────────────────────────────────────────────────────
-function showAreaDrillDown(area) {
-  const d = getData();
-  const el = document.getElementById('area-drill-down');
-  const demandas = (d.demandas_atrasadas_por_area || {})[area] || [];
-
-  if (!demandas.length) { el.style.display = 'none'; return; }
-
-  const rows = demandas.map(r => `<tr>
-    <td style="font-size:12px">${r.titulo || '—'}</td>
-    <td><span style="font-size:11px;color:var(--text-muted)">${r.key}</span></td>
-    <td>${r.designer ? r.designer.split(' ')[0] : '—'}</td>
-    <td><span class="status-pill ${statusClass(r.status)}">${r.status}</span></td>
-    <td class="atraso-tag">${r.prazo}</td>
-  </tr>`).join('');
-
-  el.style.display = 'block';
-  el.innerHTML = `<div class="card">
-    <h3 style="display:flex;align-items:center;justify-content:space-between">
-      <span>Atrasadas em <span style="color:var(--red)">${area}</span> — ${demandas.length} demanda${demandas.length !== 1 ? 's' : ''}</span>
-      <span onclick="document.getElementById('area-drill-down').style.display='none'" style="cursor:pointer;font-size:18px;color:var(--text-muted);font-weight:300">×</span>
-    </h3>
-    <div class="table-wrap"><table>
-      <thead><tr><th>Demanda</th><th>Key</th><th>Designer</th><th>Status</th><th>Prazo</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table></div>
-  </div>`;
-  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// ── POR AREA ───────────────────────────────────────────────────────────────
-function renderAreas() {
-  const v = getView();
-  const ac = v.area_counts || {};
-  const aa = v.area_atrasados || {};
-  const accentColor = currentTeam === 'creat' ? '#5b8af5' : '#f44b6e';
-
-  makeChart('chart-area2', 'bar', Object.keys(ac),
-    [{ data: Object.values(ac), backgroundColor: accentColor, borderRadius: 4 }],
-    { plugins: { legend: { display: false } }, indexAxis: 'y' }
-  );
-  const areaAtrasoLabels = Object.keys(aa);
-  makeChart('chart-area-atraso', 'bar', areaAtrasoLabels,
-    [{ data: Object.values(aa), backgroundColor: '#f44b6e', borderRadius: 4 }],
-    { plugins: { legend: { display: false } }, indexAxis: 'y',
-      onClick: (evt, elements) => {
-        if (!elements.length) return;
-        const area = areaAtrasoLabels[elements[0].index];
-        showAreaDrillDown(area);
-      },
-      onHover: (evt, elements) => {
-        evt.native.target.style.cursor = elements.length ? 'pointer' : 'default';
-      }
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.message || 'Erro ao buscar dados');
     }
-  );
-
-  const tbl  = document.getElementById('table-areas');
-  const rows = Object.keys(ac).map(area => ({
-    area, total: ac[area]||0, atrasos: aa[area]||0,
-    pct: ac[area] > 0 ? Math.round((aa[area]||0)/ac[area]*100) : 0
-  })).sort((a,b) => b.total - a.total);
-
-  tbl.innerHTML = `<thead><tr><th>Area</th><th>Total</th><th>Atrasadas</th><th>% Atraso</th></tr></thead><tbody>` +
-    rows.map(r => `<tr>
-      <td>${r.area}</td><td>${r.total}</td>
-      <td>${r.atrasos > 0 ? `<span class="atraso-tag">${r.atrasos}</span>` : '0'}</td>
-      <td>${r.pct > 0 ? `<span class="badge badge-${r.pct>=50?'red':r.pct>=20?'yellow':'green'}">${r.pct}%</span>` : '—'}</td>
-    </tr>`).join('') + '</tbody>';
+    const d = await resp.json();
+    results = results.concat(d.results || []);
+    cursor = d.has_more ? d.next_cursor : null;
+  } while (cursor);
+  
+  return results;
 }
 
-// ── ATRASOS ────────────────────────────────────────────────────────────────
-function renderAtrasos() {
-  const v    = getView();
-  const d    = getData();
+async function loadData() {
+  const btn = document.getElementById('btnRefresh');
+  btn.disabled = true; btn.textContent = '⟳ Carregando...';
+  document.getElementById('mainContent').innerHTML = '<div class="loading"><div class="spinner"></div><span>Carregando '+allData.length+' demandas...</span></div>';
 
-  document.getElementById('kpis-atrasos').innerHTML =
-    kpiHtml('Total Atrasadas', v.atrasados, `${v.taxa_atraso_geral}% do total`, v.atrasados > 0 ? 'danger' : 'ok') +
-    kpiHtml('Maior Concentracao', Object.keys(v.area_atrasados||{})[0] || '—', 'por area') +
-    kpiHtml('Canceladas', v.cancelados, '');
+  try {
+    allData = await fetchAll();
+    populateFilters();
+    applyFilters();
+    document.getElementById('lastUpdated').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+  } catch(e) {
+    document.getElementById('mainContent').innerHTML = `<div class="loading"><p style="color:var(--red)">Erro: ${e.message}</p><p style="color:var(--muted);font-size:12px;margin-top:8px;">Verifique o token e permissões do Notion</p><button class="btn-clear" onclick="logout()" style="margin-top:12px;">Trocar token</button></div>`;
+  }
+  btn.disabled = false; btn.textContent = '↻ Atualizar';
+}
 
-  // Atrasos por designer (sempre usa dados globais do designer, pois demandas_atrasadas é global)
-  const dd = Object.entries(d.designers)
-    .map(([name, info]) => {
-      const atr = currentMes === 'todos' ? info.atrasadas : (info.por_mes?.[currentMes]?.atrasadas || 0);
-      return { name: name.split(' ')[0], atr };
-    })
-    .filter(x => x.atr > 0).sort((a,b) => b.atr - a.atr);
+// ---- FILTERS ----
+function populateFilters() {
+  const statuses = new Set(), tipos = new Set(), areas = new Set(), areasDem = new Set(), creatives = new Set(), meses = new Set();
 
-  const atrasosLabel = currentTeam === 'red' ? 'Redator' : 'Designer';
-  const atrasosTitle = document.getElementById('chart-atrasos-designer-title');
-  if (atrasosTitle) atrasosTitle.textContent = `Atrasadas por ${atrasosLabel}`;
-
-  makeChart('chart-atrasos-designer', 'bar',
-    dd.map(x => x.name),
-    [{ data: dd.map(x => x.atr), backgroundColor: '#f44b6e', borderRadius: 4 }],
-    { plugins: { legend: { display: false } } }
-  );
-
-  // Tabela de atrasos (usa lista global de demandas_atrasadas)
-  const rows = [];
-  Object.entries(d.designers).forEach(([name, info]) => {
-    info.demandas_atrasadas.forEach(dem => rows.push({ designer: name, ...dem }));
+  allData.forEach(p => {
+    const props = p.properties;
+    const s = props.Status?.status?.name; if (s) statuses.add(s);
+    const t = props['Tipo de Demanda']?.select?.name; if (t) tipos.add(t);
+    (props['ÁREA']?.multi_select || []).forEach(a => areas.add(a.name));
+    (props['Área Demandadora']?.multi_select || []).forEach(a => areasDem.add(a.name));
+    (props['Creative']?.people || []).forEach(c => creatives.add(c.name));
+    const criado = props['Criado em']?.created_time;
+    if (criado) {
+      const d = new Date(criado);
+      meses.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+    }
   });
-  rows.sort((a,b) => (a.prazo||'') < (b.prazo||'') ? -1 : 1);
 
-  const tbl = document.getElementById('table-atrasos');
-  tbl.innerHTML = `<thead><tr><th>Demanda</th><th>Designer</th><th>Status</th><th>Area</th><th>Prazo</th></tr></thead><tbody>` +
-    (rows.length ? rows.map(r => `<tr>
-      <td>${r.titulo||'—'}</td>
-      <td>${r.designer.split(' ')[0]}</td>
-      <td><span class="status-pill ${statusClass(r.status)}">${r.status}</span></td>
-      <td>${r.area||'—'}</td>
-      <td class="atraso-tag">${r.prazo}</td>
-    </tr>`).join('') : '<tr><td colspan="5" class="empty-state">Nenhuma atrasada</td></tr>') +
-    '</tbody>';
+  fillSelect('fStatus', statuses);
+  fillSelect('fTipo', tipos);
+  fillSelect('fArea', areas);
+  fillSelect('fAreaDem', areasDem);
+  fillSelect('fCreative', creatives);
+  fillSelect('fMes', meses, v => {
+    const [y, m] = v.split('-');
+    return new Date(y, m-1).toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
+  });
 }
 
-// ── METRICAS ────────────────────────────────────────────────────────────────
-function renderMetricas() {
-  const d = getData();
-  const v = getView();
-  const m = d.metricas || {};
+function fillSelect(id, set, labelFn) {
+  const el = document.getElementById(id);
+  const current = el.value;
+  const first = el.options[0];
+  el.innerHTML = '';
+  el.appendChild(first);
+  [...set].sort().forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = labelFn ? labelFn(v) : v;
+    el.appendChild(opt);
+  });
+  el.value = current;
+}
 
-  function valOrDash(v, suffix='') {
-    return v !== null && v !== undefined ? `${v}${suffix}` : null;
-  }
+function applyFilters() {
+  const fStatus = document.getElementById('fStatus').value;
+  const fTipo = document.getElementById('fTipo').value;
+  const fArea = document.getElementById('fArea').value;
+  const fAreaDem = document.getElementById('fAreaDem').value;
+  const fCreative = document.getElementById('fCreative').value;
+  const fFreelancer = document.getElementById('fFreelancer').value;
+  const fMes = document.getElementById('fMes').value;
 
-  function metCard(label, value, sub, cls) {
-    const isEmpty = value === null || value === undefined;
-    return `<div class="met-card ${isEmpty ? 'empty' : (cls||'')}">
-      <div class="m-label">${label}</div>
-      ${isEmpty
-        ? `<div class="m-value" style="font-size:18px;color:var(--text-muted)">—</div>
-           <div class="m-empty">Aguardando dados no Notion</div>`
-        : `<div class="m-value">${value}</div>
-           ${sub ? `<div class="m-sub">${sub}</div>` : ''}`
-      }
-    </div>`;
-  }
+  filteredData = allData.filter(p => {
+    const props = p.properties;
+    if (fStatus && props.Status?.status?.name !== fStatus) return false;
+    if (fTipo && props['Tipo de Demanda']?.select?.name !== fTipo) return false;
+    if (fArea && !(props['ÁREA']?.multi_select || []).some(a => a.name === fArea)) return false;
+    if (fAreaDem && !(props['Área Demandadora']?.multi_select || []).some(a => a.name === fAreaDem)) return false;
+    if (fCreative && !(props['Creative']?.people || []).some(c => c.name === fCreative)) return false;
+    if (fFreelancer === '1' && !props['Freelancer']?.checkbox) return false;
+    if (fFreelancer === '0' && props['Freelancer']?.checkbox) return false;
+    if (fMes) {
+      const criado = props['Criado em']?.created_time;
+      if (!criado) return false;
+      const d = new Date(criado);
+      const m = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+      if (m !== fMes) return false;
+    }
+    return true;
+  });
 
-  function barList(title, obj, color) {
-    if (!obj || !Object.keys(obj).length) return '';
-    const max = Math.max(...Object.values(obj));
-    const rows = Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v]) => `
-      <div class="met-bar-row">
-        <div class="met-bar-label">${k}</div>
-        <div class="met-bar-track"><div class="met-bar-fill" style="width:${Math.round(v/max*100)}%;background:${color||'var(--accent)'}"></div></div>
-        <div class="met-bar-val">${v}d</div>
-      </div>`).join('');
-    return `<div class="card" style="margin-top:14px">
-      <h3>${title}</h3>
-      <div class="met-bar-list" style="margin-top:8px">${rows}</div>
-    </div>`;
-  }
+  render();
+}
 
-  // — Produtividade —
-  const total   = v.total || 0;
-  const atr     = v.atrasados || 0;
-  const fin     = v.finalizados || 0;
-  const canc    = v.cancelados || 0;
-  const txAtr   = v.taxa_atraso_geral;
-  const txCanc  = total > 0 ? Math.round(canc/total*100) : 0;
-  const fSla    = v.fora_sla || 0;
+function clearFilters() {
+  ['fStatus','fTipo','fArea','fAreaDem','fCreative','fFreelancer','fMes'].forEach(id => document.getElementById(id).value = '');
+  applyFilters();
+}
 
-  // — Qualidade (do metricas global, pois vem de finalizados) —
-  const slaM    = valOrDash(m.sla_medio_dias, ' dias');
-  const slaSub  = m.sla_amostras > 0 ? `${m.sla_amostras} entregas com data real preenchida` : null;
-  const pont    = valOrDash(m.taxa_pontualidade != null ? m.taxa_pontualidade + '%' : null);
-  const pontSub = m.pont_amostras > 0 ? `${m.pont_amostras} entregas comparadas` : null;
-  const ap1a    = valOrDash(m.taxa_aprov_1a != null ? m.taxa_aprov_1a + '%' : null);
-  const ap1aSub = m.aprov_1a_amostras > 0 ? `${m.aprov_1a_amostras} finalizadas avaliadas` : null;
-  const rev     = valOrDash(m.rev_medio != null ? m.rev_medio + 'x' : null);
-  const revSub  = m.rev_amostras > 0 ? `${m.rev_amostras} demandas com nº revisoes` : null;
-  const rat     = valOrDash(m.rating_medio != null ? '⭐ ' + m.rating_medio : null);
-  const ratSub  = m.rating_amostras > 0 ? `${m.rating_amostras} avaliações recebidas` : null;
+// ---- RENDER ----
+function render() {
+  // Compute aggregates
+  const total = filteredData.length;
+  const statusMap = {}, tipoMap = {}, areaMap = {}, areaDemMap = {}, creativeMap = {}, monthMap = {};
+  let freelancerCount = 0, aprovadoPrimeira = 0, foraSLA = 0, revisoes = 0, emProducao = 0;
 
-  // Rating distribution bar
-  let ratingBarHtml = '';
-  if (m.rating_dist && Object.keys(m.rating_dist).length > 0) {
-    const total_r = Object.values(m.rating_dist).reduce((a,b)=>a+b,0);
-    ratingBarHtml = `<div class="card" style="margin-top:14px"><h3>Distribuicao de Ratings</h3>
-      <div class="met-bar-list" style="margin-top:8px">` +
-      [5,4,3,2,1].map(n => {
-        const cnt = m.rating_dist[n] || 0;
-        const pct = total_r > 0 ? Math.round(cnt/total_r*100) : 0;
-        return `<div class="met-bar-row">
-          <div class="met-bar-label">${'⭐'.repeat(n)}</div>
-          <div class="met-bar-track"><div class="met-bar-fill" style="width:${pct}%;background:${n>=4?'var(--green)':n===3?'var(--yellow)':'var(--red)'}"></div></div>
-          <div class="met-bar-val">${cnt}</div>
-        </div>`;
-      }).join('') +
-      `</div></div>`;
-  }
+  filteredData.forEach(p => {
+    const props = p.properties;
+    const s = props.Status?.status?.name || 'Sem status';
+    statusMap[s] = (statusMap[s]||0) + 1;
+    if (s === 'Revisão') revisoes++;
+    if (s === 'Em produção') emProducao++;
 
-  document.getElementById('metricas-content').innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
-      <div style="font-size:13px;color:var(--text-muted)">Métricas de performance — ${currentTeam.toUpperCase()} · ${mesLabel(currentMes)}</div>
-      <a class="notion-link" href="https://www.notion.so/g40/Medidores-do-Time-Creative-Produtividade-Qualidade-e-Inova-o-33eb431349e1814aa0b2d18d5cc70f29" target="_blank">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 0 1 1h4"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Ver no Notion
-      </a>
+    const t = props['Tipo de Demanda']?.select?.name || 'Sem tipo';
+    tipoMap[t] = (tipoMap[t]||0) + 1;
+
+    (props['ÁREA']?.multi_select||[]).forEach(a => areaMap[a.name] = (areaMap[a.name]||0)+1);
+    (props['Área Demandadora']?.multi_select||[]).forEach(a => areaDemMap[a.name] = (areaDemMap[a.name]||0)+1);
+    (props['Creative']?.people||[]).forEach(c => creativeMap[c.name] = (creativeMap[c.name]||0)+1);
+
+    const criado = props['Criado em']?.created_time;
+    if (criado) {
+      const d = new Date(criado);
+      const k = d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'});
+      monthMap[k] = (monthMap[k]||0)+1;
+    }
+    if (props['Freelancer']?.checkbox) freelancerCount++;
+    if (props['Aprovado de Primeira?']?.checkbox) aprovadoPrimeira++;
+    if (props['Fora de SLA?']?.checkbox) foraSLA++;
+  });
+
+  const aprovados = statusMap['Aprovado']||0;
+  const finalizados = statusMap['Finalizado']||0;
+  const cancelados = statusMap['Cancelada']||0;
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="kpi-grid">
+      <div class="kpi-card blue"><div class="kpi-label">Total de Demandas</div><div class="kpi-value">${total}</div><div class="kpi-sub">no período filtrado</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Aprovadas</div><div class="kpi-value">${aprovados}</div><div class="kpi-sub">${total ? Math.round(aprovados/total*100) : 0}% do total</div></div>
+      <div class="kpi-card teal" style="--teal:var(--teal)"><div class="kpi-label" style="color:var(--muted)">Finalizadas</div><div class="kpi-value" style="color:var(--teal)">${finalizados}</div><div class="kpi-sub">entregues</div></div>
+      <div class="kpi-card yellow"><div class="kpi-label">Em Revisão</div><div class="kpi-value">${revisoes}</div><div class="kpi-sub">aguardando correção</div></div>
+      <div class="kpi-card red"><div class="kpi-label">Canceladas</div><div class="kpi-value">${cancelados}</div><div class="kpi-sub">${total ? Math.round(cancelados/total*100) : 0}% do total</div></div>
+      <div class="kpi-card orange"><div class="kpi-label">Freelancer</div><div class="kpi-value">${freelancerCount}</div><div class="kpi-sub">${total ? Math.round(freelancerCount/total*100) : 0}% das demandas</div></div>
+      <div class="kpi-card purple"><div class="kpi-label">Fora de SLA</div><div class="kpi-value">${foraSLA}</div><div class="kpi-sub">ultrapassaram prazo</div></div>
+      <div class="kpi-card blue"><div class="kpi-label">Aprov. de 1ª</div><div class="kpi-value">${aprovadoPrimeira}</div><div class="kpi-sub">${total ? Math.round(aprovadoPrimeira/total*100) : 0}% aprovados direto</div></div>
     </div>
 
-    <div class="met-section">
-      <div class="met-section-title">🏎 Produtividade</div>
-      <div class="met-grid">
-        ${metCard('Total de Demandas', total, mesLabel(currentMes))}
-        ${metCard('Finalizadas', fin, 'Finalizado + Aprovado', 'ok')}
-        ${metCard('Atrasadas', atr, `${txAtr}% do total`, atr > 0 ? 'danger' : 'ok')}
-        ${metCard('Canceladas', canc, `${txCanc}% do total`, canc > 0 ? 'warn' : '')}
-        ${metCard('Fora de SLA na criacao', fSla, 'prazo < SLA minimo ao criar', fSla > 0 ? 'warn' : 'ok')}
-        ${metCard('Demandas Freelancer', v.freelancer || 0, 'label FREELANCER no JIRA', v.freelancer > 0 ? 'info' : '')}
-      </div>
+    <div class="charts-grid">
+      <div class="chart-card"><div class="chart-title">Status das Demandas</div><div class="chart-wrap"><canvas id="chartStatus"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Por Tipo de Demanda</div><div class="chart-wrap"><canvas id="chartTipo"></canvas></div></div>
     </div>
 
-    <div class="met-section">
-      <div class="met-section-title">⏱ SLA & Velocidade</div>
-      <div class="met-grid">
-        ${metCard('SLA Medio Executado', slaM, slaSub, slaM ? (parseFloat(slaM)<=5?'ok':'warn') : '')}
-        ${metCard('Pontualidade', pont, pontSub, pont ? (parseFloat(pont)>=80?'ok':parseFloat(pont)>=60?'warn':'danger') : '')}
-      </div>
-      ${barList('Lead Time Medio por Tipo (dias)', m.sla_por_tipo, 'var(--blue)')}
+    <div class="charts-grid three">
+      <div class="chart-card"><div class="chart-title">Por Área (CREAT/ADV)</div><div class="chart-wrap"><canvas id="chartArea"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Por BU Demandadora</div><div class="chart-wrap"><canvas id="chartAreaDem"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Carga por Criativo</div><div class="chart-wrap"><canvas id="chartCreative"></canvas></div></div>
     </div>
 
-    <div class="met-section">
-      <div class="met-section-title">✅ Qualidade</div>
-      <div class="met-grid">
-        ${metCard('Aprovado de Primeira', ap1a, ap1aSub, ap1a ? (parseFloat(ap1a)>=70?'ok':parseFloat(ap1a)>=50?'warn':'danger') : '')}
-        ${metCard('Revisoes Medias', rev, revSub, rev ? (parseFloat(rev)<=1?'ok':parseFloat(rev)<=2?'warn':'danger') : '')}
-        ${metCard('Rating Medio', rat, ratSub, rat ? (m.rating_medio>=4?'ok':m.rating_medio>=3?'warn':'danger') : '')}
+    <div class="charts-grid">
+      <div class="chart-card full"><div class="chart-title">Volume por Mês</div><div class="chart-wrap tall"><canvas id="chartMonth"></canvas></div></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <h3>Demandas</h3>
+        <span class="table-count" id="tableCount">${filteredData.length} resultados</span>
       </div>
-      ${ratingBarHtml}
+      <div class="table-wrap">
+        <table id="mainTable">
+          <thead><tr>
+            <th onclick="sortTable('id')">ID ↕</th>
+            <th onclick="sortTable('title')">Nome ↕</th>
+            <th onclick="sortTable('status')">Status ↕</th>
+            <th onclick="sortTable('tipo')">Tipo ↕</th>
+            <th onclick="sortTable('area')">Área ↕</th>
+            <th onclick="sortTable('bu')">BU ↕</th>
+            <th onclick="sortTable('creative')">Criativo ↕</th>
+            <th onclick="sortTable('prazo')">Prazo ↕</th>
+            <th onclick="sortTable('criado')">Criado ↕</th>
+          </tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
     </div>
   `;
+
+  // Draw charts
+  destroyCharts();
+  drawDoughnut('chartStatus', statusMap);
+  drawBar('chartTipo', tipoMap, '#58a6ff');
+  drawDoughnut('chartArea', areaMap);
+  drawBar('chartAreaDem', areaDemMap, '#bc8cff');
+  drawHBar('chartCreative', creativeMap);
+  drawLine('chartMonth', monthMap);
+
+  // Fill table
+  renderTable();
 }
 
-// ── RENDER ALL ─────────────────────────────────────────────────────────────
-function renderAll() {
-  const d    = getData();
-  const team = currentTeam.toUpperCase();
-  const ml   = mesLabel(currentMes);
-  document.getElementById('header-meta').textContent =
-    `${team} · ${ml} · Atualizado em ${d.gerado_em} · ${d.total} demandas total`;
-  document.getElementById('footer-updated').textContent =
-    `Creative Dashboard · G4 · ${team} · Gerado em ${d.gerado_em}`;
-
-  renderGeral();
-  renderDesigners();
-  renderAreas();
-  renderAtrasos();
-  renderMetricas();
+let sortKey = 'criado', sortDir = -1;
+function sortTable(key) {
+  if (sortKey === key) sortDir *= -1;
+  else { sortKey = key; sortDir = -1; }
+  renderTable();
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
-buildMesToggle();
-renderAll();
+function renderTable() {
+  const body = document.getElementById('tableBody');
+  if (!body) return;
+
+  const rows = [...filteredData].sort((a, b) => {
+    const pa = a.properties, pb = b.properties;
+    let va, vb;
+    if (sortKey === 'id') { va = pa.ID?.unique_id?.number||0; vb = pb.ID?.unique_id?.number||0; }
+    else if (sortKey === 'title') { va = getTitle(pa); vb = getTitle(pb); }
+    else if (sortKey === 'status') { va = pa.Status?.status?.name||''; vb = pb.Status?.status?.name||''; }
+    else if (sortKey === 'tipo') { va = pa['Tipo de Demanda']?.select?.name||''; vb = pb['Tipo de Demanda']?.select?.name||''; }
+    else if (sortKey === 'area') { va = (pa['ÁREA']?.multi_select||[]).map(x=>x.name).join(','); vb = (pb['ÁREA']?.multi_select||[]).map(x=>x.name).join(','); }
+    else if (sortKey === 'bu') { va = (pa['Área Demandadora']?.multi_select||[]).map(x=>x.name).join(','); vb = (pb['Área Demandadora']?.multi_select||[]).map(x=>x.name).join(','); }
+    else if (sortKey === 'creative') { va = (pa['Creative']?.people||[]).map(x=>x.name).join(','); vb = (pb['Creative']?.people||[]).map(x=>x.name).join(','); }
+    else if (sortKey === 'prazo') { va = pa['📅 Prazo entrega']?.date?.start||''; vb = pb['📅 Prazo entrega']?.date?.start||''; }
+    else { va = pa['Criado em']?.created_time||''; vb = pb['Criado em']?.created_time||''; }
+    if (va < vb) return -1 * sortDir;
+    if (va > vb) return 1 * sortDir;
+    return 0;
+  });
+
+  body.innerHTML = rows.slice(0, 200).map(p => {
+    const props = p.properties;
+    const uid = props.ID?.unique_id;
+    const id = uid ? `${uid.prefix||''}-${uid.number}` : '—';
+    const title = getTitle(props);
+    const status = props.Status?.status?.name || '—';
+    const tipo = props['Tipo de Demanda']?.select?.name || '—';
+    const area = (props['ÁREA']?.multi_select||[]).map(a=>a.name).join(', ') || '—';
+    const bu = (props['Área Demandadora']?.multi_select||[]).map(a=>a.name).join(', ') || '—';
+    const creative = (props['Creative']?.people||[]).map(c=>c.name).join(', ') || '—';
+    const prazo = props['📅 Prazo entrega']?.date?.start ? new Date(props['📅 Prazo entrega'].date.start).toLocaleDateString('pt-BR') : '—';
+    const criado = props['Criado em']?.created_time ? new Date(props['Criado em'].created_time).toLocaleDateString('pt-BR') : '—';
+    const url = p.url || '#';
+    const badgeClass = statusBadge(status);
+    return `<tr>
+      <td style="color:var(--muted);font-family:monospace;font-size:11px;">${id}</td>
+      <td><a href="${url}" target="_blank" style="color:var(--blue);text-decoration:none;" title="${title}">${title.substring(0,50)}${title.length>50?'…':''}</a></td>
+      <td><span class="badge ${badgeClass}">${status}</span></td>
+      <td>${tipo}</td>
+      <td>${area}</td>
+      <td>${bu}</td>
+      <td>${creative}</td>
+      <td>${prazo}</td>
+      <td style="color:var(--muted)">${criado}</td>
+    </tr>`;
+  }).join('');
+
+  if (rows.length > 200) {
+    document.getElementById('tableCount').textContent = `${filteredData.length} resultados (exibindo 200)`;
+  }
+}
+
+function getTitle(props) {
+  const t = props['']?.title || [];
+  return t.map(x=>x.plain_text).join('') || '(sem título)';
+}
+
+function statusBadge(s) {
+  const m = { 'Aprovado':'badge-aprovado','Finalizado':'badge-finalizado','Em produção':'badge-producao','Revisão':'badge-revisao','Cancelada':'badge-cancelada','ERRO':'badge-erro','Na fila':'badge-fila' };
+  return m[s] || 'badge-default';
+}
+
+// ---- CHARTS ----
+const COLORS = ['#58a6ff','#3fb950','#d29922','#f85149','#bc8cff','#ffa657','#39d353','#79c0ff','#f0883e','#56d364'];
+
+function destroyCharts() {
+  Object.values(charts).forEach(c => c.destroy());
+  charts = {};
+}
+
+function drawDoughnut(id, data) {
+  const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]);
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  charts[id] = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels: sorted.map(x=>x[0]), datasets: [{ data: sorted.map(x=>x[1]), backgroundColor: COLORS, borderWidth: 2, borderColor: '#161b22' }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#8b949e', font: { size: 11 }, padding: 8, boxWidth: 12 } } } }
+  });
+}
+
+function drawBar(id, data, color) {
+  const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]).slice(0,10);
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  charts[id] = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: sorted.map(x=>x[0]), datasets: [{ data: sorted.map(x=>x[1]), backgroundColor: color || COLORS[0], borderRadius: 4 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } } } }
+  });
+}
+
+function drawHBar(id, data) {
+  const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]).slice(0,10);
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  charts[id] = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: sorted.map(x=>x[0]), datasets: [{ data: sorted.map(x=>x[1]), backgroundColor: COLORS, borderRadius: 4 }] },
+    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } } } }
+  });
+}
+
+function drawLine(id, data) {
+  const sorted = Object.keys(data).sort();
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  charts[id] = new Chart(ctx, {
+    type: 'line',
+    data: { labels: sorted, datasets: [{ label: 'Demandas', data: sorted.map(k=>data[k]), borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,0.1)', fill: true, tension: 0.4, pointBackgroundColor: '#58a6ff', pointRadius: 5 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } } } }
+  });
+}
+
+// Auto-load if token saved
+if (saved) loadData();
 </script>
 </body>
 </html>
