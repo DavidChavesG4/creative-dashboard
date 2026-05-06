@@ -138,11 +138,36 @@
     <select id="fTipo" onchange="applyFilters()"><option value="">Todos os Tipos</option></select>
     <select id="fArea" onchange="applyFilters()"><option value="">Todas as Áreas</option></select>
     <select id="fAreaDem" onchange="applyFilters()"><option value="">Todas as BUs</option></select>
+    <select id="fAreaTask" onchange="applyFilters()"><option value="">Área de Task</option></select>
     <select id="fCreative" onchange="applyFilters()"><option value="">Todos os Criativos</option></select>
+    <select id="fProjeto" onchange="applyFilters()"><option value="">Todos os Projetos</option></select>
+    <select id="fNomeFreelancer" onchange="applyFilters()"><option value="">Nome Freelancer</option></select>
     <select id="fFreelancer" onchange="applyFilters()">
       <option value="">Interno + Freelancer</option>
       <option value="1">Freelancer</option>
       <option value="0">Interno</option>
+    </select>
+    <select id="fRevisoes" onchange="applyFilters()">
+      <option value="">Nº Revisões (todos)</option>
+      <option value="0">0 revisões</option>
+      <option value="1">1 revisão</option>
+      <option value="2">2 revisões</option>
+      <option value="3+">3+ revisões</option>
+    </select>
+    <select id="fForaSLA" onchange="applyFilters()">
+      <option value="">SLA (todos)</option>
+      <option value="1">Fora do SLA</option>
+      <option value="0">Dentro do SLA</option>
+    </select>
+    <select id="fAprovadoPrimeira" onchange="applyFilters()">
+      <option value="">Aprovação (todos)</option>
+      <option value="1">Aprovado de 1ª</option>
+      <option value="0">Não aprovado de 1ª</option>
+    </select>
+    <select id="fIniciativa" onchange="applyFilters()">
+      <option value="">Iniciativa Creative (todos)</option>
+      <option value="1">Iniciativa Creative</option>
+      <option value="0">Não é iniciativa</option>
     </select>
     <select id="fMes" onchange="applyFilters()"><option value="">Todos os Meses</option></select>
     <button class="btn-clear" onclick="clearFilters()">✕ Limpar</button>
@@ -242,7 +267,9 @@ async function loadData() {
 
 // ---- FILTERS ----
 function populateFilters() {
-  const statuses = new Set(), tipos = new Set(), areas = new Set(), areasDem = new Set(), creatives = new Set(), meses = new Set();
+  const statuses = new Set(), tipos = new Set(), areas = new Set(), areasDem = new Set();
+  const creatives = new Set(), meses = new Set(), projetos = new Set();
+  const nomesFreelancer = new Set(), areasTask = new Set();
 
   allData.forEach(p => {
     const props = p.properties;
@@ -251,6 +278,10 @@ function populateFilters() {
     (props['ÁREA']?.multi_select || []).forEach(a => areas.add(a.name));
     (props['Área Demandadora']?.multi_select || []).forEach(a => areasDem.add(a.name));
     (props['Creative']?.people || []).forEach(c => creatives.add(c.name));
+    const at = props['Área de Task']?.select?.name; if (at) areasTask.add(at);
+    const nf = props['Nome Freelancer']?.rich_text?.[0]?.plain_text; if (nf) nomesFreelancer.add(nf);
+    const proj = props['Projeto']?.relation || [];
+    // projetos via relation — só temos o ID, mas podemos listar
     const criado = props['Criado em']?.created_time;
     if (criado) {
       const d = new Date(criado);
@@ -262,7 +293,9 @@ function populateFilters() {
   fillSelect('fTipo', tipos);
   fillSelect('fArea', areas);
   fillSelect('fAreaDem', areasDem);
+  fillSelect('fAreaTask', areasTask);
   fillSelect('fCreative', creatives);
+  fillSelect('fNomeFreelancer', nomesFreelancer);
   fillSelect('fMes', meses, v => {
     const [y, m] = v.split('-');
     return new Date(y, m-1).toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
@@ -289,8 +322,14 @@ function applyFilters() {
   const fTipo = document.getElementById('fTipo').value;
   const fArea = document.getElementById('fArea').value;
   const fAreaDem = document.getElementById('fAreaDem').value;
+  const fAreaTask = document.getElementById('fAreaTask').value;
   const fCreative = document.getElementById('fCreative').value;
   const fFreelancer = document.getElementById('fFreelancer').value;
+  const fNomeFreelancer = document.getElementById('fNomeFreelancer').value;
+  const fRevisoes = document.getElementById('fRevisoes').value;
+  const fForaSLA = document.getElementById('fForaSLA').value;
+  const fAprovadoPrimeira = document.getElementById('fAprovadoPrimeira').value;
+  const fIniciativa = document.getElementById('fIniciativa').value;
   const fMes = document.getElementById('fMes').value;
 
   filteredData = allData.filter(p => {
@@ -299,9 +338,27 @@ function applyFilters() {
     if (fTipo && props['Tipo de Demanda']?.select?.name !== fTipo) return false;
     if (fArea && !(props['ÁREA']?.multi_select || []).some(a => a.name === fArea)) return false;
     if (fAreaDem && !(props['Área Demandadora']?.multi_select || []).some(a => a.name === fAreaDem)) return false;
+    if (fAreaTask && props['Área de Task']?.select?.name !== fAreaTask) return false;
     if (fCreative && !(props['Creative']?.people || []).some(c => c.name === fCreative)) return false;
     if (fFreelancer === '1' && !props['Freelancer']?.checkbox) return false;
     if (fFreelancer === '0' && props['Freelancer']?.checkbox) return false;
+    if (fNomeFreelancer) {
+      const nf = props['Nome Freelancer']?.rich_text?.[0]?.plain_text || '';
+      if (nf !== fNomeFreelancer) return false;
+    }
+    if (fRevisoes) {
+      const rev = props['Nº de Revisões']?.number || 0;
+      if (fRevisoes === '0' && rev !== 0) return false;
+      if (fRevisoes === '1' && rev !== 1) return false;
+      if (fRevisoes === '2' && rev !== 2) return false;
+      if (fRevisoes === '3+' && rev < 3) return false;
+    }
+    if (fForaSLA === '1' && !props['Fora de SLA?']?.checkbox) return false;
+    if (fForaSLA === '0' && props['Fora de SLA?']?.checkbox) return false;
+    if (fAprovadoPrimeira === '1' && !props['Aprovado de Primeira?']?.checkbox) return false;
+    if (fAprovadoPrimeira === '0' && props['Aprovado de Primeira?']?.checkbox) return false;
+    if (fIniciativa === '1' && !props['Iniciativa Creative']?.checkbox) return false;
+    if (fIniciativa === '0' && props['Iniciativa Creative']?.checkbox) return false;
     if (fMes) {
       const criado = props['Criado em']?.created_time;
       if (!criado) return false;
@@ -316,7 +373,7 @@ function applyFilters() {
 }
 
 function clearFilters() {
-  ['fStatus','fTipo','fArea','fAreaDem','fCreative','fFreelancer','fMes'].forEach(id => document.getElementById(id).value = '');
+  ['fStatus','fTipo','fArea','fAreaDem','fAreaTask','fCreative','fFreelancer','fNomeFreelancer','fRevisoes','fForaSLA','fAprovadoPrimeira','fIniciativa','fMes'].forEach(id => document.getElementById(id).value = '');
   applyFilters();
 }
 
