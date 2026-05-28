@@ -249,7 +249,14 @@ async function fetchAll() {
   let results = [], cursor = null;
 
   do {
-    const body = { page_size: 100, sorts: [{ property: 'Criado em', direction: 'descending' }] };
+    const body = {
+      page_size: 100,
+      sorts: [{ property: 'Criado em', direction: 'descending' }],
+      filter: {
+        property: 'Criado em',
+        created_time: { on_or_after: '2026-01-01' }
+      }
+    };
     if (cursor) body.start_cursor = cursor;
 
     const d = await notionFetch(`/v1/databases/${DB_ID}/query`, 'POST', body);
