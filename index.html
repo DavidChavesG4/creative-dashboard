@@ -249,14 +249,7 @@ async function fetchAll() {
   let results = [], cursor = null;
 
   do {
-    const body = {
-      page_size: 100,
-      sorts: [{ property: 'Criado em', direction: 'descending' }],
-      filter: {
-        property: 'Criado em',
-        created_time: { on_or_after: '2026-01-01' }
-      }
-    };
+    const body = { page_size: 100, sorts: [{ property: 'Criado em', direction: 'descending' }] };
     if (cursor) body.start_cursor = cursor;
 
     const d = await notionFetch(`/v1/databases/${DB_ID}/query`, 'POST', body);
@@ -273,7 +266,12 @@ async function loadData() {
   document.getElementById('mainContent').innerHTML = '<div class="loading"><div class="spinner"></div><span>Carregando '+allData.length+' demandas...</span></div>';
 
   try {
-    allData = await fetchAll();
+    const raw = await fetchAll();
+    // Filtra apenas registros de 2026 no cliente (evita problemas de filtro via API/proxy)
+    allData = raw.filter(p => {
+      const ct = p.properties['Criado em']?.created_time;
+      return ct && ct.startsWith('2026');
+    });
     populateFilters();
     applyFilters();
     document.getElementById('lastUpdated').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
