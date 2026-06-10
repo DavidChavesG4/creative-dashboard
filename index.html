@@ -336,28 +336,28 @@ async function loadData() {
 
     // ADV: mesmo banco 2026, mas usa campo 'Etapa' (não 'Status')
     // Separamos aqui para não fazer fetch extra
-    // Diagnóstico: descobre a estrutura real dos registros ADV
-    const raw2026 = raw.filter(p => (p.properties['Criado em']?.created_time||'').startsWith('2026'));
-    const allKeys = raw2026.length > 0 ? Object.keys(raw2026[0].properties) : [];
-    // Conta registros por AREA
+    // ADV: usa created_time nativo (fallback quando 'Criado em' não está preenchido)
+    const getDate = p => p.properties['Criado em']?.created_time || p.created_time || '';
+    const raw2026all = raw.filter(p => getDate(p).startsWith('2026'));
+
+    // Diagnóstico
     const areaCount = {};
-    raw2026.forEach(p => {
+    raw2026all.forEach(p => {
       (p.properties['ÁREA']?.multi_select||[]).forEach(a => { areaCount[a.name] = (areaCount[a.name]||0)+1; });
     });
-    // Conta tipos começando com ADV
-    const advTipos = raw2026.filter(p => (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase().startsWith('ADV'));
-    const areaAudiovisual = raw2026.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name.toUpperCase().includes('AUDIO')));
-    window._advDiag = {
-      total: raw.length, raw2026: raw2026.length,
-      advTipos: advTipos.length, areaAudiovisual: areaAudiovisual.length,
-      areaCount: JSON.stringify(areaCount).slice(0, 200),
+    const advTipos   = raw2026all.filter(p => (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase().startsWith('ADV'));
+    const areaAudio  = raw2026all.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name.toUpperCase().includes('AUDIO')));
+    const allKeys    = raw2026all.length > 0 ? Object.keys(raw2026all[0].properties) : [];
+    window._advDiag  = {
+      total: raw.length, raw2026: raw2026all.length,
+      advTipos: advTipos.length, areaAudio: areaAudio.length,
+      areaCount: JSON.stringify(areaCount).slice(0, 300),
       allKeys: allKeys.join(', ')
     };
 
-    // Por enquanto usa tipo ADV ou AREA AUDIOVISUAL
-    advData = raw2026.filter(p => {
+    advData = raw2026all.filter(p => {
       const areas = (p.properties['ÁREA']?.multi_select||[]).map(a => a.name.toUpperCase());
-      const tipo = (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase();
+      const tipo  = (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase();
       const status = p.properties['Status']?.status?.name;
       if (!status || ['Em Construção','ERRO','Erro'].includes(status)) return false;
       return areas.some(a => a.includes('AUDIO')) || tipo.startsWith('ADV');
