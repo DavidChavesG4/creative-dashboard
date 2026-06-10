@@ -319,15 +319,27 @@ async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
 async function loadAdvData() {
   try {
-    const raw = await fetchAllFromDb(ADV_DB_ID);
-    advData = raw; // carrega todos os registros do ADV
+    // ADV_DB_ID é uma PAGE — busca a database filha dentro dela
+    let realDbId = ADV_DB_ID;
+    try {
+      const blocks = await notionFetch(`/v1/blocks/${ADV_DB_ID}/children`, 'GET');
+      const dbBlock = (blocks.results || []).find(b =>
+        b.type === 'child_database' || b.type === 'linked_to_database'
+      );
+      if (dbBlock) {
+        realDbId = dbBlock.id.replace(/-/g, '');
+        console.log('[ADV] database real encontrada:', realDbId);
+      }
+    } catch(e) { console.warn('[ADV] não foi possível resolver database filha:', e.message); }
+
+    const raw = await fetchAllFromDb(realDbId);
+    advData = raw;
     advLoaded = true;
-    console.log('[ADV] carregado:', raw.length, 'registros');
+    console.log('[ADV] carregado:', raw.length, 'registros | db:', realDbId);
   } catch(e) {
     console.error('[ADV] erro:', e.message);
     document.getElementById('mainContent').innerHTML =
-      `<div class="loading"><p style="color:var(--red)">Erro Audiovisual: ${e.message}</p>
-       <p style="color:var(--muted);font-size:12px;margin-top:8px">Verifique se o G4 OS está conectado na database AUDIOVISUAL no Notion</p></div>`;
+      `<div class="loading"><p style="color:var(--red)">Erro Audiovisual: ${e.message}</p></div>`;
   }
 }
 
