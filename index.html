@@ -295,13 +295,19 @@ function populateFilters() {
     (props['Creative']?.people || []).forEach(c => creatives.add(c.name));
     const at = props['Área de Task']?.select?.name; if (at) areasTask.add(at);
     const nf = props['Nome Freelancer']?.rich_text?.[0]?.plain_text; if (nf) nomesFreelancer.add(nf);
-    const criado = props['Criado em']?.created_time;
-    if (criado) {
-      const d = new Date(criado);
-      // Chave YYYY-MM garante separação correta por ano e mês
-      meses.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
-    }
+    // (meses gerados estaticamente abaixo — não depende dos dados)
   });
+
+  // Gera todos os meses de jan/2026 até o mês atual, independente dos dados
+  const _now = new Date();
+  const _curYear = _now.getFullYear();
+  const _curMonth = _now.getMonth() + 1;
+  for (let y = 2026; y <= _curYear; y++) {
+    const endM = (y < _curYear) ? 12 : _curMonth;
+    for (let m = 1; m <= endM; m++) {
+      meses.add(`${y}-${String(m).padStart(2,'0')}`);
+    }
+  }
 
   fillSelect('fStatus', statuses);
   fillSelect('fTipo', tipos);
