@@ -217,7 +217,7 @@ function setTab(tab) {
 function getTabData(data) {
   if (activeTab === 'creative') return data.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'CREATIVE'));
   if (activeTab === 'adv') return data.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'AUDIOVISUAL') || (p.properties['Tipo de Demanda']?.select?.name||'').startsWith('ADV'));
-  if (activeTab === 'red') return data.filter(p => p.properties.ID?.unique_id?.prefix === 'RED');
+  if (activeTab === 'red') return data.filter(p => (p.properties['Tipo de Demanda']?.select?.name || '').toUpperCase().startsWith('RED'));
   return data;
 }
 
