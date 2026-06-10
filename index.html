@@ -242,6 +242,11 @@ async function setTab(tab) {
     .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 
   populateFilters();
+
+  // Pré-seleciona a Área correspondente à aba clicada
+  const areaPreset = { creative: 'CREATIVE', adv: 'AUDIOVISUAL' };
+  if (areaPreset[tab]) setMsFilter('fArea', areaPreset[tab]);
+
   applyFilters();
 }
 
@@ -443,6 +448,22 @@ function clearMsFilter(id) {
     panel.querySelectorAll('.ms-item-cb').forEach(cb => cb.checked=false);
     const allCb = panel.querySelector('.ms-all-cb');
     if (allCb) allCb.checked = true;
+  }
+  updateMsBtn(id);
+}
+
+// Pré-seleciona valores num multi-select (chamado após populateFilters)
+function setMsFilter(id, ...values) {
+  if (!msState[id]) msState[id] = new Set();
+  msState[id].clear();
+  values.forEach(v => msState[id].add(v));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) {
+    panel.querySelectorAll('.ms-item-cb').forEach(cb => {
+      cb.checked = msState[id].has(cb.dataset.value);
+    });
+    const allCb = panel.querySelector('.ms-all-cb');
+    if (allCb) allCb.checked = msState[id].size === 0;
   }
   updateMsBtn(id);
 }
