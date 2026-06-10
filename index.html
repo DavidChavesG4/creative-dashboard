@@ -30,7 +30,6 @@
   .tab-btn:hover { color: var(--text); }
   .tab-btn.active { color: var(--text); border-bottom-color: var(--blue); }
   .tab-btn.tab-creative.active { border-bottom-color: var(--blue); color: var(--blue); }
-  .tab-btn.tab-adv.active { border-bottom-color: var(--red); color: var(--red); }
   .tab-btn.tab-red.active { border-bottom-color: var(--orange); color: var(--orange); }
   .chart-wrap canvas { cursor: pointer; }
   .drill-hint { font-size: 10px; color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 6px; }
@@ -148,7 +147,6 @@
   <div class="tabs-bar">
     <button class="tab-btn active" onclick="setTab('geral',this)">📊 Geral</button>
     <button class="tab-btn tab-creative" onclick="setTab('creative',this)">🔵 CREATIVE</button>
-    <button class="tab-btn tab-adv" onclick="setTab('adv',this)">🔴 AUDIOVISUAL</button>
     <button class="tab-btn tab-red" onclick="setTab('red',this)">🟠 REDAÇÃO</button>
   </div>
 
@@ -200,19 +198,14 @@
 
 <script>
 const DB_ID     = '2e0b431349e180498fe0cbaf43c58f21';
-const ADV_DB_ID = '253aac6d10a54b5a8bc2b575b1598df6'; // database separada do Audiovisual
 let TOKEN = '';
 let allData = [];
-let advData = [];      // database separada do Audiovisual
-let advLoaded = false;
 let filteredData = [];
 let charts = {};
 
 let activeTab = 'geral';
 
-function getBaseData() {
-  return activeTab === 'adv' ? advData : allData;
-}
+function getBaseData() { return allData; }
 
 function filterRaw(raw) {
   return raw.filter(p => {
@@ -229,30 +222,15 @@ async function setTab(tab, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
-  if (tab === 'adv' && !advLoaded) {
-    document.getElementById('mainContent').innerHTML =
-      '<div class="loading"><div class="spinner"></div><span>Carregando Audiovisual...</span></div>';
-    await loadAdvData();
-    if (!advLoaded) return; // load falhou — mensagem de erro já está no mainContent
-  }
-
   // Repopula filtros e limpa seleções ao trocar de aba
   ['fStatus','fTipo','fArea','fAreaDem','fAreaTask','fCreative','fNomeFreelancer','fMes']
     .forEach(id => clearMsFilter(id));
   ['fFreelancer','fRevisoes','fForaSLA','fAprovadoPrimeira','fIniciativa']
     .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 
-  // Esconde filtros que não fazem sentido no ADV
-  const advOnlyHide = ['fFreelancer','fRevisoes','fForaSLA','fAprovadoPrimeira','fIniciativa'];
-  advOnlyHide.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = (tab === 'adv') ? 'none' : '';
-  });
-
   populateFilters();
 
   // Pré-seleciona a Área correspondente à aba clicada
-  // ADV não usa pré-seleção de Área (database separada, não precisa filtrar por campo)
   const areaPreset = { creative: 'CREATIVE' };
   if (areaPreset[tab]) setMsFilter('fArea', areaPreset[tab]);
 
@@ -261,7 +239,6 @@ async function setTab(tab, btn) {
 
 function getTabData(data) {
   if (activeTab === 'creative') return data.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'CREATIVE'));
-  if (activeTab === 'adv') return data; // já é a database ADV inteira
   if (activeTab === 'red') return data.filter(p => (p.properties['Tipo de Demanda']?.select?.name || '').toUpperCase().startsWith('RED'));
   return data;
 }
@@ -325,31 +302,8 @@ async function fetchAllFromDb(dbId) {
 
 async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
-async function loadAdvData() {
-  try {
-    const raw = await fetchAllFromDb(ADV_DB_ID);
-    // Sem filtro — carrega tudo para diagnóstico
-    advData = raw;
-    advLoaded = true;
-    console.log('[ADV] carregado:', raw.length, 'registros');
-    // Expoe para debug
-    window._advRaw = raw.slice(0, 3);
-  } catch(e) {
-    console.error('[ADV] erro:', e);
-    document.getElementById('mainContent').innerHTML = `
-      <div class="loading">
-        <p style="color:var(--red)">Erro ao carregar Audiovisual</p>
-        <p style="color:var(--muted);font-size:12px;margin-top:8px">${e.message}</p>
-        <p style="color:var(--muted);font-size:11px;margin-top:4px">DB: ${ADV_DB_ID}</p>
-      </div>`;
-  }
-}
-
-// Retorna o status do registro considerando o campo correto por aba
 function getPropStatus(props) {
-  return activeTab === 'adv'
-    ? (props['Etapa']?.status?.name || '')
-    : (props['Status']?.status?.name || '');
+  return props['Status']?.status?.name || '';
 }
 
 async function loadData() {
@@ -365,8 +319,6 @@ async function loadData() {
     // Separamos aqui para não fazer fetch extra
     // ADV é database separada — carregada no setTab (lazy)
     // Reseta para forçar recarga ao clicar na aba
-    advData = [];
-    advLoaded = false;
 
     populateFilters();
     applyFilters();
@@ -514,10 +466,7 @@ function populateFilters() {
     }
   }
 
-  // ADV: mostra todos os tipos da database; outros: só CRT/ADV/RED
-  const tiposFiltrados = activeTab === 'adv'
-    ? tipos
-    : new Set([...tipos].filter(t => /^(CRT|ADV|RED)/i.test(t)));
+  const tiposFiltrados = new Set([...tipos].filter(t => /^(CRT|ADV|RED)/i.test(t)));
 
   // Membros fixos por time
   if (activeTab === 'creative' || activeTab === 'geral') {
@@ -528,11 +477,7 @@ function populateFilters() {
     ['Sarah Vitório','Juliana Cespedes','Marcella Mancinelli','Tici Fonseca']
       .forEach(n => creatives.add(n));
   }
-  if (activeTab === 'adv') {
-    ['Wilson Silva','Raffaela Lima','Flávio Rocha','Gui Juhas','Lucas Liberato',
-     'Amanda Rui','Joyce Moraes','Taína Vilhena','Diego Picasso','Yasmin Galdino',
-     'Gustavo Cairo','Eric Correa','Jaque Germano'].forEach(n => creatives.add(n));
-  }
+
 
   fillMultiSelect('fStatus', statuses);
   fillMultiSelect('fTipo', tiposFiltrados);
@@ -679,22 +624,7 @@ function render() {
   const dp = document.getElementById('drillPanel');
   if (dp) dp.style.display = 'none';
 
-  // Diagnóstico ADV: mostra info se não há dados
-  if (activeTab === 'adv' && filteredData.length === 0) {
-    const raw = window._advRaw || [];
-    const keys = raw.length > 0 ? Object.keys(raw[0].properties).join(', ') : 'nenhum registro carregado';
-    const ct0  = raw.length > 0 ? (raw[0].created_time || 'sem created_time') : '';
-    document.getElementById('mainContent').innerHTML = `
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;max-width:700px;margin:20px auto">
-        <h3 style="color:var(--yellow);margin-bottom:16px">⚠️ ADV: ${advData.length} registros (sem filtro de data)</h3>
-        <table style="width:100%;border-collapse:collapse;font-size:13px">
-          <tr><td style="color:var(--muted);padding:6px 0">Registros no advData</td><td style="color:${advData.length>0?'var(--green)':'var(--red)'}"><b>${advData.length}</b></td></tr>
-          <tr><td style="color:var(--muted);padding:6px 0">created_time do 1° reg</td><td style="color:var(--blue)">${ct0}</td></tr>
-          <tr><td style="color:var(--muted);padding:6px 0">Campos do 1° registro</td><td style="color:var(--blue);font-size:11px">${keys}</td></tr>
-        </table>
-      </div>`;
-    return;
-  }
+
 
   const total = filteredData.length;
   const statusMap = {}, tipoMap = {}, areaMap = {}, areaDemMap = {}, creativeMap = {}, monthMap = {};
@@ -761,7 +691,7 @@ function render() {
     </div>
 
     <div class="charts-grid three">
-      <div class="chart-card"><div class="chart-title">Por Área (CREAT/ADV)</div><div class="chart-wrap"><canvas id="chartArea"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Por Área</div><div class="chart-wrap"><canvas id="chartArea"></canvas></div></div>
       <div class="chart-card"><div class="chart-title">Por BU Demandadora</div><div class="chart-wrap"><canvas id="chartAreaDem"></canvas></div></div>
       <div class="chart-card"><div class="chart-title">Carga por Criativo</div><div class="chart-wrap"><canvas id="chartCreative"></canvas></div></div>
     </div>
@@ -877,7 +807,6 @@ function statusBadge(s) {
     'Finalizado':'badge-finalizado','Em produção':'badge-producao',
     'Revisão':'badge-revisao','Aprovação pendente':'badge-revisao',
     'Cancelada':'badge-cancelada','ERRO':'badge-erro','Na fila':'badge-fila',
-    // ADV
     'Cancelado':'badge-cancelada',
     'Em Revisão':'badge-revisao',
     'Para aprovação':'badge-revisao',
