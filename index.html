@@ -200,8 +200,7 @@
 
 <script>
 const DB_ID     = '2e0b431349e180498fe0cbaf43c58f21';
-// ADV está na mesma database principal (DB_ID confirmado)
-const ADV_PAGE_ID = DB_ID;
+const ADV_DB_ID = '358b431349e1808799ecd6f5a5cd25fb'; // Solicitação de Demandas AUDIOVISUAL
 let TOKEN = '';
 let allData = [];
 let advData = [];
@@ -319,20 +318,18 @@ async function fetchAllFromDb(dbId) {
 async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
 async function loadAdvData() {
-  // ADV está no allData (mesma database) — filtra registros ADV
-  // Por enquanto pega todos os registros com Status que não sejam CREATIVE nem RED
-  const crtStatuses = allData
-    .filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'CREATIVE'))
-    .map(p => p.id);
-  const redIds = new Set(allData
-    .filter(p => (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase().startsWith('RED'))
-    .map(p => p.id));
-  const crtIds = new Set(crtStatuses);
-
-  // ADV = registros que NÃO são CREATIVE nem RED
-  advData = allData.filter(p => !crtIds.has(p.id) && !redIds.has(p.id));
-  advLoaded = true;
-  console.log('[ADV] registros identificados:', advData.length, '(de', allData.length, 'total)');
+  try {
+    const raw = await fetchAllFromDb(ADV_DB_ID);
+    // Filtra por ano usando created_time nativo (ADV não tem campo 'Criado em')
+    advData = raw.filter(p => (p.created_time || '').startsWith('2026'));
+    advLoaded = true;
+    console.log('[ADV] carregado:', advData.length, 'de 2026 (total:', raw.length, ')');
+  } catch(e) {
+    console.error('[ADV] erro:', e.message);
+    document.getElementById('mainContent').innerHTML =
+      `<div class="loading"><p style="color:var(--red)">Erro Audiovisual: ${e.message}</p>
+       <p style="color:var(--muted);font-size:12px;margin-top:8px">Verifique se o G4 OS está conectado na database AUDIOVISUAL no Notion</p></div>`;
+  }
 }
 
 function getPropStatus(props) {
