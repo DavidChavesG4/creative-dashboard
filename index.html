@@ -252,7 +252,8 @@ async function setTab(tab, btn) {
   populateFilters();
 
   // Pré-seleciona a Área correspondente à aba clicada
-  const areaPreset = { creative: 'CREATIVE', adv: 'AUDIOVISUAL' };
+  // ADV não usa pré-seleção de Área (database separada, não precisa filtrar por campo)
+  const areaPreset = { creative: 'CREATIVE' };
   if (areaPreset[tab]) setMsFilter('fArea', areaPreset[tab]);
 
   applyFilters();
