@@ -39,6 +39,22 @@
   .btn-clear { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all .2s; }
   .btn-clear:hover { color: var(--text); border-color: var(--muted); }
 
+  /* Multi-select dropdown */
+  .ms-wrap { position: relative; display: inline-block; }
+  .ms-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 13px; cursor: pointer; min-width: 140px; display: flex; align-items: center; justify-content: space-between; gap: 8px; white-space: nowrap; transition: border-color .2s; }
+  .ms-btn:hover, .ms-btn.open { border-color: var(--blue); outline: none; }
+  .ms-arrow { color: var(--muted); font-size: 10px; flex-shrink: 0; transition: transform .2s; }
+  .ms-btn.open .ms-arrow { transform: rotate(180deg); }
+  .ms-panel { position: absolute; top: calc(100% + 4px); left: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; min-width: 220px; max-height: 300px; overflow-y: auto; z-index: 500; box-shadow: 0 8px 24px rgba(0,0,0,.5); }
+  .ms-search { padding: 8px; position: sticky; top: 0; background: var(--surface2); border-bottom: 1px solid var(--border); z-index: 1; }
+  .ms-search input { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 4px; padding: 5px 8px; font-size: 12px; outline: none; }
+  .ms-search input:focus { border-color: var(--blue); }
+  .ms-option { display: flex; align-items: center; gap: 8px; padding: 7px 12px; cursor: pointer; font-size: 13px; transition: background .15s; user-select: none; }
+  .ms-option:hover { background: rgba(88,166,255,.08); }
+  .ms-option input[type=checkbox] { accent-color: var(--blue); width: 14px; height: 14px; cursor: pointer; flex-shrink: 0; }
+  .ms-divider { border: none; border-top: 1px solid var(--border); margin: 2px 0; }
+  .ms-count { background: var(--blue); color: #fff; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
+
   .main { padding: 20px 24px; max-width: 1600px; margin: 0 auto; }
 
   .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
@@ -134,14 +150,13 @@
 
   <div class="filters" id="filtersBar">
     <span class="filter-label">Filtros:</span>
-    <select id="fStatus" onchange="applyFilters()"><option value="">Todos os Status</option></select>
-    <select id="fTipo" onchange="applyFilters()"><option value="">Todos os Tipos</option></select>
-    <select id="fArea" onchange="applyFilters()"><option value="">Todas as Áreas</option></select>
-    <select id="fAreaDem" onchange="applyFilters()"><option value="">Todas as BUs</option></select>
-    <select id="fAreaTask" onchange="applyFilters()"><option value="">Área de Task</option></select>
-    <select id="fCreative" onchange="applyFilters()"><option value="">Todos os Criativos</option></select>
-    <select id="fProjeto" onchange="applyFilters()"><option value="">Todos os Projetos</option></select>
-    <select id="fNomeFreelancer" onchange="applyFilters()"><option value="">Nome Freelancer</option></select>
+    <div class="ms-wrap"><button class="ms-btn" id="btn-fStatus" onclick="toggleMs('fStatus')"><span id="lbl-fStatus">Todos os Status</span><span class="ms-arrow">▾</span></button><div class="ms-panel" id="panel-fStatus" style="display:none;"></div></div>
+    <div class="ms-wrap"><button class="ms-btn" id="btn-fTipo" onclick="toggleMs('fTipo')"><span id="lbl-fTipo">Todos os Tipos</span><span class="ms-arrow">▾</span></button><div class="ms-panel" id="panel-fTipo" style="display:none;"></div></div>
+    <div class="ms-wrap"><button class="ms-btn" id="btn-fArea" onclick="toggleMs('fArea')"><span id="lbl-fArea">Todas as Áreas</span><span class="ms-arrow">▾</span></button><div class="ms-panel" id="panel-fArea" style="display:none;"></div></div>
+    <div class="ms-wrap"><button class="ms-btn" id="btn-fAreaDem" onclick="toggleMs('fAreaDem')"><span id="lbl-fAreaDem">Todas as BUs</span><span class="ms-arrow">▾</span></button><div class="ms-panel" id="panel-fAreaDem" style="display:none;"></div></div>
+    <div class="ms-wrap"><button class="ms-btn" id="btn-fAreaTask" onclick="toggleMs('fAreaTask')"><span id="lbl-fAreaTask">Área de Task</span><span class="ms-arrow">▾</span></button><div class="ms-panel" id="panel-fAreaTask" style="display:none;"></div></div>
+    <div class="ms-wrap"><button class="ms-btn" id="btn-fCreative" onclick="toggleMs('fCreative')"><span id="lbl-fCreative">Todos os Criativos</span><span class="ms-arrow">▾</span></button><div class="ms-panel" id="panel-fCreative" style="display:none;"></div></div>
+    <div class="ms-wrap"><button class="ms-btn" id="btn-fNomeFreelancer" onclick="toggleMs('fNomeFreelancer')"><span id="lbl-fNomeFreelancer">Nome Freelancer</span><span class="ms-arrow">▾</span></button><div class="ms-panel" id="panel-fNomeFreelancer" style="display:none;"></div></div>
     <select id="fFreelancer" onchange="applyFilters()">
       <option value="">Interno + Freelancer</option>
       <option value="1">Freelancer</option>
@@ -169,7 +184,7 @@
       <option value="1">Iniciativa Creative</option>
       <option value="0">Não é iniciativa</option>
     </select>
-    <select id="fMes" onchange="applyFilters()"><option value="">Todos os Meses</option></select>
+    <div class="ms-wrap"><button class="ms-btn" id="btn-fMes" onclick="toggleMs('fMes')"><span id="lbl-fMes">Todos os Meses</span><span class="ms-arrow">▾</span></button><div class="ms-panel" id="panel-fMes" style="display:none;"></div></div>
     <button class="btn-clear" onclick="clearFilters()">✕ Limpar</button>
   </div>
 
@@ -284,6 +299,99 @@ async function loadData() {
   btn.disabled = false; btn.textContent = '↻ Atualizar';
 }
 
+// ── Multi-select ─────────────────────────────────────────────────────────────
+const msState = {};
+const msPlaceholder = {
+  fStatus:'Todos os Status', fTipo:'Todos os Tipos', fArea:'Todas as Áreas',
+  fAreaDem:'Todas as BUs', fAreaTask:'Área de Task', fCreative:'Todos os Criativos',
+  fNomeFreelancer:'Nome Freelancer', fMes:'Todos os Meses'
+};
+
+function toggleMs(id) {
+  const panel = document.getElementById('panel-'+id);
+  const btn   = document.getElementById('btn-'+id);
+  const isOpen = panel.style.display !== 'none';
+  document.querySelectorAll('.ms-panel').forEach(p => p.style.display='none');
+  document.querySelectorAll('.ms-btn').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { panel.style.display='block'; btn.classList.add('open'); }
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ms-wrap')) {
+    document.querySelectorAll('.ms-panel').forEach(p => p.style.display='none');
+    document.querySelectorAll('.ms-btn').forEach(b => b.classList.remove('open'));
+  }
+});
+
+document.addEventListener('change', e => {
+  if (e.target.classList.contains('ms-all-cb')) {
+    const id = e.target.dataset.id;
+    if (!msState[id]) msState[id] = new Set();
+    msState[id].clear();
+    document.querySelectorAll(`#panel-${id} .ms-item-cb`).forEach(cb => cb.checked=false);
+    e.target.checked = true;
+    updateMsBtn(id); applyFilters();
+  } else if (e.target.classList.contains('ms-item-cb')) {
+    const id  = e.target.dataset.id;
+    const val = e.target.dataset.value;
+    if (!msState[id]) msState[id] = new Set();
+    e.target.checked ? msState[id].add(val) : msState[id].delete(val);
+    const allCb = document.querySelector(`#panel-${id} .ms-all-cb`);
+    if (allCb) allCb.checked = msState[id].size === 0;
+    updateMsBtn(id); applyFilters();
+  }
+});
+
+document.addEventListener('input', e => {
+  if (e.target.classList.contains('ms-search-input')) {
+    const id = e.target.dataset.target;
+    const q  = e.target.value.toLowerCase();
+    document.querySelectorAll(`#panel-${id} label[data-search]`).forEach(opt => {
+      opt.style.display = !q || opt.dataset.search.includes(q) ? '' : 'none';
+    });
+  }
+});
+
+function updateMsBtn(id) {
+  const lbl = document.getElementById('lbl-'+id);
+  if (!lbl) return;
+  const count = msState[id] ? msState[id].size : 0;
+  const base  = msPlaceholder[id] || id;
+  lbl.innerHTML = count > 0 ? `${base} <span class="ms-count">${count}</span>` : base;
+}
+
+function getMsValues(id) {
+  return msState[id] && msState[id].size > 0 ? msState[id] : null;
+}
+
+function fillMultiSelect(id, set, labelFn) {
+  const panel = document.getElementById('panel-'+id);
+  if (!panel) return;
+  if (!msState[id]) msState[id] = new Set();
+  const selected = msState[id];
+  const values   = [...set].sort();
+  let html = `<div class="ms-search"><input type="text" class="ms-search-input" data-target="${id}" placeholder="Buscar..."></div>`;
+  html += `<label class="ms-option"><input type="checkbox" class="ms-all-cb" data-id="${id}"${selected.size===0?' checked':''}> Todos</label><hr class="ms-divider">`;
+  values.forEach(v => {
+    const label = labelFn ? labelFn(v) : v;
+    const esc   = v.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+    html += `<label class="ms-option" data-search="${label.toLowerCase()}"><input type="checkbox" class="ms-item-cb" data-id="${id}" data-value="${esc}"${selected.has(v)?' checked':''}> ${label}</label>`;
+  });
+  panel.innerHTML = html;
+}
+
+function clearMsFilter(id) {
+  if (msState[id]) msState[id].clear();
+  const panel = document.getElementById('panel-'+id);
+  if (panel) {
+    panel.querySelectorAll('.ms-item-cb').forEach(cb => cb.checked=false);
+    const allCb = panel.querySelector('.ms-all-cb');
+    if (allCb) allCb.checked = true;
+  }
+  updateMsBtn(id);
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 function populateFilters() {
   const statuses = new Set(), tipos = new Set(), areas = new Set(), areasDem = new Set();
   const creatives = new Set(), meses = new Set(), projetos = new Set();
@@ -312,14 +420,14 @@ function populateFilters() {
     }
   }
 
-  fillSelect('fStatus', statuses);
-  fillSelect('fTipo', tipos);
-  fillSelect('fArea', areas);
-  fillSelect('fAreaDem', areasDem);
-  fillSelect('fAreaTask', areasTask);
-  fillSelect('fCreative', creatives);
-  fillSelect('fNomeFreelancer', nomesFreelancer);
-  fillSelect('fMes', meses, v => {
+  fillMultiSelect('fStatus', statuses);
+  fillMultiSelect('fTipo', tipos);
+  fillMultiSelect('fArea', areas);
+  fillMultiSelect('fAreaDem', areasDem);
+  fillMultiSelect('fAreaTask', areasTask);
+  fillMultiSelect('fCreative', creatives);
+  fillMultiSelect('fNomeFreelancer', nomesFreelancer);
+  fillMultiSelect('fMes', meses, v => {
     const [y, m] = v.split('-');
     return new Date(y, m-1).toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
   });
@@ -341,33 +449,33 @@ function fillSelect(id, set, labelFn) {
 }
 
 function applyFilters() {
-  const fStatus = document.getElementById('fStatus').value;
-  const fTipo = document.getElementById('fTipo').value;
-  const fArea = document.getElementById('fArea').value;
-  const fAreaDem = document.getElementById('fAreaDem').value;
-  const fAreaTask = document.getElementById('fAreaTask').value;
-  const fCreative = document.getElementById('fCreative').value;
-  const fFreelancer = document.getElementById('fFreelancer').value;
-  const fNomeFreelancer = document.getElementById('fNomeFreelancer').value;
-  const fRevisoes = document.getElementById('fRevisoes').value;
-  const fForaSLA = document.getElementById('fForaSLA').value;
+  const fStatus        = getMsValues('fStatus');
+  const fTipo          = getMsValues('fTipo');
+  const fArea          = getMsValues('fArea');
+  const fAreaDem       = getMsValues('fAreaDem');
+  const fAreaTask      = getMsValues('fAreaTask');
+  const fCreative      = getMsValues('fCreative');
+  const fNomeFreelancer = getMsValues('fNomeFreelancer');
+  const fMes           = getMsValues('fMes');
+  const fFreelancer      = document.getElementById('fFreelancer').value;
+  const fRevisoes        = document.getElementById('fRevisoes').value;
+  const fForaSLA         = document.getElementById('fForaSLA').value;
   const fAprovadoPrimeira = document.getElementById('fAprovadoPrimeira').value;
-  const fIniciativa = document.getElementById('fIniciativa').value;
-  const fMes = document.getElementById('fMes').value;
+  const fIniciativa      = document.getElementById('fIniciativa').value;
 
   filteredData = allData.filter(p => {
     const props = p.properties;
-    if (fStatus && props.Status?.status?.name !== fStatus) return false;
-    if (fTipo && props['Tipo de Demanda']?.select?.name !== fTipo) return false;
-    if (fArea && !(props['ÁREA']?.multi_select || []).some(a => a.name === fArea)) return false;
-    if (fAreaDem && !(props['Área Demandadora']?.multi_select || []).some(a => a.name === fAreaDem)) return false;
-    if (fAreaTask && props['Área de Task']?.select?.name !== fAreaTask) return false;
-    if (fCreative && !(props['Creative']?.people || []).some(c => c.name === fCreative)) return false;
+    if (fStatus && !fStatus.has(props.Status?.status?.name)) return false;
+    if (fTipo   && !fTipo.has(props['Tipo de Demanda']?.select?.name)) return false;
+    if (fArea   && !(props['ÁREA']?.multi_select||[]).some(a => fArea.has(a.name))) return false;
+    if (fAreaDem && !(props['Área Demandadora']?.multi_select||[]).some(a => fAreaDem.has(a.name))) return false;
+    if (fAreaTask && !fAreaTask.has(props['Área de Task']?.select?.name)) return false;
+    if (fCreative && !(props['Creative']?.people||[]).some(c => fCreative.has(c.name))) return false;
     if (fFreelancer === '1' && !props['Freelancer']?.checkbox) return false;
     if (fFreelancer === '0' && props['Freelancer']?.checkbox) return false;
     if (fNomeFreelancer) {
       const nf = props['Nome Freelancer']?.rich_text?.[0]?.plain_text || '';
-      if (nf !== fNomeFreelancer) return false;
+      if (!fNomeFreelancer.has(nf)) return false;
     }
     if (fRevisoes) {
       const rev = props['Nº de Revisões']?.number || 0;
@@ -387,7 +495,7 @@ function applyFilters() {
       if (!criado) return false;
       const d = new Date(criado);
       const m = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-      if (m !== fMes) return false;
+      if (!fMes.has(m)) return false;
     }
     return true;
   });
@@ -397,7 +505,8 @@ function applyFilters() {
 }
 
 function clearFilters() {
-  ['fStatus','fTipo','fArea','fAreaDem','fAreaTask','fCreative','fFreelancer','fNomeFreelancer','fRevisoes','fForaSLA','fAprovadoPrimeira','fIniciativa','fMes'].forEach(id => document.getElementById(id).value = '');
+  ['fStatus','fTipo','fArea','fAreaDem','fAreaTask','fCreative','fNomeFreelancer','fMes'].forEach(id => clearMsFilter(id));
+  ['fFreelancer','fRevisoes','fForaSLA','fAprovadoPrimeira','fIniciativa'].forEach(id => document.getElementById(id).value = '');
   applyFilters();
 }
 
