@@ -326,16 +326,27 @@ async function fetchAll() { return fetchAllFromDb(DB_ID); }
 async function loadAdvData() {
   try {
     const raw = await fetchAllFromDb(ADV_DB_ID);
-    // Database é dedicada ao ADV — carrega tudo de 2026
+    // ADV usa created_time da página (não depende de 'Criado em')
+    // Status no ADV fica no campo 'Etapa' (não 'Status')
     advData = raw.filter(p => {
-      const ct = p.properties['Criado em']?.created_time;
-      return ct && ct.startsWith('2026');
+      const ct = p.created_time || p.properties['Criado em']?.created_time;
+      if (!ct || !ct.startsWith('2026')) return false;
+      const etapa = p.properties['Etapa']?.status?.name;
+      if (!etapa) return false;
+      return !['Em Construção','ERRO','Erro'].includes(etapa);
     });
     advLoaded = true;
   } catch(e) {
     document.getElementById('mainContent').innerHTML =
       `<div class="loading"><p style="color:var(--red)">Erro ao carregar Audiovisual: ${e.message}</p></div>`;
   }
+}
+
+// Retorna o status do registro considerando o campo correto por aba
+function getPropStatus(props) {
+  return activeTab === 'adv'
+    ? (props['Etapa']?.status?.name || '')
+    : (props['Status']?.status?.name || '');
 }
 
 async function loadData() {
@@ -479,7 +490,7 @@ function populateFilters() {
 
   getBaseData().forEach(p => {
     const props = p.properties;
-    const s = props.Status?.status?.name; if (s) statuses.add(s);
+    const s = getPropStatus(props); if (s) statuses.add(s);
     const t = props['Tipo de Demanda']?.select?.name; if (t) tipos.add(t);
     (props['ÁREA']?.multi_select || []).forEach(a => areas.add(a.name));
     (props['Área Demandadora']?.multi_select || []).forEach(a => areasDem.add(a.name));
@@ -565,7 +576,7 @@ function applyFilters() {
 
   filteredData = getBaseData().filter(p => {
     const props = p.properties;
-    if (fStatus && !fStatus.has(props.Status?.status?.name)) return false;
+    if (fStatus && !fStatus.has(getPropStatus(props))) return false;
     if (fTipo   && !fTipo.has(props['Tipo de Demanda']?.select?.name)) return false;
     if (fArea   && !(props['ÁREA']?.multi_select||[]).some(a => fArea.has(a.name))) return false;
     if (fAreaDem && !(props['Área Demandadora']?.multi_select||[]).some(a => fAreaDem.has(a.name))) return false;
@@ -641,7 +652,7 @@ function showDrillDown(drillKey, key) {
               const uid = props.ID?.unique_id;
               const id = uid ? `${uid.prefix||''}-${uid.number}` : '—';
               const title = getTitle(props);
-              const status = props.Status?.status?.name || '—';
+              const status = getPropStatus(props) || '—';
               const tipo = props['Tipo de Demanda']?.select?.name || '—';
               const creative = (props['Creative']?.people||[]).map(c=>c.name).join(', ') || '—';
               const criado = props['Criado em']?.created_time ? new Date(props['Criado em'].created_time).toLocaleDateString('pt-BR') : '—';
@@ -673,7 +684,7 @@ function render() {
 
   filteredData.forEach(p => {
     const props = p.properties;
-    const s = props.Status?.status?.name || 'Sem status';
+    const s = getPropStatus(props) || 'Sem status';
     statusMap[s] = (statusMap[s]||0) + 1;
     (drillMap.status[s] = drillMap.status[s]||[]).push(p);
     if (s === 'Revisão' || s === 'Em Revisão') revisoes++;
@@ -807,7 +818,7 @@ function renderTable() {
     const uid = props.ID?.unique_id;
     const id = uid ? `${uid.prefix||''}-${uid.number}` : '—';
     const title = getTitle(props);
-    const status = props.Status?.status?.name || '—';
+    const status = getPropStatus(props) || '—';
     const tipo = props['Tipo de Demanda']?.select?.name || '—';
     const area = (props['ÁREA']?.multi_select||[]).map(a=>a.name).join(', ') || '—';
     const bu = (props['Área Demandadora']?.multi_select||[]).map(a=>a.name).join(', ') || '—';
