@@ -200,7 +200,8 @@
 
 <script>
 const DB_ID     = '2e0b431349e180498fe0cbaf43c58f21';
-const ADV_DB_ID = '253aac6d10a54b5a8bc2b575b1598df6';
+// ADV está no mesmo banco 2026 — identificado pelo campo 'Etapa' (não 'Status')
+const ADV_DB_ID = DB_ID;
 let TOKEN = '';
 let allData = [];
 let advData = [];      // database separada do Audiovisual
@@ -228,12 +229,6 @@ async function setTab(tab, btn) {
   activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-
-  if (tab === 'adv' && !advLoaded) {
-    document.getElementById('mainContent').innerHTML =
-      '<div class="loading"><div class="spinner"></div><span>Carregando Audiovisual...</span></div>';
-    await loadAdvData();
-  }
 
   // Repopula filtros e limpa seleções ao trocar de aba
   ['fStatus','fTipo','fArea','fAreaDem','fAreaTask','fCreative','fNomeFreelancer','fMes']
@@ -323,18 +318,6 @@ async function fetchAllFromDb(dbId) {
 
 async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
-async function loadAdvData() {
-  try {
-    const raw = await fetchAllFromDb(ADV_DB_ID);
-    // Filtra apenas por ano — usa created_time nativo da página
-    advData = raw.filter(p => (p.created_time || '').startsWith('2026'));
-    advLoaded = true;
-  } catch(e) {
-    document.getElementById('mainContent').innerHTML =
-      `<div class="loading"><p style="color:var(--red)">Erro ao carregar Audiovisual: ${e.message}</p><p style="color:var(--muted);font-size:12px;margin-top:8px;">Verifique se o token tem acesso à database de Audiovisual</p></div>`;
-  }
-}
-
 // Retorna o status do registro considerando o campo correto por aba
 function getPropStatus(props) {
   return activeTab === 'adv'
@@ -351,12 +334,15 @@ async function loadData() {
     const raw = await fetchAll();
     allData = filterRaw(raw);
 
-    // Se estiver na aba ADV, recarrega também
-    if (activeTab === 'adv') {
-      await loadAdvData();
-    } else {
-      advLoaded = false; // força recarga próxima vez que clicar em ADV
-    }
+    // ADV: mesmo banco 2026, mas usa campo 'Etapa' (não 'Status')
+    // Separamos aqui para não fazer fetch extra
+    advData = raw.filter(p => {
+      const ct = p.properties['Criado em']?.created_time;
+      if (!ct || !ct.startsWith('2026')) return false;
+      const etapa = p.properties['Etapa']?.status?.name;
+      return !!etapa && !['Em Construção','ERRO','Erro'].includes(etapa);
+    });
+    advLoaded = true;
 
     populateFilters();
     applyFilters();
