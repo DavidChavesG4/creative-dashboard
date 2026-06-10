@@ -31,6 +31,9 @@
   .tab-btn.active { color: var(--text); border-bottom-color: var(--blue); }
   .tab-btn.tab-creative.active { border-bottom-color: var(--blue); color: var(--blue); }
   .tab-btn.tab-adv.active { border-bottom-color: var(--red); color: var(--red); }
+  .tab-btn.tab-red.active { border-bottom-color: var(--orange); color: var(--orange); }
+  .chart-wrap canvas { cursor: pointer; }
+  .drill-hint { font-size: 10px; color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 6px; }
 
   .filters { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .filter-label { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
@@ -146,6 +149,7 @@
     <button class="tab-btn active" onclick="setTab('geral')">📊 Geral</button>
     <button class="tab-btn tab-creative" onclick="setTab('creative')">🔵 CREATIVE</button>
     <button class="tab-btn tab-adv" onclick="setTab('adv')">🔴 AUDIOVISUAL</button>
+    <button class="tab-btn tab-red" onclick="setTab('red')">🟠 REDAÇÃO</button>
   </div>
 
   <div class="filters" id="filtersBar">
@@ -191,6 +195,7 @@
   <div class="main" id="mainContent">
     <div class="loading"><div class="spinner"></div><span>Carregando dados...</span></div>
   </div>
+  <div id="drillPanel" style="display:none; padding: 0 24px 20px; max-width:1600px; margin:0 auto;"></div>
 </div>
 
 <script>
@@ -212,6 +217,7 @@ function setTab(tab) {
 function getTabData(data) {
   if (activeTab === 'creative') return data.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'CREATIVE'));
   if (activeTab === 'adv') return data.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'AUDIOVISUAL') || (p.properties['Tipo de Demanda']?.select?.name||'').startsWith('ADV'));
+  if (activeTab === 'red') return data.filter(p => p.properties.ID?.unique_id?.prefix === 'RED');
   return data;
 }
 
@@ -286,9 +292,10 @@ async function loadData() {
     allData = raw.filter(p => {
       const ct = p.properties['Criado em']?.created_time;
       if (!ct || !ct.startsWith('2026')) return false;
-      // Exclui permanentemente demandas em construção
+      // Exclui permanentemente: Em Construção, ERRO e registros sem status
       const status = p.properties.Status?.status?.name;
-      return status !== 'Em Construção';
+      if (!status) return false;
+      return !['Em Construção', 'ERRO', 'Erro'].includes(status);
     });
     populateFilters();
     applyFilters();
@@ -510,31 +517,98 @@ function clearFilters() {
   applyFilters();
 }
 
+let drillMap = {};
+
+function showDrillDown(drillKey, key) {
+  const items = drillMap[drillKey]?.[key] || [];
+  const panel = document.getElementById('drillPanel');
+  if (!panel) return;
+  if (!items.length) { panel.style.display = 'none'; return; }
+  const mNames = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  let displayLabel = key;
+  if (drillKey === 'month') {
+    const [y, m] = key.split('-');
+    displayLabel = `${mNames[parseInt(m,10)-1]}/${String(y).slice(-2)}`;
+  }
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div class="table-card" style="margin-bottom:0;">
+      <div class="table-header">
+        <h3 style="color:var(--blue)">📌 ${displayLabel} — ${items.length} demandas</h3>
+        <button class="btn-clear" onclick="document.getElementById('drillPanel').style.display='none'">&#10005; Fechar</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>ID</th><th>Nome</th><th>Status</th><th>Tipo</th><th>Criativo</th><th>Criado</th>
+          </tr></thead>
+          <tbody>
+            ${items.slice(0,200).map(p => {
+              const props = p.properties;
+              const uid = props.ID?.unique_id;
+              const id = uid ? `${uid.prefix||''}-${uid.number}` : '—';
+              const title = getTitle(props);
+              const status = props.Status?.status?.name || '—';
+              const tipo = props['Tipo de Demanda']?.select?.name || '—';
+              const creative = (props['Creative']?.people||[]).map(c=>c.name).join(', ') || '—';
+              const criado = props['Criado em']?.created_time ? new Date(props['Criado em'].created_time).toLocaleDateString('pt-BR') : '—';
+              return `<tr>
+                <td style="color:var(--muted);font-family:monospace;font-size:11px">${id}</td>
+                <td><a href="${p.url||'#'}" target="_blank" style="color:var(--blue);text-decoration:none" title="${title}">${title.substring(0,50)}${title.length>50?'…':''}</a></td>
+                <td><span class="badge ${statusBadge(status)}">${status}</span></td>
+                <td>${tipo}</td>
+                <td>${creative}</td>
+                <td style="color:var(--muted)">${criado}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
 function render() {
+  const dp = document.getElementById('drillPanel');
+  if (dp) dp.style.display = 'none';
+
   const total = filteredData.length;
   const statusMap = {}, tipoMap = {}, areaMap = {}, areaDemMap = {}, creativeMap = {}, monthMap = {};
   let freelancerCount = 0, aprovadoPrimeira = 0, foraSLA = 0, revisoes = 0, emProducao = 0;
+
+  drillMap = { status:{}, tipo:{}, area:{}, areaDem:{}, creative:{}, month:{} };
 
   filteredData.forEach(p => {
     const props = p.properties;
     const s = props.Status?.status?.name || 'Sem status';
     statusMap[s] = (statusMap[s]||0) + 1;
+    (drillMap.status[s] = drillMap.status[s]||[]).push(p);
     if (s === 'Revisão') revisoes++;
     if (s === 'Em produção') emProducao++;
 
     const t = props['Tipo de Demanda']?.select?.name || 'Sem tipo';
     tipoMap[t] = (tipoMap[t]||0) + 1;
+    (drillMap.tipo[t] = drillMap.tipo[t]||[]).push(p);
 
-    (props['ÁREA']?.multi_select||[]).forEach(a => areaMap[a.name] = (areaMap[a.name]||0)+1);
-    (props['Área Demandadora']?.multi_select||[]).forEach(a => areaDemMap[a.name] = (areaDemMap[a.name]||0)+1);
-    (props['Creative']?.people||[]).forEach(c => creativeMap[c.name] = (creativeMap[c.name]||0)+1);
+    (props['ÁREA']?.multi_select||[]).forEach(a => {
+      areaMap[a.name] = (areaMap[a.name]||0)+1;
+      (drillMap.area[a.name] = drillMap.area[a.name]||[]).push(p);
+    });
+    (props['Área Demandadora']?.multi_select||[]).forEach(a => {
+      areaDemMap[a.name] = (areaDemMap[a.name]||0)+1;
+      (drillMap.areaDem[a.name] = drillMap.areaDem[a.name]||[]).push(p);
+    });
+    (props['Creative']?.people||[]).forEach(c => {
+      creativeMap[c.name] = (creativeMap[c.name]||0)+1;
+      (drillMap.creative[c.name] = drillMap.creative[c.name]||[]).push(p);
+    });
 
     const criado = props['Criado em']?.created_time;
     if (criado) {
       const d = new Date(criado);
-      // Chave YYYY-MM: separação correta por ano e mês (evita mistura abr/25 com abr/26)
       const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
       monthMap[k] = (monthMap[k]||0)+1;
+      (drillMap.month[k] = drillMap.month[k]||[]).push(p);
     }
     if (props['Freelancer']?.checkbox) freelancerCount++;
     if (props['Aprovado de Primeira?']?.checkbox) aprovadoPrimeira++;
@@ -597,11 +671,11 @@ function render() {
   `;
 
   destroyCharts();
-  drawDoughnut('chartStatus', statusMap);
-  drawBar('chartTipo', tipoMap, '#58a6ff');
-  drawDoughnut('chartArea', areaMap);
-  drawBar('chartAreaDem', areaDemMap, '#bc8cff');
-  drawHBar('chartCreative', creativeMap);
+  drawDoughnut('chartStatus', statusMap, 'status');
+  drawBar('chartTipo', tipoMap, '#58a6ff', 'tipo');
+  drawDoughnut('chartArea', areaMap, 'area');
+  drawBar('chartAreaDem', areaDemMap, '#bc8cff', 'areaDem');
+  drawHBar('chartCreative', creativeMap, 'creative');
   drawLine('chartMonth', monthMap);
 
   renderTable();
@@ -705,55 +779,104 @@ function destroyCharts() {
   charts = {};
 }
 
-function drawDoughnut(id, data) {
+function makeTooltipWithDrill(drillKey, labelKeyFn) {
+  return {
+    backgroundColor: '#21262d', titleColor: '#e6edf3', bodyColor: '#8b949e',
+    borderColor: '#30363d', borderWidth: 1, padding: 10,
+    callbacks: {
+      label: function(ctx) {
+        const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+        const val = ctx.parsed?.y ?? ctx.parsed ?? ctx.raw;
+        const pct = total > 0 ? Math.round(val/total*100) : 0;
+        return ` ${val} demandas (${pct}%)`;
+      },
+      afterBody: function(tooltipItems) {
+        if (!drillKey) return [];
+        const rawLabel = tooltipItems[0]?.label;
+        const key = labelKeyFn ? labelKeyFn(rawLabel) : rawLabel;
+        const items = drillMap[drillKey]?.[key] || [];
+        if (!items.length) return [];
+        const lines = [''];
+        items.slice(0, 6).forEach(p => {
+          const t = getTitle(p.properties);
+          lines.push(' • ' + (t.length > 44 ? t.substring(0, 44) + '…' : t));
+        });
+        if (items.length > 6) lines.push(` + ${items.length - 6} mais`);
+        lines.push('', '↙️ Clique para ver todas');
+        return lines;
+      }
+    }
+  };
+}
+
+function drawDoughnut(id, data, drillKey) {
   const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]);
   const ctx = document.getElementById(id);
   if (!ctx) return;
   charts[id] = new Chart(ctx, {
     type: 'doughnut',
     data: { labels: sorted.map(x=>x[0]), datasets: [{ data: sorted.map(x=>x[1]), backgroundColor: COLORS, borderWidth: 2, borderColor: '#161b22' }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { ...tooltipPlugin.plugins, legend: { position: 'right', labels: { color: '#8b949e', font: { size: 11 }, padding: 8, boxWidth: 12 } } } }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      onClick: (_, els) => { if (els.length) showDrillDown(drillKey, sorted[els[0].index][0]); },
+      plugins: { tooltip: makeTooltipWithDrill(drillKey), legend: { position: 'right', labels: { color: '#8b949e', font: { size: 11 }, padding: 8, boxWidth: 12 } } }
+    }
   });
 }
 
-function drawBar(id, data, color) {
+function drawBar(id, data, color, drillKey) {
   const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]).slice(0,10);
   const ctx = document.getElementById(id);
   if (!ctx) return;
   charts[id] = new Chart(ctx, {
     type: 'bar',
     data: { labels: sorted.map(x=>x[0]), datasets: [{ data: sorted.map(x=>x[1]), backgroundColor: color || COLORS[0], borderRadius: 4 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { ...tooltipPlugin.plugins, legend: { display: false } }, scales: { x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } } } }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      onClick: (_, els) => { if (els.length) showDrillDown(drillKey, sorted[els[0].index][0]); },
+      plugins: { tooltip: makeTooltipWithDrill(drillKey), legend: { display: false } },
+      scales: { x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } } }
+    }
   });
 }
 
-function drawHBar(id, data) {
+function drawHBar(id, data, drillKey) {
   const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]).slice(0,10);
   const ctx = document.getElementById(id);
   if (!ctx) return;
   charts[id] = new Chart(ctx, {
     type: 'bar',
     data: { labels: sorted.map(x=>x[0]), datasets: [{ data: sorted.map(x=>x[1]), backgroundColor: COLORS, borderRadius: 4 }] },
-    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { ...tooltipPlugin.plugins, legend: { display: false } }, scales: { x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } } } }
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      onClick: (_, els) => { if (els.length) showDrillDown(drillKey, sorted[els[0].index][0]); },
+      plugins: { tooltip: makeTooltipWithDrill(drillKey), legend: { display: false } },
+      scales: { x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } } }
+    }
   });
 }
 
-// Recebe monthMap com chaves YYYY-MM, ordena cronologicamente e converte para labels legíveis
+let lineKeyMap = {};
 function drawLine(id, data) {
-  // Ordena as chaves YYYY-MM cronologicamente (sort lexicográfico funciona perfeitamente para esse formato)
   const sortedKeys = Object.keys(data).sort();
-  // Converte YYYY-MM para label "abr/25", "mai/25" etc. sem depender de toLocaleDateString
   const monthNames = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
   const labels = sortedKeys.map(k => {
     const [y, m] = k.split('-');
     return `${monthNames[parseInt(m,10)-1]}/${String(y).slice(-2)}`;
   });
+  lineKeyMap = {};
+  sortedKeys.forEach((k, i) => { lineKeyMap[labels[i]] = k; });
   const ctx = document.getElementById(id);
   if (!ctx) return;
   charts[id] = new Chart(ctx, {
     type: 'line',
     data: { labels: labels, datasets: [{ label: 'Demandas', data: sortedKeys.map(k=>data[k]), borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,0.1)', fill: true, tension: 0.4, pointBackgroundColor: '#58a6ff', pointRadius: 5 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { ...tooltipPlugin.plugins, legend: { display: false } }, scales: { x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } } } }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      onClick: (_, els) => { if (els.length) showDrillDown('month', sortedKeys[els[0].index]); },
+      plugins: { tooltip: makeTooltipWithDrill('month', lbl => lineKeyMap[lbl] || lbl), legend: { display: false } },
+      scales: { x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } }, y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } } }
+    }
   });
 }
 
