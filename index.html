@@ -199,24 +199,55 @@
 </div>
 
 <script>
-const DB_ID = '2e0b431349e180498fe0cbaf43c58f21';
+const DB_ID     = '2e0b431349e180498fe0cbaf43c58f21';
+const ADV_DB_ID = '253aac6d10a54b5a8bc2b575b1598df6';
 let TOKEN = '';
 let allData = [];
+let advData = [];      // database separada do Audiovisual
+let advLoaded = false;
 let filteredData = [];
 let charts = {};
 
 let activeTab = 'geral';
 
-function setTab(tab) {
+function getBaseData() {
+  return activeTab === 'adv' ? advData : allData;
+}
+
+function filterRaw(raw) {
+  return raw.filter(p => {
+    const ct = p.properties['Criado em']?.created_time;
+    if (!ct || !ct.startsWith('2026')) return false;
+    const status = p.properties.Status?.status?.name;
+    if (!status) return false;
+    return !['Em Construção', 'ERRO', 'Erro'].includes(status);
+  });
+}
+
+async function setTab(tab) {
   activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
+
+  if (tab === 'adv' && !advLoaded) {
+    document.getElementById('mainContent').innerHTML =
+      '<div class="loading"><div class="spinner"></div><span>Carregando Audiovisual...</span></div>';
+    await loadAdvData();
+  }
+
+  // Repopula filtros e limpa seleções ao trocar de aba
+  ['fStatus','fTipo','fArea','fAreaDem','fAreaTask','fCreative','fNomeFreelancer','fMes']
+    .forEach(id => clearMsFilter(id));
+  ['fFreelancer','fRevisoes','fForaSLA','fAprovadoPrimeira','fIniciativa']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+
+  populateFilters();
   applyFilters();
 }
 
 function getTabData(data) {
   if (activeTab === 'creative') return data.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'CREATIVE'));
-  if (activeTab === 'adv') return data.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'AUDIOVISUAL') || (p.properties['Tipo de Demanda']?.select?.name||'').startsWith('ADV'));
+  if (activeTab === 'adv') return data; // já é a database ADV inteira
   if (activeTab === 'red') return data.filter(p => (p.properties['Tipo de Demanda']?.select?.name || '').toUpperCase().startsWith('RED'));
   return data;
 }
@@ -266,37 +297,47 @@ async function notionFetch(path, method, body) {
   return resp.json();
 }
 
-async function fetchAll() {
+async function fetchAllFromDb(dbId) {
   let results = [], cursor = null;
-
   do {
     const body = { page_size: 100, sorts: [{ property: 'Criado em', direction: 'descending' }] };
     if (cursor) body.start_cursor = cursor;
-
-    const d = await notionFetch(`/v1/databases/${DB_ID}/query`, 'POST', body);
+    const d = await notionFetch(`/v1/databases/${dbId}/query`, 'POST', body);
     results = results.concat(d.results || []);
     cursor = d.has_more ? d.next_cursor : null;
   } while (cursor);
-
   return results;
+}
+
+async function fetchAll() { return fetchAllFromDb(DB_ID); }
+
+async function loadAdvData() {
+  try {
+    const raw = await fetchAllFromDb(ADV_DB_ID);
+    advData = filterRaw(raw);
+    advLoaded = true;
+  } catch(e) {
+    document.getElementById('mainContent').innerHTML =
+      `<div class="loading"><p style="color:var(--red)">Erro ao carregar Audiovisual: ${e.message}</p></div>`;
+  }
 }
 
 async function loadData() {
   const btn = document.getElementById('btnRefresh');
   btn.disabled = true; btn.textContent = '⟳ Carregando...';
-  document.getElementById('mainContent').innerHTML = '<div class="loading"><div class="spinner"></div><span>Carregando '+allData.length+' demandas...</span></div>';
+  document.getElementById('mainContent').innerHTML = '<div class="loading"><div class="spinner"></div><span>Carregando dados...</span></div>';
 
   try {
     const raw = await fetchAll();
-    // Filtra apenas registros de 2026 no cliente (evita problemas de filtro via API/proxy)
-    allData = raw.filter(p => {
-      const ct = p.properties['Criado em']?.created_time;
-      if (!ct || !ct.startsWith('2026')) return false;
-      // Exclui permanentemente: Em Construção, ERRO e registros sem status
-      const status = p.properties.Status?.status?.name;
-      if (!status) return false;
-      return !['Em Construção', 'ERRO', 'Erro'].includes(status);
-    });
+    allData = filterRaw(raw);
+
+    // Se estiver na aba ADV, recarrega também
+    if (activeTab === 'adv') {
+      await loadAdvData();
+    } else {
+      advLoaded = false; // força recarga próxima vez que clicar em ADV
+    }
+
     populateFilters();
     applyFilters();
     document.getElementById('lastUpdated').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
@@ -404,7 +445,7 @@ function populateFilters() {
   const creatives = new Set(), meses = new Set(), projetos = new Set();
   const nomesFreelancer = new Set(), areasTask = new Set();
 
-  allData.forEach(p => {
+  getBaseData().forEach(p => {
     const props = p.properties;
     const s = props.Status?.status?.name; if (s) statuses.add(s);
     const t = props['Tipo de Demanda']?.select?.name; if (t) tipos.add(t);
@@ -477,7 +518,7 @@ function applyFilters() {
   const fAprovadoPrimeira = document.getElementById('fAprovadoPrimeira').value;
   const fIniciativa      = document.getElementById('fIniciativa').value;
 
-  filteredData = allData.filter(p => {
+  filteredData = getBaseData().filter(p => {
     const props = p.properties;
     if (fStatus && !fStatus.has(props.Status?.status?.name)) return false;
     if (fTipo   && !fTipo.has(props['Tipo de Demanda']?.select?.name)) return false;
