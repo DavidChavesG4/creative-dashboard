@@ -314,10 +314,7 @@ async function loadData() {
   try {
     const raw = await fetchAll();
     allData = filterRaw(raw);
-
-    // ADV: mesmo banco 2026, mas usa campo 'Etapa' (não 'Status')
     // Separamos aqui para não fazer fetch extra
-    // ADV é database separada — carregada no setTab (lazy)
     // Reseta para forçar recarga ao clicar na aba
 
     populateFilters();
@@ -478,7 +475,6 @@ function populateFilters() {
       .forEach(n => creatives.add(n));
   }
 
-
   fillMultiSelect('fStatus', statuses);
   fillMultiSelect('fTipo', tiposFiltrados);
   fillMultiSelect('fArea', areas);
@@ -623,8 +619,6 @@ function showDrillDown(drillKey, key) {
 function render() {
   const dp = document.getElementById('drillPanel');
   if (dp) dp.style.display = 'none';
-
-
 
   const total = filteredData.length;
   const statusMap = {}, tipoMap = {}, areaMap = {}, areaDemMap = {}, creativeMap = {}, monthMap = {};
