@@ -311,10 +311,18 @@ async function fetchAllFromDb(dbId) {
 
 async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
+// Identifica registros ADV: ÁREA=AUDIOVISUAL OU Tipo começa com ADV
+function isAdvRecord(p) {
+  const areas = (p.properties['ÁREA']?.multi_select || []).map(a => a.name.toUpperCase());
+  const tipo  = (p.properties['Tipo de Demanda']?.select?.name || '').toUpperCase();
+  return areas.includes('AUDIOVISUAL') || tipo.startsWith('ADV');
+}
+
 async function loadAdvData() {
   try {
     const raw = await fetchAllFromDb(ADV_DB_ID);
-    advData = filterRaw(raw);
+    // Filtra apenas registros ADV — a database pode conter outros tipos
+    advData = filterRaw(raw).filter(isAdvRecord);
     advLoaded = true;
   } catch(e) {
     document.getElementById('mainContent').innerHTML =
@@ -471,9 +479,11 @@ function populateFilters() {
   // Filtra tipos: só exibe os que começam com CRT, ADV ou RED
   const tiposFiltrados = new Set([...tipos].filter(t => /^(CRT|ADV|RED)/i.test(t)));
 
-  // Garante que os 5 criativos do time sempre aparecem no filtro
-  ['Neemias Araujo do Amaral','Flávia Lima','Matheus Pio Nunes Gonçalves','Vitor Santos Serodeo','Pedro Marcondes']
-    .forEach(n => creatives.add(n));
+  // Membros fixos do time CREATIVE (não aplica no ADV — lá os membros vêm da própria database)
+  if (activeTab !== 'adv') {
+    ['Neemias Araujo do Amaral','Flávia Lima','Matheus Pio Nunes Gonçalves','Vitor Santos Serodeo','Pedro Marcondes']
+      .forEach(n => creatives.add(n));
+  }
 
   fillMultiSelect('fStatus', statuses);
   fillMultiSelect('fTipo', tiposFiltrados);
