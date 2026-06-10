@@ -326,19 +326,12 @@ async function fetchAll() { return fetchAllFromDb(DB_ID); }
 async function loadAdvData() {
   try {
     const raw = await fetchAllFromDb(ADV_DB_ID);
-    // ADV usa created_time da página (não depende de 'Criado em')
-    // Status no ADV fica no campo 'Etapa' (não 'Status')
-    advData = raw.filter(p => {
-      const ct = p.created_time || p.properties['Criado em']?.created_time;
-      if (!ct || !ct.startsWith('2026')) return false;
-      const etapa = p.properties['Etapa']?.status?.name;
-      if (!etapa) return false;
-      return !['Em Construção','ERRO','Erro'].includes(etapa);
-    });
+    // Filtra apenas por ano — usa created_time nativo da página
+    advData = raw.filter(p => (p.created_time || '').startsWith('2026'));
     advLoaded = true;
   } catch(e) {
     document.getElementById('mainContent').innerHTML =
-      `<div class="loading"><p style="color:var(--red)">Erro ao carregar Audiovisual: ${e.message}</p></div>`;
+      `<div class="loading"><p style="color:var(--red)">Erro ao carregar Audiovisual: ${e.message}</p><p style="color:var(--muted);font-size:12px;margin-top:8px;">Verifique se o token tem acesso à database de Audiovisual</p></div>`;
   }
 }
 
