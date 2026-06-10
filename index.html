@@ -327,10 +327,12 @@ async function fetchAll() { return fetchAllFromDb(DB_ID); }
 async function loadAdvData() {
   try {
     const raw = await fetchAllFromDb(ADV_DB_ID);
-    // ADV database: usa created_time nativo da página (sem campo 'Criado em')
-    advData = raw.filter(p => (p.created_time || '').startsWith('2026'));
+    // Sem filtro — carrega tudo para diagnóstico
+    advData = raw;
     advLoaded = true;
-    console.log('[ADV] carregado:', raw.length, 'total |', advData.length, 'de 2026');
+    console.log('[ADV] carregado:', raw.length, 'registros');
+    // Expoe para debug
+    window._advRaw = raw.slice(0, 3);
   } catch(e) {
     console.error('[ADV] erro:', e);
     document.getElementById('mainContent').innerHTML = `
@@ -677,17 +679,17 @@ function render() {
   if (dp) dp.style.display = 'none';
 
   // Diagnóstico ADV: mostra info se não há dados
-  if (activeTab === 'adv' && filteredData.length === 0 && window._advDiag) {
-    const d = window._advDiag;
+  if (activeTab === 'adv' && filteredData.length === 0) {
+    const raw = window._advRaw || [];
+    const keys = raw.length > 0 ? Object.keys(raw[0].properties).join(', ') : 'nenhum registro carregado';
+    const ct0  = raw.length > 0 ? (raw[0].created_time || 'sem created_time') : '';
     document.getElementById('mainContent').innerHTML = `
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;max-width:700px;margin:20px auto">
-        <h3 style="color:var(--yellow);margin-bottom:16px">⚠️ ADV sem dados — diagnóstico</h3>
+        <h3 style="color:var(--yellow);margin-bottom:16px">⚠️ ADV: ${advData.length} registros (sem filtro de data)</h3>
         <table style="width:100%;border-collapse:collapse;font-size:13px">
-          <tr><td style="color:var(--muted);padding:4px 0">Total no banco</td><td>${d.total} | De 2026: ${d.raw2026}</td></tr>
-          <tr><td style="color:var(--muted);padding:4px 0">Tipo começa com ADV</td><td style="color:${d.advTipos>0?'var(--green)':'var(--red)'}"><b>${d.advTipos}</b></td></tr>
-          <tr><td style="color:var(--muted);padding:4px 0">ÁREA contém AUDIO</td><td style="color:${d.areaAudiovisual>0?'var(--green)':'var(--red)'}"><b>${d.areaAudiovisual}</b></td></tr>
-          <tr><td style="color:var(--muted);padding:4px 0">Todas as ÁREAs</td><td style="color:var(--blue);font-size:11px">${d.areaCount}</td></tr>
-          <tr><td style="color:var(--muted);padding:4px 0">Campos do 1º registro</td><td style="color:var(--blue);font-size:11px">${d.allKeys}</td></tr>
+          <tr><td style="color:var(--muted);padding:6px 0">Registros no advData</td><td style="color:${advData.length>0?'var(--green)':'var(--red)'}"><b>${advData.length}</b></td></tr>
+          <tr><td style="color:var(--muted);padding:6px 0">created_time do 1° reg</td><td style="color:var(--blue)">${ct0}</td></tr>
+          <tr><td style="color:var(--muted);padding:6px 0">Campos do 1° registro</td><td style="color:var(--blue);font-size:11px">${keys}</td></tr>
         </table>
       </div>`;
     return;
