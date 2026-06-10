@@ -270,7 +270,10 @@ async function loadData() {
     // Filtra apenas registros de 2026 no cliente (evita problemas de filtro via API/proxy)
     allData = raw.filter(p => {
       const ct = p.properties['Criado em']?.created_time;
-      return ct && ct.startsWith('2026');
+      if (!ct || !ct.startsWith('2026')) return false;
+      // Exclui permanentemente demandas em construção
+      const status = p.properties.Status?.status?.name;
+      return status !== 'Em Construção';
     });
     populateFilters();
     applyFilters();
