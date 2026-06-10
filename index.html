@@ -200,8 +200,7 @@
 
 <script>
 const DB_ID     = '2e0b431349e180498fe0cbaf43c58f21';
-// ADV está no mesmo banco 2026 — identificado pelo campo 'Etapa' (não 'Status')
-const ADV_DB_ID = DB_ID;
+const ADV_DB_ID = '253aac6d10a54b5a8bc2b575b1598df6'; // database separada do Audiovisual
 let TOKEN = '';
 let allData = [];
 let advData = [];      // database separada do Audiovisual
@@ -229,6 +228,12 @@ async function setTab(tab, btn) {
   activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
+
+  if (tab === 'adv' && !advLoaded) {
+    document.getElementById('mainContent').innerHTML =
+      '<div class="loading"><div class="spinner"></div><span>Carregando Audiovisual...</span></div>';
+    await loadAdvData();
+  }
 
   // Repopula filtros e limpa seleções ao trocar de aba
   ['fStatus','fTipo','fArea','fAreaDem','fAreaTask','fCreative','fNomeFreelancer','fMes']
@@ -318,6 +323,22 @@ async function fetchAllFromDb(dbId) {
 
 async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
+async function loadAdvData() {
+  try {
+    const raw = await fetchAllFromDb(ADV_DB_ID);
+    // ADV database: usa created_time nativo da página (não tem campo 'Criado em')
+    // Status: usa campo 'Etapa' se existir, senão 'Status'
+    advData = raw.filter(p => {
+      const ct = p.created_time || '';
+      return ct.startsWith('2026');
+    });
+    advLoaded = true;
+  } catch(e) {
+    document.getElementById('mainContent').innerHTML =
+      `<div class="loading"><p style="color:var(--red)">Erro ao carregar Audiovisual: ${e.message}</p></div>`;
+  }
+}
+
 // Retorna o status do registro considerando o campo correto por aba
 function getPropStatus(props) {
   return activeTab === 'adv'
@@ -336,33 +357,10 @@ async function loadData() {
 
     // ADV: mesmo banco 2026, mas usa campo 'Etapa' (não 'Status')
     // Separamos aqui para não fazer fetch extra
-    // ADV: usa created_time nativo (fallback quando 'Criado em' não está preenchido)
-    const getDate = p => p.properties['Criado em']?.created_time || p.created_time || '';
-    const raw2026all = raw.filter(p => getDate(p).startsWith('2026'));
-
-    // Diagnóstico
-    const areaCount = {};
-    raw2026all.forEach(p => {
-      (p.properties['ÁREA']?.multi_select||[]).forEach(a => { areaCount[a.name] = (areaCount[a.name]||0)+1; });
-    });
-    const advTipos   = raw2026all.filter(p => (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase().startsWith('ADV'));
-    const areaAudio  = raw2026all.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name.toUpperCase().includes('AUDIO')));
-    const allKeys    = raw2026all.length > 0 ? Object.keys(raw2026all[0].properties) : [];
-    window._advDiag  = {
-      total: raw.length, raw2026: raw2026all.length,
-      advTipos: advTipos.length, areaAudio: areaAudio.length,
-      areaCount: JSON.stringify(areaCount).slice(0, 300),
-      allKeys: allKeys.join(', ')
-    };
-
-    advData = raw2026all.filter(p => {
-      const areas = (p.properties['ÁREA']?.multi_select||[]).map(a => a.name.toUpperCase());
-      const tipo  = (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase();
-      const status = p.properties['Status']?.status?.name;
-      if (!status || ['Em Construção','ERRO','Erro'].includes(status)) return false;
-      return areas.some(a => a.includes('AUDIO')) || tipo.startsWith('ADV');
-    });
-    advLoaded = true;
+    // ADV é database separada — carregada no setTab (lazy)
+    // Reseta para forçar recarga ao clicar na aba
+    advData = [];
+    advLoaded = false;
 
     populateFilters();
     applyFilters();
