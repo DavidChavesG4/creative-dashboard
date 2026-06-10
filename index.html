@@ -31,6 +31,7 @@
   .tab-btn.active { color: var(--text); border-bottom-color: var(--blue); }
   .tab-btn.tab-creative.active { border-bottom-color: var(--blue); color: var(--blue); }
   .tab-btn.tab-red.active { border-bottom-color: var(--orange); color: var(--orange); }
+  .tab-btn.tab-adv.active { border-bottom-color: var(--red); color: var(--red); }
   .chart-wrap canvas { cursor: pointer; }
   .drill-hint { font-size: 10px; color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 6px; }
 
@@ -147,6 +148,7 @@
   <div class="tabs-bar">
     <button class="tab-btn active" onclick="setTab('geral',this)">📊 Geral</button>
     <button class="tab-btn tab-creative" onclick="setTab('creative',this)">🔵 CREATIVE</button>
+    <button class="tab-btn tab-adv" onclick="setTab('adv',this)">🔴 AUDIOVISUAL</button>
     <button class="tab-btn tab-red" onclick="setTab('red',this)">🟠 REDAÇÃO</button>
   </div>
 
@@ -198,14 +200,19 @@
 
 <script>
 const DB_ID     = '2e0b431349e180498fe0cbaf43c58f21';
+const ADV_PAGE_ID = '253aac6d10a54b5a8bc2b575b1598df6';
 let TOKEN = '';
 let allData = [];
+let advData = [];
+let advLoaded = false;
 let filteredData = [];
 let charts = {};
 
 let activeTab = 'geral';
 
-function getBaseData() { return allData; }
+function getBaseData() {
+  return activeTab === 'adv' ? advData : allData;
+}
 
 function filterRaw(raw) {
   return raw.filter(p => {
@@ -222,6 +229,13 @@ async function setTab(tab, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
+  if (tab === 'adv' && !advLoaded) {
+    document.getElementById('mainContent').innerHTML =
+      '<div class="loading"><div class="spinner"></div><span>Carregando Audiovisual...</span></div>';
+    await loadAdvData();
+    if (!advLoaded) return;
+  }
+
   // Repopula filtros e limpa seleções ao trocar de aba
   ['fStatus','fTipo','fArea','fAreaDem','fAreaTask','fCreative','fNomeFreelancer','fMes']
     .forEach(id => clearMsFilter(id));
@@ -231,7 +245,7 @@ async function setTab(tab, btn) {
   populateFilters();
 
   // Pré-seleciona a Área correspondente à aba clicada
-  const areaPreset = { creative: 'CREATIVE' };
+  const areaPreset = { creative: 'CREATIVE', adv: 'AUDIOVISUAL' };
   if (areaPreset[tab]) setMsFilter('fArea', areaPreset[tab]);
 
   applyFilters();
@@ -239,6 +253,7 @@ async function setTab(tab, btn) {
 
 function getTabData(data) {
   if (activeTab === 'creative') return data.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'CREATIVE'));
+  if (activeTab === 'adv') return data; // já filtrado em loadAdvData
   if (activeTab === 'red') return data.filter(p => (p.properties['Tipo de Demanda']?.select?.name || '').toUpperCase().startsWith('RED'));
   return data;
 }
@@ -301,6 +316,35 @@ async function fetchAllFromDb(dbId) {
 }
 
 async function fetchAll() { return fetchAllFromDb(DB_ID); }
+
+// Tenta descobrir o ID real do banco dentro de uma página Notion
+async function resolveAdvDbId() {
+  try {
+    const resp = await notionFetch(`/v1/blocks/${ADV_PAGE_ID}/children`);
+    const blocks = resp.results || [];
+    for (const b of blocks) {
+      if (b.type === 'child_database') return b.id.replace(/-/g,'');
+      if (b.type === 'linked_to_database') return (b.linked_to_database?.id||'').replace(/-/g,'');
+    }
+  } catch(e) { console.warn('[ADV] resolveAdvDbId falhou:', e.message); }
+  return ADV_PAGE_ID; // usa o próprio ID como fallback
+}
+
+async function loadAdvData() {
+  try {
+    const dbId = await resolveAdvDbId();
+    console.log('[ADV] usando DB ID:', dbId);
+    const raw = await fetchAllFromDb(dbId);
+    console.log('[ADV] registros brutos:', raw.length);
+    // Sem filtro de data — ADV não tem campo 'Criado em'
+    advData = raw;
+    advLoaded = true;
+  } catch(e) {
+    console.error('[ADV] erro:', e);
+    document.getElementById('mainContent').innerHTML =
+      `<div class="loading"><p style="color:var(--red)">Erro Audiovisual: ${e.message}</p></div>`;
+  }
+}
 
 function getPropStatus(props) {
   return props['Status']?.status?.name || '';
