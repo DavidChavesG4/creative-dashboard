@@ -200,7 +200,8 @@
 
 <script>
 const DB_ID     = '2e0b431349e180498fe0cbaf43c58f21';
-const ADV_PAGE_ID = '253aac6d10a54b5a8bc2b575b1598df6';
+// ADV está na mesma database principal (DB_ID confirmado)
+const ADV_PAGE_ID = DB_ID;
 let TOKEN = '';
 let allData = [];
 let advData = [];
@@ -317,33 +318,21 @@ async function fetchAllFromDb(dbId) {
 
 async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
-// Tenta descobrir o ID real do banco dentro de uma página Notion
-async function resolveAdvDbId() {
-  try {
-    const resp = await notionFetch(`/v1/blocks/${ADV_PAGE_ID}/children`);
-    const blocks = resp.results || [];
-    for (const b of blocks) {
-      if (b.type === 'child_database') return b.id.replace(/-/g,'');
-      if (b.type === 'linked_to_database') return (b.linked_to_database?.id||'').replace(/-/g,'');
-    }
-  } catch(e) { console.warn('[ADV] resolveAdvDbId falhou:', e.message); }
-  return ADV_PAGE_ID; // usa o próprio ID como fallback
-}
-
 async function loadAdvData() {
-  try {
-    const dbId = await resolveAdvDbId();
-    console.log('[ADV] usando DB ID:', dbId);
-    const raw = await fetchAllFromDb(dbId);
-    console.log('[ADV] registros brutos:', raw.length);
-    // Sem filtro de data — ADV não tem campo 'Criado em'
-    advData = raw;
-    advLoaded = true;
-  } catch(e) {
-    console.error('[ADV] erro:', e);
-    document.getElementById('mainContent').innerHTML =
-      `<div class="loading"><p style="color:var(--red)">Erro Audiovisual: ${e.message}</p></div>`;
-  }
+  // ADV está no allData (mesma database) — filtra registros ADV
+  // Por enquanto pega todos os registros com Status que não sejam CREATIVE nem RED
+  const crtStatuses = allData
+    .filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name === 'CREATIVE'))
+    .map(p => p.id);
+  const redIds = new Set(allData
+    .filter(p => (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase().startsWith('RED'))
+    .map(p => p.id));
+  const crtIds = new Set(crtStatuses);
+
+  // ADV = registros que NÃO são CREATIVE nem RED
+  advData = allData.filter(p => !crtIds.has(p.id) && !redIds.has(p.id));
+  advLoaded = true;
+  console.log('[ADV] registros identificados:', advData.length, '(de', allData.length, 'total)');
 }
 
 function getPropStatus(props) {
