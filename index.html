@@ -319,18 +319,27 @@ async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
 async function loadAdvData() {
   try {
-    // ADV_DB_ID é uma PAGE — busca a database filha dentro dela
-    let realDbId = ADV_DB_ID;
+    // Descobre a database ADV via search (ADV_DB_ID é uma página, não a database)
+    let realDbId = null;
     try {
-      const blocks = await notionFetch(`/v1/blocks/${ADV_DB_ID}/children`, 'GET');
-      const dbBlock = (blocks.results || []).find(b =>
-        b.type === 'child_database' || b.type === 'linked_to_database'
+      const search = await notionFetch('/v1/search', 'POST', {
+        query: 'AUDIOVISUAL',
+        filter: { value: 'database', property: 'object' },
+        page_size: 10
+      });
+      const found = (search.results || []).find(r =>
+        r.object === 'database' &&
+        (r.title?.[0]?.plain_text || '').toUpperCase().includes('AUDIO')
       );
-      if (dbBlock) {
-        realDbId = dbBlock.id.replace(/-/g, '');
-        console.log('[ADV] database real encontrada:', realDbId);
+      if (found) {
+        realDbId = found.id.replace(/-/g, '');
+        console.log('[ADV] database encontrada via search:', realDbId, '-', found.title?.[0]?.plain_text);
       }
-    } catch(e) { console.warn('[ADV] não foi possível resolver database filha:', e.message); }
+    } catch(e) { console.warn('[ADV] search falhou:', e.message); }
+
+    if (!realDbId) {
+      throw new Error('Database AUDIOVISUAL não encontrada. Verifique se G4 OS tem acesso.');
+    }
 
     const raw = await fetchAllFromDb(realDbId);
     advData = raw;
