@@ -244,7 +244,7 @@ async function setTab(tab) {
   populateFilters();
 
   // Pré-seleciona a Área correspondente à aba clicada
-  const areaPreset = { creative: 'CREATIVE', adv: 'AUDIOVISUAL' };
+  const areaPreset = { creative: 'CREATIVE', adv: 'AUDIOVISUAL', red: 'REDAÇÃO' };
   if (areaPreset[tab]) setMsFilter('fArea', areaPreset[tab]);
 
   applyFilters();
@@ -500,9 +500,13 @@ function populateFilters() {
   // Filtra tipos: só exibe os que começam com CRT, ADV ou RED
   const tiposFiltrados = new Set([...tipos].filter(t => /^(CRT|ADV|RED)/i.test(t)));
 
-  // Membros fixos do time CREATIVE (não aplica no ADV — lá os membros vêm da própria database)
-  if (activeTab !== 'adv') {
+  // Membros fixos por time
+  if (activeTab === 'creative' || activeTab === 'geral') {
     ['Neemias Araujo do Amaral','Flávia Lima','Matheus Pio Nunes Gonçalves','Vitor Santos Serodeo','Pedro Marcondes']
+      .forEach(n => creatives.add(n));
+  }
+  if (activeTab === 'red') {
+    ['Sarah Vitório','Juliana Cespedes','Marcella Mancinelli','Tici Fonseca']
       .forEach(n => creatives.add(n));
   }
 
