@@ -146,10 +146,10 @@
   </div>
 
   <div class="tabs-bar">
-    <button class="tab-btn active" onclick="setTab('geral')">📊 Geral</button>
-    <button class="tab-btn tab-creative" onclick="setTab('creative')">🔵 CREATIVE</button>
-    <button class="tab-btn tab-adv" onclick="setTab('adv')">🔴 AUDIOVISUAL</button>
-    <button class="tab-btn tab-red" onclick="setTab('red')">🟠 REDAÇÃO</button>
+    <button class="tab-btn active" onclick="setTab('geral',this)">📊 Geral</button>
+    <button class="tab-btn tab-creative" onclick="setTab('creative',this)">🔵 CREATIVE</button>
+    <button class="tab-btn tab-adv" onclick="setTab('adv',this)">🔴 AUDIOVISUAL</button>
+    <button class="tab-btn tab-red" onclick="setTab('red',this)">🟠 REDAÇÃO</button>
   </div>
 
   <div class="filters" id="filtersBar">
@@ -224,10 +224,10 @@ function filterRaw(raw) {
   });
 }
 
-async function setTab(tab) {
+async function setTab(tab, btn) {
   activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  if (btn) btn.classList.add('active');
 
   if (tab === 'adv' && !advLoaded) {
     document.getElementById('mainContent').innerHTML =
@@ -251,7 +251,7 @@ async function setTab(tab) {
   populateFilters();
 
   // Pré-seleciona a Área correspondente à aba clicada
-  const areaPreset = { creative: 'CREATIVE', adv: 'AUDIOVISUAL', red: 'REDAÇÃO' };
+  const areaPreset = { creative: 'CREATIVE', adv: 'AUDIOVISUAL' };
   if (areaPreset[tab]) setMsFilter('fArea', areaPreset[tab]);
 
   applyFilters();
