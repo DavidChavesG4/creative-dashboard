@@ -427,8 +427,15 @@ function populateFilters() {
     }
   }
 
+  // Filtra tipos: só exibe os que começam com CRT, ADV ou RED
+  const tiposFiltrados = new Set([...tipos].filter(t => /^(CRT|ADV|RED)/i.test(t)));
+
+  // Garante que os 5 criativos do time sempre aparecem no filtro
+  ['Neemias Araujo do Amaral','Flávia Lima','Matheus Pio Nunes Gonçalves','Vitor Santos Serodeo','Pedro Marcondes']
+    .forEach(n => creatives.add(n));
+
   fillMultiSelect('fStatus', statuses);
-  fillMultiSelect('fTipo', tipos);
+  fillMultiSelect('fTipo', tiposFiltrados);
   fillMultiSelect('fArea', areas);
   fillMultiSelect('fAreaDem', areasDem);
   fillMultiSelect('fAreaTask', areasTask);
