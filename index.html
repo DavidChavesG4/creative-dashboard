@@ -320,10 +320,9 @@ async function fetchAll() { return fetchAllFromDb(DB_ID); }
 async function loadAdvData() {
   try {
     const raw = await fetchAllFromDb(ADV_DB_ID);
-    // Filtra por ano usando created_time nativo (ADV não tem campo 'Criado em')
-    advData = raw.filter(p => (p.created_time || '').startsWith('2026'));
+    advData = raw; // carrega todos os registros do ADV
     advLoaded = true;
-    console.log('[ADV] carregado:', advData.length, 'de 2026 (total:', raw.length, ')');
+    console.log('[ADV] carregado:', raw.length, 'registros');
   } catch(e) {
     console.error('[ADV] erro:', e.message);
     document.getElementById('mainContent').innerHTML =
