@@ -316,18 +316,14 @@ async function fetchAllFromDb(dbId) {
 
 async function fetchAll() { return fetchAllFromDb(DB_ID); }
 
-// Identifica registros ADV: ÁREA=AUDIOVISUAL OU Tipo começa com ADV
-function isAdvRecord(p) {
-  const areas = (p.properties['ÁREA']?.multi_select || []).map(a => a.name.toUpperCase());
-  const tipo  = (p.properties['Tipo de Demanda']?.select?.name || '').toUpperCase();
-  return areas.includes('AUDIOVISUAL') || tipo.startsWith('ADV');
-}
-
 async function loadAdvData() {
   try {
     const raw = await fetchAllFromDb(ADV_DB_ID);
-    // Filtra apenas registros ADV — a database pode conter outros tipos
-    advData = filterRaw(raw).filter(isAdvRecord);
+    // Database é dedicada ao ADV — carrega tudo de 2026
+    advData = raw.filter(p => {
+      const ct = p.properties['Criado em']?.created_time;
+      return ct && ct.startsWith('2026');
+    });
     advLoaded = true;
   } catch(e) {
     document.getElementById('mainContent').innerHTML =
