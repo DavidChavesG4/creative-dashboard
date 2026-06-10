@@ -338,12 +338,30 @@ async function loadData() {
     // Separamos aqui para não fazer fetch extra
     // Diagnóstico: descobre a estrutura real dos registros ADV
     const raw2026 = raw.filter(p => (p.properties['Criado em']?.created_time||'').startsWith('2026'));
-    const comEtapa = raw2026.filter(p => !!p.properties['Etapa']?.status?.name);
-    const semStatus = raw2026.filter(p => !p.properties['Status']?.status?.name && !p.properties['Etapa']?.status?.name);
-    const sampleKeys = raw2026.length > 0 ? Object.keys(raw2026[0].properties).slice(0, 15).join(', ') : 'nenhum';
-    window._advDiag = { total: raw.length, raw2026: raw2026.length, comEtapa: comEtapa.length, semStatus: semStatus.length, sampleKeys };
+    const allKeys = raw2026.length > 0 ? Object.keys(raw2026[0].properties) : [];
+    // Conta registros por AREA
+    const areaCount = {};
+    raw2026.forEach(p => {
+      (p.properties['ÁREA']?.multi_select||[]).forEach(a => { areaCount[a.name] = (areaCount[a.name]||0)+1; });
+    });
+    // Conta tipos começando com ADV
+    const advTipos = raw2026.filter(p => (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase().startsWith('ADV'));
+    const areaAudiovisual = raw2026.filter(p => (p.properties['ÁREA']?.multi_select||[]).some(a => a.name.toUpperCase().includes('AUDIO')));
+    window._advDiag = {
+      total: raw.length, raw2026: raw2026.length,
+      advTipos: advTipos.length, areaAudiovisual: areaAudiovisual.length,
+      areaCount: JSON.stringify(areaCount).slice(0, 200),
+      allKeys: allKeys.join(', ')
+    };
 
-    advData = comEtapa.filter(p => !['Em Construção','ERRO','Erro'].includes(p.properties['Etapa'].status.name));
+    // Por enquanto usa tipo ADV ou AREA AUDIOVISUAL
+    advData = raw2026.filter(p => {
+      const areas = (p.properties['ÁREA']?.multi_select||[]).map(a => a.name.toUpperCase());
+      const tipo = (p.properties['Tipo de Demanda']?.select?.name||'').toUpperCase();
+      const status = p.properties['Status']?.status?.name;
+      if (!status || ['Em Construção','ERRO','Erro'].includes(status)) return false;
+      return areas.some(a => a.includes('AUDIO')) || tipo.startsWith('ADV');
+    });
     advLoaded = true;
 
     populateFilters();
@@ -661,14 +679,14 @@ function render() {
   if (activeTab === 'adv' && filteredData.length === 0 && window._advDiag) {
     const d = window._advDiag;
     document.getElementById('mainContent').innerHTML = `
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;max-width:600px;margin:20px auto">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;max-width:700px;margin:20px auto">
         <h3 style="color:var(--yellow);margin-bottom:16px">⚠️ ADV sem dados — diagnóstico</h3>
         <table style="width:100%;border-collapse:collapse;font-size:13px">
-          <tr><td style="color:var(--muted);padding:4px 0">Total de registros no banco</td><td style="color:var(--text)">${d.total}</td></tr>
-          <tr><td style="color:var(--muted);padding:4px 0">Registros de 2026</td><td style="color:var(--text)">${d.raw2026}</td></tr>
-          <tr><td style="color:var(--muted);padding:4px 0">Com campo <b>Etapa</b></td><td style="color:${d.comEtapa>0?'var(--green)':'var(--red)'}"><b>${d.comEtapa}</b></td></tr>
-          <tr><td style="color:var(--muted);padding:4px 0">Sem Status nem Etapa</td><td style="color:var(--text)">${d.semStatus}</td></tr>
-          <tr><td style="color:var(--muted);padding:4px 0">Campos do 1º registro</td><td style="color:var(--blue);font-size:11px">${d.sampleKeys}</td></tr>
+          <tr><td style="color:var(--muted);padding:4px 0">Total no banco</td><td>${d.total} | De 2026: ${d.raw2026}</td></tr>
+          <tr><td style="color:var(--muted);padding:4px 0">Tipo começa com ADV</td><td style="color:${d.advTipos>0?'var(--green)':'var(--red)'}"><b>${d.advTipos}</b></td></tr>
+          <tr><td style="color:var(--muted);padding:4px 0">ÁREA contém AUDIO</td><td style="color:${d.areaAudiovisual>0?'var(--green)':'var(--red)'}"><b>${d.areaAudiovisual}</b></td></tr>
+          <tr><td style="color:var(--muted);padding:4px 0">Todas as ÁREAs</td><td style="color:var(--blue);font-size:11px">${d.areaCount}</td></tr>
+          <tr><td style="color:var(--muted);padding:4px 0">Campos do 1º registro</td><td style="color:var(--blue);font-size:11px">${d.allKeys}</td></tr>
         </table>
       </div>`;
     return;
