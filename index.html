@@ -241,6 +241,13 @@ async function setTab(tab) {
   ['fFreelancer','fRevisoes','fForaSLA','fAprovadoPrimeira','fIniciativa']
     .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 
+  // Esconde filtros que não fazem sentido no ADV
+  const advOnlyHide = ['fFreelancer','fRevisoes','fForaSLA','fAprovadoPrimeira','fIniciativa'];
+  advOnlyHide.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (tab === 'adv') ? 'none' : '';
+  });
+
   populateFilters();
 
   // Pré-seleciona a Área correspondente à aba clicada
@@ -493,8 +500,10 @@ function populateFilters() {
     }
   }
 
-  // Filtra tipos: só exibe os que começam com CRT, ADV ou RED
-  const tiposFiltrados = new Set([...tipos].filter(t => /^(CRT|ADV|RED)/i.test(t)));
+  // ADV: mostra todos os tipos da database; outros: só CRT/ADV/RED
+  const tiposFiltrados = activeTab === 'adv'
+    ? tipos
+    : new Set([...tipos].filter(t => /^(CRT|ADV|RED)/i.test(t)));
 
   // Membros fixos por time
   if (activeTab === 'creative' || activeTab === 'geral') {
@@ -504,6 +513,11 @@ function populateFilters() {
   if (activeTab === 'red') {
     ['Sarah Vitório','Juliana Cespedes','Marcella Mancinelli','Tici Fonseca']
       .forEach(n => creatives.add(n));
+  }
+  if (activeTab === 'adv') {
+    ['Wilson Silva','Raffaela Lima','Flávio Rocha','Gui Juhas','Lucas Liberato',
+     'Amanda Rui','Joyce Moraes','Taína Vilhena','Diego Picasso','Yasmin Galdino',
+     'Gustavo Cairo','Eric Correa','Jaque Germano'].forEach(n => creatives.add(n));
   }
 
   fillMultiSelect('fStatus', statuses);
@@ -662,8 +676,8 @@ function render() {
     const s = props.Status?.status?.name || 'Sem status';
     statusMap[s] = (statusMap[s]||0) + 1;
     (drillMap.status[s] = drillMap.status[s]||[]).push(p);
-    if (s === 'Revisão') revisoes++;
-    if (s === 'Em produção') emProducao++;
+    if (s === 'Revisão' || s === 'Em Revisão') revisoes++;
+    if (s === 'Em produção' || s === 'Produção' || s === 'Editando' || s === 'Gravação') emProducao++;
 
     const t = props['Tipo de Demanda']?.select?.name || 'Sem tipo';
     tipoMap[t] = (tipoMap[t]||0) + 1;
@@ -696,7 +710,7 @@ function render() {
 
   const aprovados = statusMap['Aprovado']||0;
   const finalizados = statusMap['Finalizado']||0;
-  const cancelados = statusMap['Cancelada']||0;
+  const cancelados = (statusMap['Cancelada']||0) + (statusMap['Cancelado']||0);
 
   document.getElementById('mainContent').innerHTML = `
     <div class="kpi-grid">
@@ -826,7 +840,25 @@ function getTitle(props) {
 }
 
 function statusBadge(s) {
-  const m = { 'Aprovado':'badge-aprovado','Finalizado':'badge-finalizado','Em produção':'badge-producao','Revisão':'badge-revisao','Cancelada':'badge-cancelada','ERRO':'badge-erro','Na fila':'badge-fila' };
+  const m = {
+    // CREATIVE / GERAL
+    'Aprovado':'badge-aprovado','Aprovado':'badge-aprovado',
+    'Finalizado':'badge-finalizado','Em produção':'badge-producao',
+    'Revisão':'badge-revisao','Aprovação pendente':'badge-revisao',
+    'Cancelada':'badge-cancelada','ERRO':'badge-erro','Na fila':'badge-fila',
+    // ADV
+    'Cancelado':'badge-cancelada',
+    'Em Revisão':'badge-revisao',
+    'Para aprovação':'badge-revisao',
+    'Para Edição':'badge-fila',
+    'Backlog':'badge-fila',
+    'Produção':'badge-producao',
+    'Editando':'badge-producao',
+    'Gravação':'badge-producao',
+    'Produção Blocked':'badge-erro',
+    'Blocked':'badge-erro',
+    'Freela':'badge-default',
+  };
   return m[s] || 'badge-default';
 }
 
