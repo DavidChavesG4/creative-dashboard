@@ -233,6 +233,7 @@ async function setTab(tab, btn) {
     document.getElementById('mainContent').innerHTML =
       '<div class="loading"><div class="spinner"></div><span>Carregando Audiovisual...</span></div>';
     await loadAdvData();
+    if (!advLoaded) return; // load falhou — mensagem de erro já está no mainContent
   }
 
   // Repopula filtros e limpa seleções ao trocar de aba
@@ -326,16 +327,18 @@ async function fetchAll() { return fetchAllFromDb(DB_ID); }
 async function loadAdvData() {
   try {
     const raw = await fetchAllFromDb(ADV_DB_ID);
-    // ADV database: usa created_time nativo da página (não tem campo 'Criado em')
-    // Status: usa campo 'Etapa' se existir, senão 'Status'
-    advData = raw.filter(p => {
-      const ct = p.created_time || '';
-      return ct.startsWith('2026');
-    });
+    // ADV database: usa created_time nativo da página (sem campo 'Criado em')
+    advData = raw.filter(p => (p.created_time || '').startsWith('2026'));
     advLoaded = true;
+    console.log('[ADV] carregado:', raw.length, 'total |', advData.length, 'de 2026');
   } catch(e) {
-    document.getElementById('mainContent').innerHTML =
-      `<div class="loading"><p style="color:var(--red)">Erro ao carregar Audiovisual: ${e.message}</p></div>`;
+    console.error('[ADV] erro:', e);
+    document.getElementById('mainContent').innerHTML = `
+      <div class="loading">
+        <p style="color:var(--red)">Erro ao carregar Audiovisual</p>
+        <p style="color:var(--muted);font-size:12px;margin-top:8px">${e.message}</p>
+        <p style="color:var(--muted);font-size:11px;margin-top:4px">DB: ${ADV_DB_ID}</p>
+      </div>`;
   }
 }
 
